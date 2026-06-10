@@ -73,6 +73,28 @@ const AboutSection = () => {
           </p>
         </motion.div>
 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.25 }}
+          className="max-w-3xl mx-auto mb-16"
+        >
+          <h3 className="font-heading text-xl font-semibold text-foreground mb-3 text-center">
+            Status quo in Deutschland
+          </h3>
+          <p className="text-muted-foreground leading-relaxed text-center">
+            Angesichts wachsender medialer Aufmerksamkeit, zunehmender
+            wissenschaftlicher Forschung und eines steigenden
+            gesellschaftlichen Interesses an Psychedelika gehen wir davon
+            aus, dass auch unter Studierenden in Deutschland ein großes
+            Interesse an psychedelischer Forschung und Therapie besteht.
+            Gleichzeitig fehlt es bislang an bundesweiten studentischen
+            Zusammenschlüssen, die die Entwicklung dieses Feldes durch
+            Austausch und Vernetzung auf studentischer Ebene fördern.
+          </p>
+        </motion.div>
+
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {pillars.map((pillar, i) => (
             <motion.div
