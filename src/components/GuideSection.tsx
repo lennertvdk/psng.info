@@ -105,7 +105,7 @@ const GuideSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="bg-card rounded-2xl p-6 border border-border"
+                className="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow"
               >
                 <p.icon className="w-8 h-8 text-primary mb-3" />
                 <h4 className="font-heading text-sm font-semibold text-foreground mb-2">{p.title}</h4>
@@ -133,7 +133,7 @@ const GuideSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="flex gap-4 bg-card rounded-2xl p-6 border border-border"
+                className="flex gap-4 bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow"
               >
                 <s.icon className="w-6 h-6 text-primary shrink-0 mt-1" />
                 <div>
@@ -176,7 +176,7 @@ const GuideSection = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06 }}
-                className="flex gap-4 items-start bg-card rounded-xl p-5 border border-border"
+                className="flex gap-4 items-start bg-card rounded-xl p-5 border border-border hover:shadow-lg transition-shadow"
               >
                 <span className="font-heading text-xs font-bold text-primary bg-primary/10 rounded-full w-8 h-8 flex items-center justify-center shrink-0">
                   {topic.num}

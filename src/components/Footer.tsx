@@ -79,6 +79,9 @@ const Footer = () => {
               © {new Date().getFullYear()} Psychedelic Student Network Germany
               (PSNG). Alle Rechte vorbehalten.
             </p>
+            <p className="text-transparent text-xs font-heading mt-2">
+              Mit Dank an David Frank aus Basel.
+            </p>
           </div>
         </div>
       </div>

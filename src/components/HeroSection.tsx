@@ -64,7 +64,7 @@ const HeroSection = () => {
             Eigene Gruppe gründen
           </a>
           <a
-            href="#about"
+            href="#uber-uns"
             className="inline-flex items-center justify-center px-8 py-3 rounded-lg border border-primary/30 text-primary font-heading font-medium text-sm hover:bg-primary/5 transition-colors"
           >
             Mehr erfahren

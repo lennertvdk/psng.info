@@ -61,7 +61,7 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-24 md:py-32 bg-background">
+    <section id="kontakt" className="py-24 md:py-32 bg-background">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -90,7 +90,7 @@ const ContactSection = () => {
           className="max-w-xl mx-auto"
         >
           {status === "success" ? (
-            <div className="bg-card rounded-2xl border border-border p-8 text-center">
+            <div className="bg-card rounded-2xl border border-border p-8 text-center hover:shadow-lg transition-shadow">
               <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
                 Danke für deine Nachricht!
               </h3>
@@ -105,7 +105,7 @@ const ContactSection = () => {
               data-netlify="true"
               netlify-honeypot="bot-field"
               onSubmit={handleSubmit}
-              className="bg-card rounded-2xl border border-border p-6 md:p-8 space-y-5"
+              className="bg-card rounded-2xl border border-border p-6 md:p-8 space-y-5 hover:shadow-lg transition-shadow"
             >
               {/* Required for Netlify form detection */}
               <input type="hidden" name="form-name" value="kontakt" />

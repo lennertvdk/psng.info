@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import psngLogo from "@/assets/PSNG-Logo-centered.png";
 
 const navLinks = [
-  { label: "Kick-off", href: "#kickoff" },
-  { label: "Über uns", href: "#about" },
+  { label: "Über uns", href: "#uber-uns" },
   { label: "Events", href: "#events" },
+  { label: "Aufnahmen", href: "#aufnahmen" },
   { label: "Leitfaden", href: "#leitfaden" },
   { label: "FAQ", href: "#faq" },
   { label: "Team", href: "#team" },
-  { label: "Kooperation", href: "#partners" },
-  { label: "Kontakt", href: "#contact" },
+  { label: "Kooperation", href: "#kooperation" },
+  { label: "Kontakt", href: "#kontakt" },
 ];
 
 const Navbar = () => {
@@ -19,10 +20,11 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
-        <a href="#" className="font-heading text-xl font-bold tracking-tight text-primary">
-          PSNG
+        <a href="#" className="flex items-center gap-3 font-heading text-xl font-bold tracking-tight text-primary">
+          <img src={psngLogo} alt="PSNG Logo" className="h-9 w-9 rounded-full border border-border" />
+          <span>PSNG</span>
         </a>
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -34,7 +36,7 @@ const Navbar = () => {
           ))}
         </div>
         <button
-          className="lg:hidden text-primary"
+          className="md:hidden text-primary"
           onClick={() => setOpen(!open)}
           aria-label="Menü umschalten"
         >

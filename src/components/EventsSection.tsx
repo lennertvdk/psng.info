@@ -1,91 +1,100 @@
 import { motion } from "framer-motion";
-import { Calendar, MapPin, Video } from "lucide-react";
-import { formatEventDate, getUpcomingEvents } from "@/data/events";
+import { Calendar, MapPin, Users, Video } from "lucide-react";
+import SectionHeader from "@/components/SectionHeader";
+import { eventCategoryLabels, formatEventDate, getUpcomingEvents } from "@/data/events";
 
 const EventsSection = () => {
   const upcomingEvents = getUpcomingEvents();
+  const upcomingSpecialEvents = upcomingEvents.filter(
+    (event) => event.category !== "lecture" && event.category !== "community-call",
+  );
 
   return (
     <section id="events" className="py-24 md:py-32 gradient-soft">
       <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl mx-auto text-center mb-6"
-        >
-          <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary mb-4">
-            Events
-          </p>
-          <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
-            Kommende Veranstaltungen
-          </h2>
-          <p className="text-muted-foreground text-lg leading-relaxed mb-12">
-            Wir hosten regelmäßige Events: Community Calls zur Vernetzung,
-            Lectures mit wissenschaftlichem Input und mehr. Diesen Sommer findet
-            ein Community-Event vor Ort statt!
-          </p>
-        </motion.div>
-        {upcomingEvents.length > 0 ? (
-          <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
-            {upcomingEvents.map((event, i) => (
-              <motion.div
-                key={event.title + event.date}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="bg-card rounded-xl p-5 border border-border hover:shadow-md transition-all group"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-lg gradient-psychedelic flex items-center justify-center">
-                    <Video className="text-primary-foreground" size={18} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="inline-block px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-heading font-medium mb-2">
-                      {event.tag}
-                    </span>
-                    <h3 className="font-heading text-sm font-semibold text-foreground mb-1.5 group-hover:text-primary transition-colors">
-                      {event.title}
-                    </h3>
-                    <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Calendar size={12} className="text-primary" />
-                        {formatEventDate(event.date)}, {event.time}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <MapPin size={12} className="text-primary" />
-                        {event.location}
+        <SectionHeader
+          eyebrow="Events"
+          title="Kommende Veranstaltungen"
+          intro="Unsere regelmäßigen Formate geben dir Struktur. Die nächsten konkreten Termine siehst du hier – der Rest lebt in unserem Rhythmus-Text."
+        />
+
+        <div className="grid gap-8 lg:grid-cols-2 mb-12 items-start">
+          <div className="grid gap-6">
+            {upcomingSpecialEvents.length > 0 ? (
+              upcomingSpecialEvents.map((event, i) => (
+                <motion.div
+                  key={event.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  className="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow"
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="flex-shrink-0 w-11 h-11 rounded-xl gradient-psychedelic flex items-center justify-center">
+                      {event.category === "gathering" ? (
+                        <Users className="text-primary-foreground" size={20} />
+                      ) : (
+                        <Video className="text-primary-foreground" size={20} />
+                      )}
+                    </div>
+                    <div>
+                      <span className="inline-block px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-heading font-medium">
+                        {eventCategoryLabels[event.category]}
                       </span>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                  <h3 className="font-heading text-xl font-semibold text-foreground mb-3">
+                    {event.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                    {event.description ?? "Weitere Details zum Event folgen bald."}
+                  </p>
+                  <div className="space-y-2 text-sm text-muted-foreground">
+                    <p>
+                      <span className="font-medium text-foreground">Datum:</span> {formatEventDate(event.date)}
+                    </p>
+                    {event.location ? (
+                      <p>
+                        <span className="font-medium text-foreground">Ort:</span> {event.location}
+                      </p>
+                    ) : null}
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="rounded-2xl border border-border bg-card p-8 text-center hover:shadow-lg transition-shadow">
+                <p className="text-sm text-muted-foreground">
+                  Aktuell sind keine besonderen Vor-Ort-Events geplant.
+                </p>
+              </div>
+            )}
           </div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-2xl mx-auto text-center bg-card rounded-xl p-8 border border-border"
-          >
-            <p className="text-muted-foreground text-sm">
-              Aktuell sind keine neuen Termine geplant – schau bald wieder
-              vorbei oder folge uns auf{" "}
-              <a
-                href="https://www.instagram.com/psng.info/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary font-medium hover:underline"
-              >
-                Instagram
-              </a>{" "}
-              für Updates.
+
+          <div className="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow">
+            <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary mb-4">
+              Regelmäßige Formate
             </p>
-          </motion.div>
-        )}
+            <div className="grid gap-4">
+              <div className="rounded-2xl border border-border/70 bg-muted p-5">
+                <h4 className="font-heading text-lg font-semibold text-foreground mb-2">
+                  Community Calls
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Unsere Community Calls finden in der Regel am 4. Dienstag im Monat statt. Hier vernetzen wir uns, tauschen aktuelle Projekte aus und planen gemeinsames Engagement.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-border/70 bg-muted p-5">
+                <h4 className="font-heading text-lg font-semibold text-foreground mb-2">
+                  Lectures
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Lectures bieten fachlichen Input und finden üblicherweise am 2. Dienstag im Monat statt. Themen reichen von Forschung über Projekte bis zu psychedelischer Kultur.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

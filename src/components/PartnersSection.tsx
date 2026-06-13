@@ -69,7 +69,7 @@ const partners = [
 
 const PartnersSection = () => {
   return (
-    <section id="partners" className="py-24 md:py-32 bg-background">
+    <section id="kooperation" className="py-24 md:py-32 bg-background">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -96,7 +96,7 @@ const PartnersSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="bg-card rounded-2xl p-6 border border-border hover:shadow-md transition-shadow flex flex-col h-full"
+              className="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow flex flex-col h-full"
             >
               {partner.logo && (
                 <div className="flex justify-center mb-4">
@@ -146,7 +146,7 @@ const PartnersSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="max-w-2xl mx-auto text-center mt-12 p-6 rounded-2xl border border-border bg-card"
+          className="max-w-2xl mx-auto text-center mt-12 p-6 rounded-2xl border border-border bg-card hover:shadow-lg transition-shadow"
         >
           <p className="text-muted-foreground text-sm">
             Du möchtest mit uns kooperieren für Events, Reichweite, Forschung

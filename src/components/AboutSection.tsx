@@ -30,7 +30,7 @@ const pillars = [
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-24 md:py-32 bg-background">
+    <section id="uber-uns" className="py-24 md:py-32 bg-background">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -134,6 +134,9 @@ const AboutSection = () => {
             University Network for Psychedelic Students (UNePSI) Studierende an
             verschiedenen Universitäten. Diese Netzwerke dienen als Vorbilder
             für das PSNG.
+          </p>
+          <p className="mt-6 text-sm font-medium text-primary text-center">
+            Neu hier? Schau dir unser <a href="#kickoff" className="underline">Kick-off</a> und unsere <a href="#aufnahmen" className="underline">Aufnahmen</a> an.
           </p>
         </motion.div>
       </div>
