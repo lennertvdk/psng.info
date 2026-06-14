@@ -1,6 +1,5 @@
 import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
-import { Mail, Instagram, Youtube } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -180,34 +179,6 @@ const ContactSection = () => {
               </Button>
             </form>
           )}
-
-          <div className="flex flex-wrap items-center justify-center gap-6 mt-8">
-            <a
-              href="mailto:kontakt@psng.info"
-              className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm"
-            >
-              <Mail size={16} />
-              kontakt@psng.info
-            </a>
-            <a
-              href="https://www.instagram.com/psng.info/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm"
-            >
-              <Instagram size={16} />
-              @psng.info
-            </a>
-            <a
-              href="https://www.youtube.com/channel/UCMHHH4dOREJTJF_ySpgV7mA"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm"
-            >
-              <Youtube size={16} />
-              YouTube
-            </a>
-          </div>
         </motion.div>
       </div>
     </section>
