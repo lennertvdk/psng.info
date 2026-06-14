@@ -142,11 +142,11 @@ export const events: PsngEvent[] = [
   },
   {
     id: "gathering-2026-08-08",
-    title: "PSNGathering im König Atelier",
+    title: "PSNGathering in der Galerie König",
     category: "gathering",
     date: "2026-08-08",
     time: "18:00 – 22:00",
-    location: "König Atelier, Berlin",
+    location: "Galerie König, Berlin",
     description:
       "Unser Sommer-Event vor Ort mit Kurzvorträgen, Networking und Austausch über psychedelische Forschung und lokale Initiativen.",
   },

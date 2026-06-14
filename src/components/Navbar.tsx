@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
-import psngLogo from "@/assets/PSNG-Logo-centered.png";
+import psngLogo from "@/assets/PSNG-Logo-centered.webp";
 
 const navLinks = [
   { label: "Über uns", href: "#uber-uns" },

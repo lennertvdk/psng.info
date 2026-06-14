@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import cameronImg from "@/assets/Cameron.png";
-import ivanaImg from "@/assets/Ivana.png";
-import lennertImg from "@/assets/Lennert.png";
-import metaImg from "@/assets/Meta.png";
-import stelaImg from "@/assets/Stela.png";
+import cameronImg from "@/assets/Cameron.webp";
+import ivanaImg from "@/assets/Ivana.webp";
+import lennertImg from "@/assets/Lennert.webp";
+import metaImg from "@/assets/Meta.webp";
+import stelaImg from "@/assets/Stela.webp";
 
 const team = [
   {
@@ -84,6 +84,7 @@ const TeamSection = () => {
                 <img
                   src={member.image}
                   alt={member.name}
+                  loading="lazy"
                   className="w-full h-full object-cover"
                 />
               </div>

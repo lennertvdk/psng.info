@@ -15,7 +15,7 @@ const EventsSection = () => {
         <SectionHeader
           eyebrow="Events"
           title="Kommende Veranstaltungen"
-          intro="Unsere regelmäßigen Formate geben dir Struktur. Die nächsten konkreten Termine siehst du hier – der Rest lebt in unserem Rhythmus-Text."
+          intro="Hier findest du unsere nächsten Termine sowie unsere regelmäßigen Formate, an denen du teilnehmen kannst."
         />
 
         <div className="grid gap-8 lg:grid-cols-2 mb-12 items-start">
@@ -28,8 +28,8 @@ const EventsSection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.08 }}
-                  className="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow"
                 >
+                <div className="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow">
                   <div className="flex items-start gap-4 mb-4">
                     <div className="flex-shrink-0 w-11 h-11 rounded-xl gradient-psychedelic flex items-center justify-center">
                       {event.category === "gathering" ? (
@@ -60,6 +60,17 @@ const EventsSection = () => {
                       </p>
                     ) : null}
                   </div>
+                </div>
+                {event.category === "gathering" ? (
+                  <a
+                    href="https://www.instagram.com/psng.info/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex w-full items-center justify-center rounded-lg border border-primary/30 px-4 py-2 text-sm font-heading font-medium text-primary hover:bg-primary/5 transition-colors"
+                  >
+                    Folge uns auf Instagram, um nichts zu verpassen
+                  </a>
+                ) : null}
                 </motion.div>
               ))
             ) : (

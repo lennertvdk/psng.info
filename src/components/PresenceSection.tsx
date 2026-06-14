@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import trypPhoto1 from "@/assets/tryp-1.jpg";
-import icprPhoto from "@/assets/icpr-1.jpg";
+import trypPhoto1 from "@/assets/tryp-1.webp";
+import icprPhoto from "@/assets/icpr-1.webp";
 
 const PresenceSection = () => {
   return (
@@ -37,7 +37,7 @@ const PresenceSection = () => {
             className="bg-card rounded-2xl border border-border overflow-hidden hover:shadow-lg transition-shadow"
           >
             <div className="overflow-hidden rounded-t-2xl bg-slate-950/5 aspect-[4/3]">
-              <img src={trypPhoto1} alt="PSNG beim TRYP Expo Berlin" className="w-full h-full object-cover object-center" />
+              <img src={trypPhoto1} alt="PSNG beim TRYP Expo Berlin" loading="lazy" className="w-full h-full object-cover object-center" />
             </div>
             <div className="p-6 flex flex-col h-full">
               <div className="flex-1">
@@ -70,7 +70,7 @@ const PresenceSection = () => {
             className="bg-card rounded-2xl border border-border overflow-hidden hover:shadow-lg transition-shadow"
           >
             <div className="overflow-hidden rounded-t-2xl bg-slate-950/5 aspect-[4/3]">
-              <img src={icprPhoto} alt="PSNG bei der ICPR 2026 Haarlem" className="w-full h-full object-cover object-top" />
+              <img src={icprPhoto} alt="PSNG bei der ICPR 2026 Haarlem" loading="lazy" className="w-full h-full object-cover object-top" />
             </div>
             <div className="p-6 flex flex-col h-full">
               <div className="flex-1">

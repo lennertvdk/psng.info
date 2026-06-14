@@ -1,13 +1,12 @@
-import React, { useEffect } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
-import psngLogo from "@/assets/PSNG-Logo-centered-transparent.png";
-import alpsLogo from "@/assets/ALPS-Logo.png";
-import spsnLogo from "@/assets/SPSN-Logo.png";
-import unepsiLogo from "@/assets/UNEPSI-Logo.png";
-import psychedelicareLogo from "@/assets/PsychedeliCare-Logo.png";
-import psychedelicGermanyLogo from "@/assets/Psychedelic-Germany-Logo.png";
-import nachtschattenLogo from "@/assets/Nachtschatten-Logo.png";
-import psychedeliaStiftungLogo from "@/assets/Psychedelia-Stiftung-Logo.png";
+import { motion } from "framer-motion";
+import psngLogo from "@/assets/PSNG-Logo-centered-transparent.webp";
+import alpsLogo from "@/assets/ALPS-Logo.webp";
+import spsnLogo from "@/assets/SPSN-Logo.webp";
+import unepsiLogo from "@/assets/UNEPSI-Logo.webp";
+import psychedelicareLogo from "@/assets/PsychedeliCare-Logo.webp";
+import psychedelicGermanyLogo from "@/assets/Psychedelic-Germany-Logo.webp";
+import nachtschattenLogo from "@/assets/Nachtschatten-Logo.webp";
+import psychedeliaStiftungLogo from "@/assets/Psychedelia-Stiftung-Logo.webp";
 
 const whatsappLink = "https://chat.whatsapp.com/LBUA3UpzOV9BW1v59EZK8w?mode=gi_t";
 
@@ -46,27 +45,12 @@ const partnerLogos = [
 ];
 
 const HeroSection = () => {
-  const scrollY = useMotionValue(0);
-
-  useEffect(() => {
-    const update = () => scrollY.set(window.scrollY);
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
-  }, [scrollY]);
-
-  const logoScale = useTransform(scrollY, [0, 400], [1, 0.28]);
-  const logoY = useTransform(scrollY, [0, 400], [0, -260]);
-  const contentOpacity = useTransform(scrollY, [0, 250], [1, 0]);
-  const contentY = useTransform(scrollY, [0, 250], [0, 30]);
-
   return (
     <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden px-6">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8 }}
-        style={{ scale: logoScale, y: logoY }}
         className="relative w-56 md:w-80 flex items-center justify-center"
       >
         <div className="absolute w-[82%] h-[82%] rounded-full bg-white shadow-2xl" />
@@ -77,10 +61,7 @@ const HeroSection = () => {
         />
       </motion.div>
 
-      <motion.div
-        style={{ opacity: contentOpacity, y: contentY }}
-        className="mt-6 text-center max-w-2xl mx-auto"
-      >
+      <motion.div className="mt-6 text-center max-w-2xl mx-auto">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

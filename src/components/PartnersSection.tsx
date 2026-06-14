@@ -1,12 +1,19 @@
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import alpsLogo from "@/assets/ALPS-Logo.png";
-import spsnLogo from "@/assets/SPSN-Logo.png";
-import unepsiLogo from "@/assets/UNEPSI-Logo.png";
-import psychedelicareLogo from "@/assets/PsychedeliCare-Logo.png";
-import psychedelicGermanyLogo from "@/assets/Psychedelic-Germany-Logo.png";
-import nachtschattenLogo from "@/assets/Nachtschatten-Logo.png";
-import psychedeliaStiftungLogo from "@/assets/Psychedelia-Stiftung-Logo.png";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
+import alpsLogo from "@/assets/ALPS-Logo.webp";
+import spsnLogo from "@/assets/SPSN-Logo.webp";
+import unepsiLogo from "@/assets/UNEPSI-Logo.webp";
+import psychedelicareLogo from "@/assets/PsychedeliCare-Logo.webp";
+import psychedelicGermanyLogo from "@/assets/Psychedelic-Germany-Logo.webp";
+import nachtschattenLogo from "@/assets/Nachtschatten-Logo.webp";
+import psychedeliaStiftungLogo from "@/assets/Psychedelia-Stiftung-Logo.webp";
 
 const partners = [
   {
@@ -48,6 +55,7 @@ const partners = [
     logo: psychedelicGermanyLogo,
     url: "https://psychedelic-germany.de",
     instagram: "",
+    telegram: "https://t.me/psychedelic_germany",
   },
   {
     name: "Nachtschatten Verlag",
@@ -88,59 +96,81 @@ const PartnersSection = () => {
             Wir sind stolze Kooperationspartner der folgenden Organisationen.
           </p>
         </motion.div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {partners.map((partner, i) => (
-            <motion.div
-              key={partner.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow flex flex-col h-full"
-            >
-              {partner.logo && (
-                <div className="flex justify-center mb-4">
-                  <img
-                    src={partner.logo}
-                    alt={`${partner.name} Logo`}
-                    className="h-28 max-w-full object-contain"
-                  />
-                </div>
-              )}
-              <div className="flex-grow">
-                <h3 className="font-heading text-base font-semibold text-foreground mb-2">
-                  {partner.name}
-                </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                  {partner.description}
-                </p>
-              </div>
-              <div className="flex gap-3 flex-wrap justify-center mt-auto pt-4 border-t border-border/50">
-                {partner.url && (
-                  <a
-                    href={partner.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                  >
-                    <ExternalLink size={12} />
-                    Website
-                  </a>
-                )}
-                {partner.instagram && (
-                  <a
-                    href={partner.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                  >
-                    Instagram
-                  </a>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <Carousel
+          opts={{ align: "start", loop: true }}
+          className="max-w-5xl mx-auto"
+        >
+          <CarouselContent>
+            {partners.map((partner, i) => (
+              <CarouselItem
+                key={partner.name}
+                className="md:basis-1/2 lg:basis-1/3"
+              >
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  className="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow flex flex-col h-full"
+                >
+                  {partner.logo && (
+                    <div className="flex justify-center mb-4">
+                      <img
+                        src={partner.logo}
+                        alt={`${partner.name} Logo`}
+                        loading="lazy"
+                        className="h-28 max-w-full object-contain"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-grow">
+                    <h3 className="font-heading text-base font-semibold text-foreground mb-2">
+                      {partner.name}
+                    </h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                      {partner.description}
+                    </p>
+                  </div>
+                  <div className="flex gap-3 flex-wrap justify-center mt-auto pt-4 border-t border-border/50">
+                    {partner.url && (
+                      <a
+                        href={partner.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                      >
+                        <ExternalLink size={12} />
+                        Website
+                      </a>
+                    )}
+                    {partner.instagram && (
+                      <a
+                        href={partner.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                      >
+                        Instagram
+                      </a>
+                    )}
+                    {partner.telegram && (
+                      <a
+                        href={partner.telegram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                      >
+                        Telegram
+                      </a>
+                    )}
+                  </div>
+                </motion.div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
