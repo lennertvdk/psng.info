@@ -62,28 +62,25 @@ const HeroSection = () => {
 
   return (
     <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden px-6">
-      <motion.img
-        src={psngLogo}
-        alt="PSNG Logo"
+      <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8 }}
         style={{ scale: logoScale, y: logoY }}
-        className="w-56 md:w-80 object-contain"
-      />
+        className="relative w-56 md:w-80 flex items-center justify-center"
+      >
+        <div className="absolute w-[82%] h-[82%] rounded-full bg-white shadow-2xl" />
+        <img
+          src={psngLogo}
+          alt="PSNG Logo"
+          className="relative w-full object-contain"
+        />
+      </motion.div>
 
       <motion.div
         style={{ opacity: contentOpacity, y: contentY }}
         className="mt-6 text-center max-w-2xl mx-auto"
       >
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="font-heading text-sm uppercase tracking-[0.3em] text-foreground/60 mb-4"
-        >
-          Psychedelic Student Network Germany
-        </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -121,12 +118,6 @@ const HeroSection = () => {
           >
             Eigene Gruppe gründen
           </a>
-          <a
-            href="#uber-uns"
-            className="inline-flex items-center justify-center px-8 py-3 rounded-lg border border-primary/30 text-primary font-heading font-medium text-sm hover:bg-primary/5 transition-colors"
-          >
-            Mehr erfahren
-          </a>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -149,7 +140,7 @@ const HeroSection = () => {
                 <img
                   src={partner.logo}
                   alt={partner.name}
-                  className="h-8 max-w-[100px] object-contain opacity-50 grayscale hover:opacity-90 hover:grayscale-0 transition-all"
+                  className="h-9 max-w-[110px] object-contain opacity-90 hover:opacity-100 transition-opacity"
                 />
               </a>
             ))}

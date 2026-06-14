@@ -60,12 +60,12 @@ const AboutSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-3xl mx-auto text-center mb-16 p-8 rounded-2xl border border-border"
+          className="max-w-3xl mx-auto text-center mb-16 p-8 rounded-2xl bg-foreground text-background"
         >
-          <h3 className="font-heading text-xl font-semibold text-foreground mb-3">
+          <h3 className="font-heading text-xl font-semibold text-background mb-3">
             Unsere Vision
           </h3>
-          <p className="text-muted-foreground leading-relaxed">
+          <p className="text-background/70 leading-relaxed">
             Eine Zukunft, in der psychedelische Wissenschaft entstigmatisiert
             ist, interessierte Menschen einander leicht finden können und
             Forschung im Bereich der Psychedelika sicher, wissenschaftlich
