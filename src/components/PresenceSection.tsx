@@ -4,7 +4,7 @@ import icprPhoto from "@/assets/icpr-1.jpg";
 
 const PresenceSection = () => {
   return (
-    <section id="presence" className="py-24 md:py-32 bg-background">
+    <section id="presence" className="py-24 md:py-32">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

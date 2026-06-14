@@ -30,7 +30,7 @@ const pillars = [
 
 const AboutSection = () => {
   return (
-    <section id="uber-uns" className="py-24 md:py-32 bg-background">
+    <section id="uber-uns" className="py-24 md:py-32">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -60,7 +60,7 @@ const AboutSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-3xl mx-auto text-center mb-16 p-8 rounded-2xl gradient-soft border border-border"
+          className="max-w-3xl mx-auto text-center mb-16 p-8 rounded-2xl border border-border"
         >
           <h3 className="font-heading text-xl font-semibold text-foreground mb-3">
             Unsere Vision

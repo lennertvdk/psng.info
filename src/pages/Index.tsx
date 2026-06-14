@@ -1,3 +1,4 @@
+import heroBg from "@/assets/hero-bg.png";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
@@ -13,7 +14,12 @@ import Highlights from "@/components/Highlights";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="relative min-h-screen">
+      <div
+        className="fixed inset-0 -z-20 bg-cover bg-center"
+        style={{ backgroundImage: `url(${heroBg})` }}
+      />
+      <div className="absolute top-[210vh] left-0 right-0 bottom-0 -z-20 bg-background/50" />
       <Navbar />
       <HeroSection />
       <AboutSection />
