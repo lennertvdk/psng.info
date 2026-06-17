@@ -13,6 +13,7 @@ const team = [
     bio: "Klinischer Psychologe in der Psychotherapie-Ausbildung in Berlin. Research Assistant der Psychedelic Substances Research Group der Charité. Setzt sich für einen Ort ein, an dem Menschen neugierig ihrer Leidenschaft an der Erforschung veränderter Bewusstseinszustände nachgehen können.",
     image: cameronImg,
     initials: "CH",
+    linkedin: "https://www.linkedin.com/in/cameron-hornung-643514158/",
   },
   {
     name: "Ivana Sterr",
@@ -25,10 +26,11 @@ const team = [
   {
     name: "Lennert van de Kreeke",
     role: "Medizinstudent",
-    uni: "Berlin",
+    uni: "Charité Berlin",
     bio: "Aktiv in der klinischen Psychedelikaforschung und engagiert bei der ALPS Foundation in der Schweiz. Studiert Medizin in Berlin und sieht im PSNG großes Potenzial für Verbindung, Austausch und gemeinsame Entwicklung.",
     image: lennertImg,
     initials: "LK",
+    linkedin: "https://www.linkedin.com/in/lennert-van-de-kreeke-1b860828b/",
   },
   {
     name: "Meta Laubinger",
@@ -37,14 +39,16 @@ const team = [
     bio: "Klinische Psychologie-Masterandin und wissenschaftliche Hilfskraft. Überzeugt, dass Psychedelika ein kraftvolles Werkzeug zur Erforschung des Bewusstseins sind, deren therapeutisches Potenzial durch systematische Forschung nutzbar gemacht werden kann.",
     image: metaImg,
     initials: "ML",
+    linkedin: "https://www.linkedin.com/in/meta-laubinger-905634395/",
   },
   {
     name: "Stela Malvasija",
     role: "Klinische Psychologin",
-    uni: "",
+    uni: "Euro-FH Europäische Fernhochschule Hamburg",
     bio: "Klinische Psychologin mit besonderem Interesse an Psychedelika. Erforscht, wie veränderte Bewusstseinszustände Genesung, Verbundenheit und neue Narrative ermöglichen können – im Individuum und im Kollektiv.",
     image: stelaImg,
     initials: "SM",
+    linkedin: "https://www.linkedin.com/in/stela-malvasija-5510011aa/",
   },
 ];
 
@@ -99,6 +103,16 @@ const TeamSection = () => {
                 <p className="text-muted-foreground text-sm leading-relaxed mt-3">
                   {member.bio}
                 </p>
+                {member.linkedin && (
+                  <a
+                    href={member.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-3 text-xs font-medium text-primary hover:underline"
+                  >
+                    LinkedIn →
+                  </a>
+                )}
               </div>
             </motion.div>
           ))}

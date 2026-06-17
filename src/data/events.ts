@@ -21,6 +21,7 @@ export interface EventAssets {
   photos?: string[];
   attendees?: number;
   recapUrl?: string;
+  speakerLinkedinUrl?: string;
 }
 
 export interface PsngEvent {
@@ -66,6 +67,7 @@ export const events: PsngEvent[] = [
       "Ein breiter Überblick: Was Psychedelika sind und wie sie im Gehirn wirken – wie sie Wahrnehmung verändern und psychische Erkrankungen behandeln können. Eric forscht am Decision Circuits Lab (Einstein Center for Neurosciences Berlin) zu den neuronalen und serotonergen Mechanismen von Halluzinationen.",
     assets: {
       youtubeUrl: "https://www.youtube.com/watch?v=LftC0jVmxuI",
+      speakerLinkedinUrl: "https://www.linkedin.com/in/eric-lonergan-563b0683/",
     },
   },
   {

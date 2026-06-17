@@ -122,6 +122,16 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
               Recap lesen →
             </a>
           ) : null}
+          {a.speakerLinkedinUrl ? (
+            <a
+              href={a.speakerLinkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary hover:underline"
+            >
+Eric's LinkedIn →
+            </a>
+          ) : null}
         </div>
       </div>
     </div>
@@ -153,7 +163,13 @@ export default function Highlights({ contactHref = "/#kontakt" }: HighlightsProp
           {items.map((ev) => (
             <motion.div
               key={ev.id}
-              id={ev.id === "kickoff-2026-03-03" ? "kickoff" : undefined}
+              id={
+                ev.id === "kickoff-2026-03-03"
+                  ? "kickoff"
+                  : ev.id === "lecture-lonergan-2026-06"
+                    ? "lonergan-lecture"
+                    : undefined
+              }
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

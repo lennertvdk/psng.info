@@ -1,6 +1,7 @@
 import heroBg from "@/assets/hero-bg.webp";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import AnnouncementBar from "@/components/AnnouncementBar";
 import AboutSection from "@/components/AboutSection";
 import PresenceSection from "@/components/PresenceSection";
 import EventsSection from "@/components/EventsSection";
@@ -22,6 +23,7 @@ const Index = () => {
       <div className="absolute top-[100vh] left-0 right-0 bottom-0 -z-20 bg-background/70" />
       <Navbar />
       <HeroSection />
+      <AnnouncementBar />
       <AboutSection />
       <EventsSection />
       <PresenceSection />
