@@ -53,7 +53,7 @@ const HeroSection = () => {
         transition={{ duration: 0.8 }}
         className="relative w-56 md:w-80 flex items-center justify-center"
       >
-        <div className="absolute w-[82%] h-[82%] rounded-full bg-white shadow-2xl" />
+        <div className="absolute w-[82%] h-[82%] rounded-full bg-white" />
         <img
           src={psngLogo}
           alt="PSNG Logo"

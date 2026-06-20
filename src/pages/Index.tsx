@@ -20,7 +20,7 @@ const Index = () => {
         className="fixed inset-0 -z-20 bg-cover bg-center"
         style={{ backgroundImage: `url(${heroBg})` }}
       />
-      <div className="absolute top-[100vh] left-0 right-0 bottom-0 -z-20 bg-background/70" />
+      <div className="absolute top-[100vh] left-0 right-0 bottom-0 -z-20 bg-white" />
       <Navbar />
       <HeroSection />
       <AnnouncementBar />
