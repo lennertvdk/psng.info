@@ -33,7 +33,7 @@ const steps = [
   {
     icon: MessageSquare,
     title: "2. Kontakt zum PSNG",
-    desc: "Melde dich bei uns unter kontakt@psng.info – wir unterstützen euch beim Aufbau und vernetzen euch mit anderen Gruppen.",
+    desc: "Schreib uns über das Kontaktformular – wir unterstützen euch beim Aufbau und vernetzen euch mit anderen Gruppen.",
   },
   {
     icon: ClipboardList,
@@ -198,7 +198,7 @@ const GuideSection = () => {
           className="text-center mt-12"
         >
           <a
-            href="mailto:kontakt@psng.info"
+            href="#kontakt"
             className="inline-flex items-center justify-center px-8 py-3 rounded-lg gradient-psychedelic text-primary-foreground font-heading font-medium text-sm hover:opacity-90 transition-opacity"
           >
             Jetzt Gruppe gründen – Kontakt aufnehmen

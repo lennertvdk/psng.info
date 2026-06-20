@@ -39,7 +39,7 @@ const PresenceSection = () => {
             <div className="overflow-hidden rounded-t-2xl bg-slate-950/5 aspect-[4/3]">
               <img src={trypPhoto1} alt="PSNG beim TRYP Expo Berlin" loading="lazy" className="w-full h-full object-cover object-center" />
             </div>
-            <div className="p-6 flex flex-col h-full">
+            <div className="p-6 flex flex-col">
               <div className="flex-1">
                 <span className="inline-block px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-heading font-medium mb-3">
                   Mai 2026 · Berlin
@@ -72,7 +72,7 @@ const PresenceSection = () => {
             <div className="overflow-hidden rounded-t-2xl bg-slate-950/5 aspect-[4/3]">
               <img src={icprPhoto} alt="PSNG bei der ICPR 2026 Haarlem" loading="lazy" className="w-full h-full object-cover object-top" />
             </div>
-            <div className="p-6 flex flex-col h-full">
+            <div className="p-6 flex flex-col">
               <div className="flex-1">
                 <span className="inline-block px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-heading font-medium mb-3">
                   Juni 2026 · Haarlem

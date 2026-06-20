@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
-import { Calendar, MapPin, Users, Video } from "lucide-react";
+import { Users, Video } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import { eventCategoryLabels, formatEventDate, getUpcomingEvents } from "@/data/events";
 
 const EventsSection = () => {
   const upcomingEvents = getUpcomingEvents();
+  const nextLecture = upcomingEvents.find((e) => e.category === "lecture");
+  const nextCall = upcomingEvents.find((e) => e.category === "community-call");
   const upcomingSpecialEvents = upcomingEvents.filter(
     (event) => event.category !== "lecture" && event.category !== "community-call",
   );
@@ -92,16 +94,26 @@ const EventsSection = () => {
                   Community Calls
                 </h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Unsere Community Calls finden in der Regel am 4. Dienstag im Monat statt. Hier vernetzen wir uns, tauschen aktuelle Projekte aus und planen gemeinsames Engagement.
+                  In der Regel am 4. Dienstag im Monat. Vernetzung, aktuelle Projekte, gemeinsames Engagement.
                 </p>
+                {nextCall && (
+                  <p className="mt-2 text-xs font-medium text-primary">
+                    Nächster Call: {formatEventDate(nextCall.date)}, {nextCall.time}
+                  </p>
+                )}
               </div>
               <div className="rounded-2xl border border-border/70 bg-muted p-5">
                 <h4 className="font-heading text-lg font-semibold text-foreground mb-2">
                   Lectures
                 </h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Lectures bieten fachlichen Input und finden üblicherweise am 2. Dienstag im Monat statt. Themen reichen von Forschung über Projekte bis zu psychedelischer Kultur.
+                  In der Regel am 2. Dienstag im Monat. Fachlicher Input zu Forschung, Projekten und psychedelischer Wissenschaft.
                 </p>
+                {nextLecture && (
+                  <p className="mt-2 text-xs font-medium text-primary">
+                    Nächste Lecture: {formatEventDate(nextLecture.date)}, {nextLecture.time}
+                  </p>
+                )}
               </div>
             </div>
           </div>

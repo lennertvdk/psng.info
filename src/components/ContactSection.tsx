@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 
 const subjectOptions = [
   { value: "Gruppe gründen", label: "Ich möchte eine Lokalgruppe gründen" },
+  { value: "Team", label: "Ich möchte Teil des Teams werden" },
   { value: "Kooperation", label: "Kooperationsanfrage" },
   { value: "Feedback", label: "Feedback zur Website oder zum Netzwerk" },
   { value: "Beschwerde", label: "Beschwerde / Code-of-Conduct-Anliegen" },
