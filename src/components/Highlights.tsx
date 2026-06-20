@@ -9,8 +9,7 @@ import {
 } from "@/data/events";
 import { getYouTubeThumbnail, getYouTubeEmbedUrl } from "@/lib/youtube";
 
-const WA_B64 =
-  "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9JVE1Sd093Qjd5V0FScHVyNjBaaUxZ";
+const WHATSAPP_LINK = "https://chat.whatsapp.com/LBUA3UpzOV9BW1v59EZK8w?s=cl&p=i&ilr=1";
 
 interface HighlightsProps {
   /** Ziel des "Vortrag vorschlagen"-Buttons. Default: Kontakt auf Startseite. */
@@ -129,7 +128,7 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
               rel="noopener noreferrer"
               className="font-medium text-primary hover:underline"
             >
-Eric's LinkedIn →
+              Eric's LinkedIn →
             </a>
           ) : null}
         </div>
@@ -138,7 +137,7 @@ Eric's LinkedIn →
   );
 }
 
-export default function Highlights({ contactHref = "/#kontakt" }: HighlightsProps) {
+export default function Highlights({ contactHref = "#kontakt" }: HighlightsProps) {
   const items = useMemo(() => getHighlightEvents(), []);
   if (items.length === 0) return null;
 
@@ -150,15 +149,6 @@ export default function Highlights({ contactHref = "/#kontakt" }: HighlightsProp
           title="Was bei uns schon passiert ist"
           intro="Zum Nachschauen und Nachlesen."
         />
-        <div className="text-center mb-10">
-          <a
-            href="#kickoff"
-            className="text-sm font-medium text-primary hover:underline"
-          >
-            Neu hier? Schau dir unser Kick-off an.
-          </a>
-        </div>
-
         <div className="grid gap-6 sm:grid-cols-2">
           {items.map((ev) => (
             <motion.div
@@ -193,7 +183,7 @@ export default function Highlights({ contactHref = "/#kontakt" }: HighlightsProp
               Vortrag vorschlagen
             </a>
             <a
-              href={atob(WA_B64)}
+              href={WHATSAPP_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-md border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"

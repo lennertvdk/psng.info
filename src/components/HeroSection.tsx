@@ -1,48 +1,7 @@
 import { motion } from "framer-motion";
 import psngLogo from "@/assets/PSNG-Logo-centered-transparent.webp";
-import alpsLogo from "@/assets/ALPS-Logo.webp";
-import spsnLogo from "@/assets/SPSN-Logo.webp";
-import unepsiLogo from "@/assets/UNEPSI-Logo.webp";
-import psychedelicareLogo from "@/assets/PsychedeliCare-Logo.webp";
-import psychedelicGermanyLogo from "@/assets/Psychedelic-Germany-Logo.webp";
-import nachtschattenLogo from "@/assets/Nachtschatten-Logo.webp";
-import psychedeliaStiftungLogo from "@/assets/Psychedelia-Stiftung-Logo.webp";
 
-const whatsappLink = "https://chat.whatsapp.com/LBUA3UpzOV9BW1v59EZK8w?mode=gi_t";
-
-const partnerLogos = [
-  { name: "ALPS Foundation", logo: alpsLogo, url: "https://alps.foundation" },
-  {
-    name: "Swiss Psychedelic Student Network",
-    logo: spsnLogo,
-    url: "https://www.instagram.com/swisspsychedelicstudentnetwork/",
-  },
-  {
-    name: "UNePSI – Italy",
-    logo: unepsiLogo,
-    url: "https://www.instagram.com/_unepsi_/",
-  },
-  {
-    name: "PsychedeliCare",
-    logo: psychedelicareLogo,
-    url: "https://psychedelicare.eu",
-  },
-  {
-    name: "Psychedelic Germany",
-    logo: psychedelicGermanyLogo,
-    url: "https://psychedelic-germany.de",
-  },
-  {
-    name: "Nachtschatten Verlag",
-    logo: nachtschattenLogo,
-    url: "https://nachtschatten.ch/",
-  },
-  {
-    name: "Psychedelia Stiftung",
-    logo: psychedeliaStiftungLogo,
-    url: "https://psychedelia-stiftung.de/",
-  },
-];
+const whatsappLink = "https://chat.whatsapp.com/LBUA3UpzOV9BW1v59EZK8w?s=cl&p=i&ilr=1";
 
 const HeroSection = () => {
   return (
@@ -66,10 +25,20 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="font-heading text-3xl md:text-5xl font-bold text-foreground leading-tight mb-6"
+          className="font-heading text-3xl md:text-5xl font-bold text-foreground leading-tight mb-4"
         >
           Psychedelische <span className="gradient-text">Forschung</span> verbindet
         </motion.h1>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.45 }}
+          className="flex justify-center gap-3 font-heading text-sm text-foreground/50 mb-5"
+        >
+          <span>250+ Studierende</span>
+          <span>·</span>
+          <span>13+ Städte</span>
+        </motion.div>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -77,7 +46,7 @@ const HeroSection = () => {
           className="text-foreground/70 text-base md:text-lg max-w-xl mx-auto mb-8 font-body"
         >
           Deutschlands erstes bundesweites studentisches Netzwerk für
-          psychedelische Wissenschaft. Gestartet am 03. März 2026.
+          psychedelische Wissenschaft. Seit März 2026 aktiv.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -94,38 +63,11 @@ const HeroSection = () => {
             WhatsApp beitreten
           </a>
           <a
-            href="#leitfaden"
+            href="#uber-uns"
             className="inline-flex items-center justify-center px-8 py-3 rounded-lg border border-primary/30 text-primary font-heading font-medium text-sm hover:bg-primary/5 transition-colors"
           >
-            Eigene Gruppe gründen
+            Mehr erfahren
           </a>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="mt-12"
-        >
-          <p className="font-heading text-xs uppercase tracking-[0.2em] text-foreground/40 mb-5">
-            In Kooperation mit
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-            {partnerLogos.map((partner) => (
-              <a
-                key={partner.name}
-                href={partner.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={partner.name}
-              >
-                <img
-                  src={partner.logo}
-                  alt={partner.name}
-                  className="h-9 max-w-[110px] object-contain opacity-90 hover:opacity-100 hover:scale-125 transition"
-                />
-              </a>
-            ))}
-          </div>
         </motion.div>
       </motion.div>
     </section>

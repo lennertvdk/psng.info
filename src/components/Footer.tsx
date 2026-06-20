@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Mail, Instagram, Youtube, Linkedin } from "lucide-react";
 
-const whatsappLink = "https://chat.whatsapp.com/LBUA3UpzOV9BW1v59EZK8w?mode=gi_t";
+const whatsappLink = "https://chat.whatsapp.com/LBUA3UpzOV9BW1v59EZK8w?s=cl&p=i&ilr=1";
 
 const Footer = () => {
   return (
@@ -67,6 +67,12 @@ const Footer = () => {
                 className="text-primary-foreground/60 hover:text-primary-foreground transition-colors text-xs font-heading"
               >
                 Datenschutz
+              </Link>
+              <Link
+                to="/leitfaden"
+                className="text-primary-foreground/60 hover:text-primary-foreground transition-colors text-xs font-heading"
+              >
+                Leitfaden
               </Link>
               <Link
                 to="/code-of-conduct"

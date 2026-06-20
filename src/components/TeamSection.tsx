@@ -133,25 +133,27 @@ const TeamSection = () => {
                   {member.bio}
                 </p>
                 <div className="flex-1" />
-                <div className="mt-4">
-                  {member.linkedin ? (
-                    <a
-                      href={member.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block text-xs font-medium text-primary hover:underline"
-                    >
-                      LinkedIn →
-                    </a>
-                  ) : member.isRecruiting ? (
-                    <a
-                      href="#kontakt"
-                      className="inline-flex items-center justify-center px-5 py-2 rounded-lg border border-primary/30 text-primary font-heading font-medium text-xs hover:bg-primary/5 transition-colors"
-                    >
-                      Kontakt aufnehmen
-                    </a>
-                  ) : null}
-                </div>
+                {(member.linkedin || member.isRecruiting) && (
+                  <div className="mt-auto pt-3 border-t border-border/50">
+                    {member.linkedin ? (
+                      <a
+                        href={member.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block text-xs font-medium text-primary hover:underline"
+                      >
+                        LinkedIn →
+                      </a>
+                    ) : (
+                      <a
+                        href="#kontakt"
+                        className="inline-flex items-center justify-center px-5 py-2 rounded-lg border border-primary/30 text-primary font-heading font-medium text-xs hover:bg-primary/5 transition-colors"
+                      >
+                        Kontakt aufnehmen
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             </motion.div>
           ))}

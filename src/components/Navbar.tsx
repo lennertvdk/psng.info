@@ -5,8 +5,8 @@ import psngLogo from "@/assets/PSNG-Logo-centered.webp";
 
 const navLinks = [
   { label: "Über uns", href: "#uber-uns" },
-  { label: "Events", href: "#events" },
   { label: "Aufnahmen", href: "#aufnahmen" },
+  { label: "Events", href: "#events" },
   { label: "Leitfaden", href: "#leitfaden" },
   { label: "FAQ", href: "#faq" },
   { label: "Team", href: "#team" },

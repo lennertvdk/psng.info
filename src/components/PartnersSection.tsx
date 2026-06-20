@@ -182,10 +182,10 @@ const PartnersSection = () => {
             Du möchtest mit uns kooperieren für Events, Reichweite, Forschung
             oder Ideen-Sparring?{" "}
             <a
-              href="mailto:kontakt@psng.info"
+              href="#kontakt"
               className="text-primary font-medium hover:underline"
             >
-              Schreib uns eine E-Mail!
+              Schreib uns!
             </a>
           </p>
         </motion.div>

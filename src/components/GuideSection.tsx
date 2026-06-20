@@ -24,36 +24,33 @@ const principles = [
   },
 ];
 
+const WHATSAPP_LINK = "https://chat.whatsapp.com/LBUA3UpzOV9BW1v59EZK8w?s=cl&p=i&ilr=1";
+
 const steps = [
   {
     icon: Users,
     title: "1. Team zusammenstellen",
-    desc: "Finde 2–3 Mitstreiter*innen an deiner Hochschule, die Interesse an psychedelischer Forschung haben.",
+    desc: "Finde 2–3 Mitstreiter*innen an deiner Hochschule – oder tritt unserer WhatsApp-Community bei, wo wir für jede Stadt eine eigene Gruppe haben.",
+    link: { label: "WhatsApp beitreten", href: WHATSAPP_LINK, external: true },
   },
   {
     icon: MessageSquare,
     title: "2. Kontakt zum PSNG",
-    desc: "Schreib uns über das Kontaktformular – wir unterstützen euch beim Aufbau und vernetzen euch mit anderen Gruppen.",
+    desc: "Schreib uns über unser Kontaktformular – wir unterstützen euch beim Aufbau und vernetzen euch mit anderen Gruppen.",
+    link: { label: "Kontaktformular", href: "#kontakt", external: false },
   },
   {
     icon: ClipboardList,
     title: "3. Erstes Treffen planen",
-    desc: "Nutzt unser Psychedelic Curriculum als Leitfaden für eure ersten Veranstaltungen. Themen, Formate und Diskussionsfragen sind vorbereitet.",
+    desc: "Lehnt euch an unsere monatlichen Lectures und Community Calls an oder entwickelt eigene Formate.",
+    link: { label: "Events & Termine", href: "#events", external: false },
   },
   {
     icon: BookOpen,
     title: "4. Ressourcen nutzen",
-    desc: "Greift auf unser modulares Lernökosystem zu: Kurzeinführungen, Reviews, vertiefende Literatur und Diskussionsfragen für Journal Clubs.",
+    desc: "Der Leitfaden gibt euch Struktur, das Curriculum liefert Themen-Inspiration, und unsere Aufnahmen sind ein guter erster inhaltlicher Aufschlag.",
+    link: { label: "Leitfaden", href: "/leitfaden", external: false },
   },
-];
-
-const curriculumTopics = [
-  { num: "01", title: "Einführung – Psychedelika: Wundermittel oder Hype?", desc: "Was sind Psychedelika, warum ist das Thema so präsent – und was hält einer kritischen Betrachtung stand?" },
-  { num: "02", title: "Geschichte", desc: "Von schamanischen Ritualen über den Forschungshype der 1960er bis zum Verbot und zur heutigen Renaissance." },
-  { num: "03", title: "Stoffklassen und Klassifikation", desc: "Tryptamine, Phenethylamine, Entaktogene, Dissoziative – Wirkung, Pharmakologie und Unterschiede." },
-  { num: "04", title: "Neurowissenschaft", desc: "Wie wirken Psychedelika im Gehirn? Serotonin-Rezeptoren, Default Mode Network und Neuroplastizität." },
-  { num: "05", title: "Klinische Forschung", desc: "Aktuelle Studien zu Depression, PTBS, Sucht und Angststörungen – Methodik, Ergebnisse und Limitationen." },
-  { num: "06", title: "Philosophie & Bewusstsein", desc: "Was sagen psychedelische Erfahrungen über die Natur des Bewusstseins? Phänomenologie und Erkenntnistheorie." },
 ];
 
 const GuideSection = () => {
@@ -77,6 +74,43 @@ const GuideSection = () => {
           <p className="text-muted-foreground text-lg">
             Werde Teil des bundesweiten Psychedelic Student Network Germany und schaffe einen Raum für wissenschaftlichen Austausch an deiner Hochschule.
           </p>
+        </motion.div>
+
+        {/* Resource card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto mb-20"
+        >
+          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-8">
+            <div className="flex flex-col sm:flex-row items-start gap-8">
+              <div className="flex-1">
+                <p className="font-heading text-xs uppercase tracking-[0.2em] text-primary mb-2">
+                  Vollständiger Leitfaden
+                </p>
+                <h4 className="font-heading text-xl font-semibold text-foreground mb-2">
+                  Von null bis zur ersten Sitzung.
+                </h4>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-5">
+                  Schritt für Schritt erklärt: AStA-Anmeldung, Mitstreiter*innen finden, Moderationsregeln, Krisenplan – plus das vollständige Psychedelic Curriculum.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {["AStA & Bürokratie", "Erstes Event", "Moderationsregeln", "Krisenplan", "Curriculum"].map((tag) => (
+                    <span key={tag} className="text-xs px-2.5 py-1 rounded-full border border-primary/20 bg-white text-primary">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <a
+                href="/leitfaden"
+                className="shrink-0 inline-flex items-center justify-center px-6 py-3 rounded-lg border border-primary/30 text-primary font-heading font-medium text-sm hover:bg-primary/10 transition-colors"
+              >
+                Leitfaden lesen →
+              </a>
+            </div>
+          </div>
         </motion.div>
 
         {/* Principles */}
@@ -136,54 +170,16 @@ const GuideSection = () => {
                 className="flex gap-4 bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow"
               >
                 <s.icon className="w-6 h-6 text-primary shrink-0 mt-1" />
-                <div>
+                <div className="flex flex-col flex-1">
                   <h4 className="font-heading text-sm font-semibold text-foreground mb-1">{s.title}</h4>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Psychedelic Curriculum */}
-        <div className="max-w-4xl mx-auto mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-8"
-          >
-            <h3 className="font-heading text-2xl font-bold text-foreground mb-2">
-              Psychedelic Curriculum
-            </h3>
-            <p className="text-muted-foreground">
-              Ein modulares Lernökosystem für Studierende und Forschende. Jedes Event zu diesen Themen kann enthalten:
-            </p>
-            <div className="flex flex-wrap justify-center gap-3 mt-4">
-              {["Kurzeinführung (~10 Min.)", "Review & kritische Einordnung", "Vertiefende Literatur", "Diskussionsfragen"].map((item) => (
-                <span key={item} className="inline-flex items-center px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
-                  {item}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-
-          <div className="space-y-4">
-            {curriculumTopics.map((topic, i) => (
-              <motion.div
-                key={topic.num}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-                className="flex gap-4 items-start bg-card rounded-xl p-5 border border-border hover:shadow-lg transition-shadow"
-              >
-                <span className="font-heading text-xs font-bold text-primary bg-primary/10 rounded-full w-8 h-8 flex items-center justify-center shrink-0">
-                  {topic.num}
-                </span>
-                <div>
-                  <h4 className="font-heading text-sm font-semibold text-foreground">{topic.title}</h4>
-                  <p className="text-muted-foreground text-sm mt-1">{topic.desc}</p>
+                  <p className="text-muted-foreground text-sm leading-relaxed flex-1">{s.desc}</p>
+                  <a
+                    href={s.link.href}
+                    {...(s.link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    className="mt-auto pt-3 border-t border-border/50 inline-flex items-center text-xs font-medium text-primary hover:underline"
+                  >
+                    {s.link.label} →
+                  </a>
                 </div>
               </motion.div>
             ))}

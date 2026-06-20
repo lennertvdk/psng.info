@@ -34,26 +34,26 @@ const PresenceSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="bg-card rounded-2xl border border-border overflow-hidden hover:shadow-lg transition-shadow"
+            className="bg-card rounded-2xl border border-border overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
           >
             <div className="overflow-hidden rounded-t-2xl bg-slate-950/5 aspect-[4/3]">
               <img src={trypPhoto1} alt="PSNG beim TRYP Expo Berlin" loading="lazy" className="w-full h-full object-cover object-center" />
             </div>
-            <div className="p-6 flex flex-col">
-              <div className="flex-1">
-                <span className="inline-block px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-heading font-medium mb-3">
-                  Mai 2026 · Berlin
-                </span>
-                <h3 className="font-heading text-lg font-semibold text-foreground mb-0.5">
-                  TRYP Expo
-                </h3>
-                <p className="text-primary text-sm mb-3">Funkhaus Berlin</p>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                  Europas größtes Event an der Schnittstelle von Psychedelika-Forschung,
-                  Mental Health und Bewusstseinskultur – 80+ Speaker, 150+ Aussteller,
-                  drei Tage Funkhaus Berlin. Das PSNG hat sich dort als Community
-                  getroffen: gemeinsamer Besuch, Banner, und Mittagessen.
-                </p>
+            <div className="p-6 flex flex-col flex-1">
+              <span className="inline-block px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-heading font-medium mb-3">
+                Mai 2026 · Berlin
+              </span>
+              <h3 className="font-heading text-lg font-semibold text-foreground mb-0.5">
+                TRYP Expo
+              </h3>
+              <p className="text-primary text-sm mb-3">Funkhaus Berlin</p>
+              <p className="text-muted-foreground text-sm leading-relaxed flex-1">
+                Europas größtes Event an der Schnittstelle von Psychedelika-Forschung,
+                Mental Health und Bewusstseinskultur – 80+ Speaker, 150+ Aussteller,
+                drei Tage Funkhaus Berlin. Das PSNG hat sich dort als Community
+                getroffen: gemeinsamer Besuch, Banner, und Mittagessen.
+              </p>
+              <div className="mt-auto pt-3 border-t border-border/50">
                 <a href="https://tryp.de" target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-primary hover:underline">
                   tryp.de →
                 </a>
@@ -67,26 +67,26 @@ const PresenceSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="bg-card rounded-2xl border border-border overflow-hidden hover:shadow-lg transition-shadow"
+            className="bg-card rounded-2xl border border-border overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
           >
             <div className="overflow-hidden rounded-t-2xl bg-slate-950/5 aspect-[4/3]">
               <img src={icprPhoto} alt="PSNG bei der ICPR 2026 Haarlem" loading="lazy" className="w-full h-full object-cover object-top" />
             </div>
-            <div className="p-6 flex flex-col">
-              <div className="flex-1">
-                <span className="inline-block px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-heading font-medium mb-3">
-                  Juni 2026 · Haarlem
-                </span>
-                <h3 className="font-heading text-lg font-semibold text-foreground mb-0.5">
-                  ICPR 2026
-                </h3>
-                <p className="text-primary text-sm mb-3">International Conference on Psychedelic Research</p>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                  Europas wichtigste wissenschaftliche Konferenz für
-                  Psychedelika-Forschung. Das PSNG hat sich auch hier als Gruppe getroffen. Ein
-                  wichtiger Schritt in der Vernetzung mit der europäischen
-                  Forschungscommunity.
-                </p>
+            <div className="p-6 flex flex-col flex-1">
+              <span className="inline-block px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-heading font-medium mb-3">
+                Juni 2026 · Haarlem
+              </span>
+              <h3 className="font-heading text-lg font-semibold text-foreground mb-0.5">
+                ICPR 2026
+              </h3>
+              <p className="text-primary text-sm mb-3">International Conference on Psychedelic Research</p>
+              <p className="text-muted-foreground text-sm leading-relaxed flex-1">
+                Europas wichtigste wissenschaftliche Konferenz für
+                Psychedelika-Forschung. Das PSNG hat sich auch hier als Gruppe getroffen. Ein
+                wichtiger Schritt in der Vernetzung mit der europäischen
+                Forschungscommunity.
+              </p>
+              <div className="mt-auto pt-3 border-t border-border/50">
                 <a href="https://icpr-conference.com" target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-primary hover:underline">
                   icpr-conference.com →
                 </a>

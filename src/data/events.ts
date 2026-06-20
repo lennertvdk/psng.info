@@ -41,12 +41,13 @@ export interface PsngEvent {
 }
 
 export const events: PsngEvent[] = [
+  // ── Kick-off ──────────────────────────────────────────────────────────────
   {
     id: "kickoff-2026-03-03",
     title: "Kick-off: Was macht das PSNG?",
     category: "kickoff",
     date: "2026-03-03",
-    time: "18:00 – 19:00",
+    time: "19:00 – 20:00",
     speaker: "PSNG-Team",
     featured: true,
     description:
@@ -56,81 +57,37 @@ export const events: PsngEvent[] = [
       slidesUrl: "https://www.canva.com/design/DAHBkDM0-8o/t39605od4UYhUdlL0MnidQ/view",
     },
   },
-  {
-    id: "lecture-lonergan-2026-06",
-    title: "Introduction to Psychedelic Neuroscience",
-    category: "lecture",
-    date: "2026-06-09",
-    time: "18:00 – 19:00",
-    speaker: "Eric Lonergan, PhD cand.",
-    description:
-      "Ein breiter Überblick: Was Psychedelika sind und wie sie im Gehirn wirken – wie sie Wahrnehmung verändern und psychische Erkrankungen behandeln können. Eric forscht am Decision Circuits Lab (Einstein Center for Neurosciences Berlin) zu den neuronalen und serotonergen Mechanismen von Halluzinationen.",
-    assets: {
-      youtubeUrl: "https://www.youtube.com/watch?v=LftC0jVmxuI",
-      speakerLinkedinUrl: "https://www.linkedin.com/in/eric-lonergan-563b0683/",
-    },
-  },
+
+  // ── Community Calls (4. Dienstag des Monats) ──────────────────────────────
   {
     id: "community-call-1",
     title: "1. PSNG Community Call",
     category: "community-call",
     date: "2026-03-17",
-    time: "18:00 – 19:00",
-    location: "Zoom",
-  },
-  {
-    id: "lecture-1",
-    title: "1. PSNG Lecture",
-    category: "lecture",
-    date: "2026-04-07",
-    time: "17:00 – 18:00",
+    time: "19:00 – 20:00",
     location: "Zoom",
   },
   {
     id: "community-call-2",
     title: "2. PSNG Community Call",
     category: "community-call",
-    date: "2026-04-21",
-    time: "17:00 – 18:00",
-    location: "Zoom",
-  },
-  {
-    id: "lecture-2",
-    title: "2. PSNG Lecture",
-    category: "lecture",
-    date: "2026-05-05",
-    time: "17:00 – 18:00",
+    date: "2026-04-28",
+    time: "19:00 – 20:00",
     location: "Zoom",
   },
   {
     id: "community-call-3",
     title: "3. PSNG Community Call",
     category: "community-call",
-    date: "2026-05-19",
-    time: "17:00 – 18:00",
-    location: "Zoom",
-  },
-  {
-    id: "lecture-3",
-    title: "3. PSNG Lecture",
-    category: "lecture",
-    date: "2026-06-02",
-    time: "17:00 – 18:00",
-    location: "Zoom",
-  },
-  {
-    id: "lecture-4",
-    title: "4. PSNG Lecture",
-    category: "lecture",
-    date: "2026-06-23",
+    date: "2026-05-26",
     time: "19:00 – 20:00",
     location: "Zoom",
   },
   {
-    id: "lecture-5",
-    title: "5. PSNG Lecture",
-    category: "lecture",
-    date: "2026-07-14",
+    id: "community-call-4",
+    title: "4. PSNG Community Call",
+    category: "community-call",
+    date: "2026-06-23",
     time: "19:00 – 20:00",
     location: "Zoom",
   },
@@ -143,6 +100,72 @@ export const events: PsngEvent[] = [
     location: "Zoom",
   },
   {
+    id: "community-call-6",
+    title: "6. PSNG Community Call",
+    category: "community-call",
+    date: "2026-08-25",
+    time: "19:00 – 20:00",
+    location: "Zoom",
+  },
+
+  // ── Lectures (2. Dienstag des Monats) ─────────────────────────────────────
+  {
+    id: "lecture-1",
+    title: "1. PSNG Lecture",
+    category: "lecture",
+    date: "2026-04-14",
+    time: "19:00 – 20:00",
+    location: "Zoom",
+  },
+  {
+    id: "lecture-2",
+    title: "2. PSNG Lecture",
+    category: "lecture",
+    date: "2026-05-12",
+    time: "19:00 – 20:00",
+    location: "Zoom",
+  },
+  {
+    id: "lecture-lonergan-2026-06",
+    title: "Introduction to Psychedelic Neuroscience",
+    category: "lecture",
+    date: "2026-06-09",
+    time: "19:00 – 20:00",
+    speaker: "Eric Lonergan, PhD cand.",
+    description:
+      "Ein breiter Überblick: Was Psychedelika sind und wie sie im Gehirn wirken – wie sie Wahrnehmung verändern und psychische Erkrankungen behandeln können. Eric forscht am Decision Circuits Lab (Einstein Center for Neurosciences Berlin) zu den neuronalen und serotonergen Mechanismen von Halluzinationen.",
+    assets: {
+      youtubeUrl: "https://www.youtube.com/watch?v=LftC0jVmxuI",
+      speakerLinkedinUrl: "https://www.linkedin.com/in/eric-lonergan-563b0683/",
+    },
+  },
+  {
+    id: "lecture-4",
+    title: "4. PSNG Lecture",
+    category: "lecture",
+    date: "2026-07-14",
+    time: "19:00 – 20:00",
+    location: "Zoom",
+  },
+  {
+    id: "lecture-5",
+    title: "5. PSNG Lecture",
+    category: "lecture",
+    date: "2026-08-11",
+    time: "19:00 – 20:00",
+    location: "Zoom",
+  },
+  {
+    id: "lecture-6",
+    title: "6. PSNG Lecture",
+    category: "lecture",
+    date: "2026-09-08",
+    time: "19:00 – 20:00",
+    location: "Zoom",
+  },
+
+  // ── Gatherings ────────────────────────────────────────────────────────────
+  {
     id: "gathering-2026-08-08",
     title: "PSNGathering in der Galerie König",
     category: "gathering",
@@ -151,30 +174,6 @@ export const events: PsngEvent[] = [
     location: "Galerie König, Berlin",
     description:
       "Unser Sommer-Event vor Ort mit Kurzvorträgen, Networking und Austausch über psychedelische Forschung und lokale Initiativen.",
-  },
-  {
-    id: "lecture-6",
-    title: "6. PSNG Lecture",
-    category: "lecture",
-    date: "2026-08-11",
-    time: "19:00 – 20:00",
-    location: "Zoom",
-  },
-  {
-    id: "community-call-6",
-    title: "6. PSNG Community Call",
-    category: "community-call",
-    date: "2026-08-25",
-    time: "19:00 – 20:00",
-    location: "Zoom",
-  },
-  {
-    id: "lecture-7",
-    title: "7. PSNG Lecture",
-    category: "lecture",
-    date: "2026-09-08",
-    time: "19:00 – 20:00",
-    location: "Zoom",
   },
 ];
 
