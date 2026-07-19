@@ -146,7 +146,7 @@ const TeamSection = () => {
                       </a>
                     ) : (
                       <a
-                        href="#kontakt"
+                        href="/?subject=team#kontakt"
                         className="inline-flex items-center justify-center px-5 py-2 rounded-lg border border-primary/30 text-primary font-heading font-medium text-xs hover:bg-primary/5 transition-colors"
                       >
                         Kontakt aufnehmen

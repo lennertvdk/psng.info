@@ -63,10 +63,10 @@ const HeroSection = () => {
             WhatsApp beitreten
           </a>
           <a
-            href="#uber-uns"
+            href="#leitfaden"
             className="inline-flex items-center justify-center px-8 py-3 rounded-lg border border-primary/30 text-primary font-heading font-medium text-sm hover:bg-primary/5 transition-colors"
           >
-            Mehr erfahren
+            Gründe deine Gruppe
           </a>
         </motion.div>
       </motion.div>

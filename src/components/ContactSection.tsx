@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,11 +15,21 @@ import { Button } from "@/components/ui/button";
 const subjectOptions = [
   { value: "Gruppe gründen", label: "Ich möchte eine Lokalgruppe gründen" },
   { value: "Team", label: "Ich möchte Teil des Teams werden" },
+  { value: "Vortrag vorschlagen", label: "Ich möchte einen Vortrag vorschlagen" },
   { value: "Kooperation", label: "Kooperationsanfrage" },
   { value: "Feedback", label: "Feedback zur Website oder zum Netzwerk" },
   { value: "Beschwerde", label: "Beschwerde / Code-of-Conduct-Anliegen" },
   { value: "Sonstiges", label: "Sonstiges" },
 ];
+
+const subjectParamMap: Record<string, string> = {
+  gruppe: "Gruppe gründen",
+  team: "Team",
+  vortrag: "Vortrag vorschlagen",
+  kooperation: "Kooperation",
+  feedback: "Feedback",
+  beschwerde: "Beschwerde",
+};
 
 const encode = (data: Record<string, string>) =>
   Object.keys(data)
@@ -31,6 +41,13 @@ type Status = "idle" | "submitting" | "success" | "error";
 const ContactSection = () => {
   const [status, setStatus] = useState<Status>("idle");
   const [subject, setSubject] = useState("");
+
+  useEffect(() => {
+    const param = new URLSearchParams(window.location.search).get("subject");
+    if (param && subjectParamMap[param]) {
+      setSubject(subjectParamMap[param]);
+    }
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

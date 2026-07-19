@@ -4,7 +4,8 @@ import SectionHeader from "@/components/SectionHeader";
 import {
   getHighlightEvents,
   formatEventDate,
-  eventCategoryLabels,
+  eventColumnLabels,
+  speakerTypeLabels,
   type PsngEvent,
 } from "@/data/events";
 import { getYouTubeThumbnail, getYouTubeEmbedUrl } from "@/lib/youtube";
@@ -79,8 +80,13 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
       <div className="space-y-3 p-5">
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
-            {eventCategoryLabels[ev.category]}
+            {eventColumnLabels[ev.column]}
           </span>
+          {ev.speakerType && (
+            <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+              {speakerTypeLabels[ev.speakerType]}
+            </span>
+          )}
           {ev.featured && (
             <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
               ✨ Unser erstes Event
@@ -92,6 +98,8 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
         <h3 className="text-lg font-semibold leading-snug">{ev.title}</h3>
         {ev.speaker ? (
           <p className="text-sm text-muted-foreground">mit {ev.speaker}</p>
+        ) : ev.location ? (
+          <p className="text-sm text-muted-foreground">{ev.location}</p>
         ) : null}
         {ev.description ? (
           <p className="text-sm text-muted-foreground">{ev.description}</p>
@@ -131,13 +139,23 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
               Eric's LinkedIn →
             </a>
           ) : null}
+          {a.externalUrl ? (
+            <a
+              href={a.externalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary hover:underline"
+            >
+              {a.externalLabel ?? "Mehr erfahren"} →
+            </a>
+          ) : null}
         </div>
       </div>
     </div>
   );
 }
 
-export default function Highlights({ contactHref = "#kontakt" }: HighlightsProps) {
+export default function Highlights({ contactHref = "/?subject=vortrag#kontakt" }: HighlightsProps) {
   const items = useMemo(() => getHighlightEvents(), []);
   if (items.length === 0) return null;
 
@@ -145,9 +163,9 @@ export default function Highlights({ contactHref = "#kontakt" }: HighlightsProps
     <section id="aufnahmen" className="py-16 md:py-24">
       <div className="container mx-auto max-w-6xl px-4">
         <SectionHeader
-          eyebrow="Aufnahmen"
+          eyebrow="Vergangene Events"
           title="Was bei uns schon passiert ist"
-          intro="Zum Nachschauen und Nachlesen."
+          intro="Eigene Events zum Nachschauen und Nachlesen, sowie Konferenzen und Community-Events, auf denen sich das PSNG getroffen hat."
         />
         <div className="grid gap-6 sm:grid-cols-2">
           {items.map((ev) => (

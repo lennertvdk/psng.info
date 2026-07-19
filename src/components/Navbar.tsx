@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import psngLogo from "@/assets/PSNG-Logo-centered.webp";
+import AnnouncementBanner from "@/components/AnnouncementBanner";
 
 const navLinks = [
   { label: "Über uns", href: "#uber-uns" },
-  { label: "Aufnahmen", href: "#aufnahmen" },
+  { label: "Vergangene Events", href: "#aufnahmen" },
   { label: "Events", href: "#events" },
   { label: "Leitfaden", href: "#leitfaden" },
   { label: "FAQ", href: "#faq" },
@@ -29,6 +30,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
+      <AnnouncementBanner />
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         <a href="#" className="flex items-center gap-3 font-heading text-xl font-bold tracking-tight text-primary">
           <motion.img

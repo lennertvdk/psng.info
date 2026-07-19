@@ -37,7 +37,7 @@ const Leitfaden = () => {
 
       <hr />
 
-      <h2>Bevor wir anfangen</h2>
+      <h2>Bevor du anfängst</h2>
       <p>
         In diesem Dokument liefern wir Vorschläge, die auf unseren eigenen Erfahrungen im Leiten von
         Hochschulgruppen und denen anderer Menschen in unseren Netzwerken basieren. Du kannst dein
@@ -89,7 +89,7 @@ const Leitfaden = () => {
       <p>
         <strong>Wir stehen an deiner Seite!</strong> Du hast eine Idee, weißt aber nicht, wie du sie
         formulieren oder umsetzen sollst? Du brauchst Kontakt zu anderen Gruppen? Schreib uns über das{" "}
-        <a href="/#kontakt" className="text-primary hover:underline">
+        <a href="/?subject=gruppe#kontakt" className="text-primary hover:underline">
           Kontaktformular
         </a>{" "}
         oder komm zu einem unserer monatlichen{" "}
@@ -157,7 +157,7 @@ const Leitfaden = () => {
         <li>
           Wir bieten gerne an, dass deine Gruppe auf psng.info erscheint, mit oder ohne Kontaktperson.
           Meld dich einfach über unser{" "}
-          <a href="/#kontakt" className="text-primary hover:underline">
+          <a href="/?subject=gruppe#kontakt" className="text-primary hover:underline">
             Kontaktformular
           </a>
           .
@@ -446,7 +446,7 @@ const Leitfaden = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <a
-            href="/#kontakt"
+            href="/?subject=gruppe#kontakt"
             className="inline-flex items-center justify-center px-6 py-2.5 rounded-lg bg-foreground text-background font-heading font-medium text-sm hover:opacity-80 transition-opacity"
           >
             Kontakt aufnehmen

@@ -48,7 +48,7 @@ const steps = [
   {
     icon: BookOpen,
     title: "4. Ressourcen nutzen",
-    desc: "Der Leitfaden gibt euch Struktur, das Curriculum liefert Themen-Inspiration, und unsere Aufnahmen sind ein guter erster inhaltlicher Aufschlag.",
+    desc: "Der Leitfaden gibt euch Struktur, das Curriculum liefert Themen-Inspiration, und unsere vergangenen Events sind ein guter erster inhaltlicher Aufschlag.",
     link: { label: "Leitfaden", href: "/leitfaden", external: false },
   },
 ];
@@ -69,10 +69,10 @@ const GuideSection = () => {
             Leitfaden & Ressourcen
           </p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
-            Gründe deine eigene Hochschulgruppe
+            Gründe deine Hochschulgruppe oder schließ dich einer an
           </h2>
           <p className="text-muted-foreground text-lg">
-            Werde Teil des bundesweiten Psychedelic Student Network Germany und schaffe einen Raum für wissenschaftlichen Austausch an deiner Hochschule.
+            Schon 250+ Studierende in 13+ Städten sind Teil des bundesweiten Psychedelic Student Network Germany. Ob du eine neue Gruppe an deiner Hochschule gründest oder einer bestehenden beitrittst: Wir vernetzen dich mit anderen.
           </p>
         </motion.div>
 
@@ -93,7 +93,7 @@ const GuideSection = () => {
                   Von null bis zur ersten Sitzung.
                 </h4>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-5">
-                  Schritt für Schritt erklärt: AStA-Anmeldung, Mitstreiter*innen finden, Moderationsregeln, Krisenplan – plus das vollständige Psychedelic Curriculum.
+                  Schritt für Schritt erklärt: AStA-Anmeldung, Mitstreiter*innen finden, Moderationsregeln, Krisenplan sowie Ideen für ein Curriculum.
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {["AStA & Bürokratie", "Erstes Event", "Moderationsregeln", "Krisenplan", "Curriculum"].map((tag) => (
@@ -105,7 +105,7 @@ const GuideSection = () => {
               </div>
               <a
                 href="/leitfaden"
-                className="shrink-0 inline-flex items-center justify-center px-6 py-3 rounded-lg border border-primary/30 text-primary font-heading font-medium text-sm hover:bg-primary/10 transition-colors"
+                className="shrink-0 inline-flex items-center justify-center px-6 py-3 rounded-lg gradient-psychedelic text-primary-foreground font-heading font-medium text-sm hover:opacity-90 transition-opacity"
               >
                 Leitfaden lesen →
               </a>
@@ -115,13 +115,16 @@ const GuideSection = () => {
 
         {/* Principles */}
         <div className="max-w-5xl mx-auto mb-20">
+          <p className="font-heading text-xs uppercase tracking-widest text-primary text-center mb-2">
+            Kurzfassung
+          </p>
           <motion.h3
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="font-heading text-xl font-semibold text-foreground mb-2 text-center"
           >
-            Bevor wir anfangen
+            Bevor du anfängst
           </motion.h3>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -194,7 +197,7 @@ const GuideSection = () => {
           className="text-center mt-12"
         >
           <a
-            href="#kontakt"
+            href="/?subject=gruppe#kontakt"
             className="inline-flex items-center justify-center px-8 py-3 rounded-lg gradient-psychedelic text-primary-foreground font-heading font-medium text-sm hover:opacity-90 transition-opacity"
           >
             Jetzt Gruppe gründen – Kontakt aufnehmen

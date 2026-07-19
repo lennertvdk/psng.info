@@ -182,7 +182,7 @@ const PartnersSection = () => {
             Du möchtest mit uns kooperieren für Events, Reichweite, Forschung
             oder Ideen-Sparring?{" "}
             <a
-              href="#kontakt"
+              href="/?subject=kooperation#kontakt"
               className="text-primary font-medium hover:underline"
             >
               Schreib uns!
