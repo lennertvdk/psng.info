@@ -72,6 +72,7 @@ const partners = [
     logo: psychedeliaStiftungLogo,
     url: "https://psychedelia-stiftung.de/",
     instagram: "",
+    opportunityUrl: "https://psychedelia-stiftung.de/kontakt/",
   },
 ];
 
@@ -161,6 +162,16 @@ const PartnersSection = () => {
                         className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
                       >
                         Telegram
+                      </a>
+                    )}
+                    {partner.opportunityUrl && (
+                      <a
+                        href={partner.opportunityUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                      >
+                        Forschungsmöglichkeiten
                       </a>
                     )}
                   </div>

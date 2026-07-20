@@ -6,7 +6,6 @@ import AnnouncementBanner from "@/components/AnnouncementBanner";
 
 const navLinks = [
   { label: "Über uns", href: "#uber-uns" },
-  { label: "Vergangene Events", href: "#aufnahmen" },
   { label: "Events", href: "#events" },
   { label: "Leitfaden", href: "#leitfaden" },
   { label: "FAQ", href: "#faq" },

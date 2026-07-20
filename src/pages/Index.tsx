@@ -3,7 +3,6 @@ import heroBg from "@/assets/hero-bg.webp";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
-import Highlights from "@/components/Highlights";
 import EventsSection from "@/components/EventsSection";
 import GuideSection from "@/components/GuideSection";
 import FAQSection from "@/components/FAQSection";
@@ -97,10 +96,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-      <div className="bg-white">
-        <Highlights />
-      </div>
 
       <div className="bg-primary/5">
         <EventsSection />

@@ -1,5 +1,6 @@
 import trypPhoto1 from "@/assets/tryp-1.webp";
 import icprPhoto from "@/assets/icpr-1.webp";
+import psngBpsaLogo from "@/assets/PSNG-BPSA-Logo.png";
 
 export type EventCategory =
   | "kickoff"
@@ -36,6 +37,9 @@ export interface EventAssets {
   /** Link zu einer externen Website (z. B. Partner-Konferenz), mit eigenem Linktext. */
   externalUrl?: string;
   externalLabel?: string;
+  /** Co-Branding-Logo, z. B. bei gemeinsam veranstalteten Events mit einem Partner. */
+  partnerLogo?: string;
+  partnerLogoAlt?: string;
 }
 
 export interface PsngEvent {
@@ -215,6 +219,7 @@ export const events: PsngEvent[] = [
       "Von individueller Heilung zu kollektiver Verbundenheit: Wie können Psychedelika unser Gehirn, unsere Beziehungen und unsere Gemeinschaften verändern, um ein Gefühl von Zugehörigkeit wiederherzustellen? Eric forscht am Decision Circuits Lab (Einstein Center for Neurosciences Berlin) zu den neuronalen und serotonergen Mechanismen von Halluzinationen.",
     assets: {
       youtubeUrl: "https://youtu.be/vhPzjy2N2mM",
+      speakerLinkedinUrl: "https://www.linkedin.com/in/eric-lonergan-563b0683/",
     },
   },
   {
@@ -250,6 +255,10 @@ export const events: PsngEvent[] = [
     registrationUrl: "https://luma.com/n6io5052",
     description:
       "Das erste eigene In-Person-Treffen des PSNG in Zusammenarbeit mit der Berlin Psychedelic Science Association (BPSA). Ein Nachmittag zum Ankommen, Kennenlernen und Austauschen: mit wissenschaftlichem Vortrag zu Psychedelika, einem Workshop zu Authentic Relating und einer Klangreise zur Integration. Danach Apéro und gemeinsames Abendessen für alle, die möchten. Vorläufiges Programm, Änderungen möglich.",
+    assets: {
+      partnerLogo: psngBpsaLogo,
+      partnerLogoAlt: "PSNG × BPSA",
+    },
   },
 ];
 
