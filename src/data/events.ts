@@ -58,6 +58,12 @@ export interface PsngEvent {
   /** hebt das Event in den Aufnahmen hervor (z. B. der Kick-off) */
   featured?: boolean;
   description?: string;
+  /** kurzer Hinweis, für wen das Event gedacht ist, direkt unter der Beschreibung */
+  audienceNote?: string;
+  /** Teilnahmebeitrag, in der Datum/Ort-Faktenzeile angezeigt */
+  contribution?: string;
+  /** kursiver Hinweis am Kartenende (z. B. "Vorläufiges Programm, Änderungen möglich.") */
+  disclaimer?: string;
   registrationUrl?: string;
   assets?: EventAssets;
 }
@@ -245,16 +251,19 @@ export const events: PsngEvent[] = [
   // ── Gatherings ────────────────────────────────────────────────────────────
   {
     id: "gathering-2026-08-08",
-    title: "PSNGathering #1 in der König Galerie",
+    title: "Ein Abend rund um Psychedelika – PSNG x BPSA",
     category: "gathering",
     column: "social",
     highlightBadge: "Erstes eigenes In-Person-Event",
     date: "2026-08-08",
-    time: "16:00 – 20:00 (Einlass ab 15:30)",
-    location: "König Galerie, Berlin",
+    time: "16:00 – 20:00 Uhr (Einlass ab 15:30)",
+    location: "König Galerie, Alexandrinenstraße 118–121, 10969 Berlin",
+    contribution: "5 – 10 € empfohlen, freiwillig – niemand wird abgewiesen",
     registrationUrl: "https://luma.com/n6io5052",
     description:
-      "Das erste eigene In-Person-Treffen des PSNG in Zusammenarbeit mit der Berlin Psychedelic Science Association (BPSA). Ein Nachmittag zum Ankommen, Kennenlernen und Austauschen: mit wissenschaftlichem Vortrag zu Psychedelika, einem Workshop zu Authentic Relating und einer Klangreise zur Integration. Danach Apéro und gemeinsames Abendessen für alle, die möchten. Vorläufiges Programm, Änderungen möglich.",
+      "Das erste eigene In-Person-Treffen des PSNG, gemeinsam mit der Berlin Psychedelic Science Association (BPSA). Ein Abend zum Ankommen, Kennenlernen und Austauschen: mit einem Expertenvortrag zur Psychedelikaforschung, einem interaktiven Workshop zu Authentic Relating und einer Klangmeditation zur Integration. Danach Apéro und gemeinsames Abendessen für alle, die möchten.",
+    audienceNote: "Für Studierende und alle Interessierten – Vorwissen braucht ihr keins.",
+    disclaimer: "Vorläufiges Programm, Änderungen möglich.",
     assets: {
       partnerLogo: psngBpsaLogo,
       partnerLogoAlt: "PSNG × BPSA",

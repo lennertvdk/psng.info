@@ -73,6 +73,11 @@ function EventCard({ event, i }: { event: PsngEvent; i: number }) {
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
           {event.description ?? "Weitere Details folgen bald."}
         </p>
+        {event.audienceNote && (
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            {event.audienceNote}
+          </p>
+        )}
       </div>
       <div className="space-y-1 text-sm text-muted-foreground">
         <p>
@@ -84,7 +89,15 @@ function EventCard({ event, i }: { event: PsngEvent; i: number }) {
             <span className="font-medium text-foreground">Ort:</span> {event.location}
           </p>
         ) : null}
+        {event.contribution ? (
+          <p>
+            <span className="font-medium text-foreground">Beitrag:</span> {event.contribution}
+          </p>
+        ) : null}
       </div>
+      {event.disclaimer && (
+        <p className="text-xs text-muted-foreground italic mt-3">{event.disclaimer}</p>
+      )}
       {(event.registrationUrl || event.category === "gathering") && (
         <div className="flex flex-wrap gap-3 mt-4">
           {event.registrationUrl && (
