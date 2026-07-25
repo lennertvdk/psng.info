@@ -1,6 +1,7 @@
 import trypPhoto1 from "@/assets/tryp-1.webp";
 import icprPhoto from "@/assets/icpr-1.webp";
 import psngBpsaLogo from "@/assets/PSNG-BPSA-Logo.png";
+import torstenPassiePhoto from "@/assets/Torsten-Passie-Talk-Asset-3-v1.png";
 
 export type EventCategory =
   | "kickoff"
@@ -24,7 +25,7 @@ export type SpeakerType = "student" | "gast";
 /** Badge innerhalb der Vorträge-Spalte, rein beschreibend, ohne Rangfolge. */
 export const speakerTypeLabels: Record<SpeakerType, string> = {
   student: "Studentisch",
-  gast: "Gastvortrag",
+  gast: "Expertenvortrag",
 };
 
 export interface EventAssets {
@@ -40,6 +41,8 @@ export interface EventAssets {
   /** Co-Branding-Logo, z. B. bei gemeinsam veranstalteten Events mit einem Partner. */
   partnerLogo?: string;
   partnerLogoAlt?: string;
+  /** Portraitfoto des Speakers, quadratisch dargestellt. */
+  speakerPhoto?: string;
 }
 
 export interface PsngEvent {
@@ -48,11 +51,15 @@ export interface PsngEvent {
   category: EventCategory;
   column: EventColumn;
   date: string;
+  /** optionaler Wochentag, wird der formatierten Datumsangabe vorangestellt (z. B. "Samstag") */
+  weekdayLabel?: string;
   time: string;
   endDate?: string;
   location?: string;
   speaker?: string;
   speakerType?: SpeakerType;
+  /** verlinkt den Namen des Speakers in der Karte (z. B. persönliche Website) */
+  speakerWebsiteUrl?: string;
   /** kurzes Label für besonders hervorgehobene Events (z. B. "Erstes eigenes In-Person-Event") */
   highlightBadge?: string;
   /** hebt das Event in den Aufnahmen hervor (z. B. der Kick-off) */
@@ -65,6 +72,8 @@ export interface PsngEvent {
   /** kursiver Hinweis am Kartenende (z. B. "Vorläufiges Programm, Änderungen möglich.") */
   disclaimer?: string;
   registrationUrl?: string;
+  /** überschreibt den Standard-Button-Text "Jetzt anmelden" (z. B. "Zoom-Link" bei Online-Talks) */
+  registrationLabel?: string;
   assets?: EventAssets;
 }
 
@@ -230,13 +239,21 @@ export const events: PsngEvent[] = [
   },
   {
     id: "lecture-5",
-    title: "5. PSNG Lecture",
+    title: "Ein realitätsnaher Blick auf die aktuelle Therapieforschung mit Psychedelika",
     category: "lecture",
     column: "vortraege",
     date: "2026-08-11",
     time: "19:30 – 20:30",
     location: "Zoom",
-    description: "Ausnahmsweise 30 Minuten später als gewohnt.",
+    speaker: "Prof. Dr. Torsten Passie",
+    speakerType: "gast",
+    speakerWebsiteUrl: "http://psychedelic-science.org/",
+    description:
+      "Ein kritischer, realitätsnaher Blick auf die aktuelle Therapieforschung mit Psychedelika: Neuroplastizität und ihre Grenzen, wie belastbar Therapieeffekte tatsächlich sind, der Wert für psychiatrische Indikationen sowie Methodikkritik und Übertragbarkeitsprobleme präklinischer Studien. Torsten Passie ist apl. Professor für Psychiatrie und Psychotherapie an der Medizinischen Hochschule Hannover und Visiting Scientist an der Goethe-Universität Frankfurt am Main; er gilt international als anerkannter Experte für die Pharmakologie und therapeutische Anwendung halluzinogener und entaktogener Substanzen.",
+    registrationUrl: "https://luma.com/event/evt-ebeCkgyBvDwslja",
+    assets: {
+      speakerPhoto: torstenPassiePhoto,
+    },
   },
   {
     id: "lecture-6",
@@ -251,18 +268,19 @@ export const events: PsngEvent[] = [
   // ── Gatherings ────────────────────────────────────────────────────────────
   {
     id: "gathering-2026-08-08",
-    title: "Ein Abend rund um Psychedelika – PSNG x BPSA",
+    title: "Ein Abend rund um Psychedelika, Forschung, Verbindung & Austausch",
     category: "gathering",
     column: "social",
-    highlightBadge: "Erstes eigenes In-Person-Event",
+    highlightBadge: "Erstes eigenes In-Person-Event, PSNG x BPSA",
     date: "2026-08-08",
-    time: "16:00 – 20:00 Uhr (Einlass ab 15:30)",
+    weekdayLabel: "Samstag",
+    time: "16:00 bis 20:00 Uhr (Einlass ab 15:30)",
     location: "König Galerie, Alexandrinenstraße 118–121, 10969 Berlin",
-    contribution: "5 – 10 € empfohlen, freiwillig – niemand wird abgewiesen",
+    contribution: "5 bis 10 € empfohlen, freiwillig, niemand wird abgewiesen",
     registrationUrl: "https://luma.com/n6io5052",
     description:
-      "Das erste eigene In-Person-Treffen des PSNG, gemeinsam mit der Berlin Psychedelic Science Association (BPSA). Ein Abend zum Ankommen, Kennenlernen und Austauschen: mit einem Expertenvortrag zur Psychedelikaforschung, einem interaktiven Workshop zu Authentic Relating und einer Klangmeditation zur Integration. Danach Apéro und gemeinsames Abendessen für alle, die möchten.",
-    audienceNote: "Für Studierende und alle Interessierten – Vorwissen braucht ihr keins.",
+      "Das erste eigene In-Person-Treffen des PSNG, gemeinsam mit der Berlin Psychedelic Science Association (BPSA). Ein Abend zum Ankommen, Kennenlernen und Austauschen, mit einem Vortrag zu den prosozialen Effekten von Psychedelika, einem interaktiven Workshop und einer Klangmeditation zur Integration mit Lucie André (Beyond Yoga). Danach Apéro und gemeinsames Abendessen für alle, die möchten.",
+    audienceNote: "Für Studierende und alle Interessierten, Vorwissen braucht ihr keins.",
     disclaimer: "Vorläufiges Programm, Änderungen möglich.",
     assets: {
       partnerLogo: psngBpsaLogo,

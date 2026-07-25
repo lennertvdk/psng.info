@@ -64,11 +64,31 @@ function EventCard({ event, i }: { event: PsngEvent; i: number }) {
             className="float-right ml-3 mb-1 h-[105px] w-[105px] rounded-full object-cover shadow-sm"
           />
         )}
+        {event.assets?.speakerPhoto && (
+          <img
+            src={event.assets.speakerPhoto}
+            alt={event.speaker ?? "Speaker"}
+            className="float-right ml-3 mb-1 h-[105px] w-[105px] rounded-2xl object-cover shadow-sm"
+          />
+        )}
         <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
           {event.title}
         </h3>
         {event.speaker && (
-          <p className="text-sm text-primary font-medium mb-2">{event.speaker}</p>
+          <p className="text-sm text-primary font-medium mb-2">
+            {event.speakerWebsiteUrl ? (
+              <a
+                href={event.speakerWebsiteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                {event.speaker}
+              </a>
+            ) : (
+              event.speaker
+            )}
+          </p>
         )}
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
           {event.description ?? "Weitere Details folgen bald."}
@@ -82,6 +102,7 @@ function EventCard({ event, i }: { event: PsngEvent; i: number }) {
       <div className="space-y-1 text-sm text-muted-foreground">
         <p>
           <span className="font-medium text-foreground">Datum:</span>{" "}
+          {event.weekdayLabel ? `${event.weekdayLabel}, ` : ""}
           {formatEventDate(event.date)}, {event.time}
         </p>
         {event.location ? (
@@ -98,28 +119,21 @@ function EventCard({ event, i }: { event: PsngEvent; i: number }) {
       {event.disclaimer && (
         <p className="text-xs text-muted-foreground italic mt-3">{event.disclaimer}</p>
       )}
-      {(event.registrationUrl || event.category === "gathering") && (
+      {event.registrationUrl?.includes("luma.com") && (
+        <p className="text-xs text-muted-foreground mt-3">
+          Alle weiteren Infos und das vollständige Programm gibt's auf Luma.
+        </p>
+      )}
+      {event.registrationUrl && (
         <div className="flex flex-wrap gap-3 mt-4">
-          {event.registrationUrl && (
-            <a
-              href={event.registrationUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-lg gradient-psychedelic px-4 py-2 text-sm font-heading font-medium text-primary-foreground hover:opacity-90 transition-opacity"
-            >
-              Jetzt anmelden
-            </a>
-          )}
-          {event.category === "gathering" && (
-            <a
-              href="https://www.instagram.com/psng.info/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-lg border border-primary/30 px-4 py-2 text-sm font-heading font-medium text-primary hover:bg-primary/5 transition-colors"
-            >
-              Auf Instagram folgen
-            </a>
-          )}
+          <a
+            href={event.registrationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-lg gradient-psychedelic px-4 py-2 text-sm font-heading font-medium text-primary-foreground hover:opacity-90 transition-opacity"
+          >
+            {event.registrationLabel ?? "Jetzt anmelden"}
+          </a>
         </div>
       )}
     </motion.div>
@@ -143,6 +157,14 @@ function NextDateCard({ event }: { event: PsngEvent }) {
           </p>
         ) : null}
       </div>
+      <a
+        href={WHATSAPP_LINK}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center rounded-lg border border-primary/30 text-primary font-heading font-medium text-sm hover:bg-primary/5 transition-colors px-4 py-2 mt-4"
+      >
+        Zoom-Link via WhatsApp
+      </a>
     </div>
   );
 }
