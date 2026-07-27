@@ -249,7 +249,7 @@ export const events: PsngEvent[] = [
     speakerType: "gast",
     speakerWebsiteUrl: "http://psychedelic-science.org/",
     description:
-      "Ein kritischer, realitätsnaher Blick auf die aktuelle Therapieforschung mit Psychedelika: Neuroplastizität und ihre Grenzen, wie belastbar Therapieeffekte tatsächlich sind, der Wert für psychiatrische Indikationen sowie Methodikkritik und Übertragbarkeitsprobleme präklinischer Studien. Torsten Passie ist apl. Professor für Psychiatrie und Psychotherapie an der Medizinischen Hochschule Hannover und Visiting Scientist an der Goethe-Universität Frankfurt am Main. Er forscht seit rund drei Jahrzehnten zu Psychedelika und gilt international als anerkannter Experte für die Pharmakologie und therapeutische Anwendung halluzinogener und entaktogener Substanzen.",
+      "Ein kritischer, realitätsnaher Blick auf die aktuelle Therapieforschung mit Psychedelika: Neuroplastizität und ihre Grenzen, wie belastbar Therapieeffekte tatsächlich sind, der Wert für psychiatrische Indikationen sowie Methodikkritik und Übertragbarkeitsprobleme präklinischer Studien. Torsten Passie ist apl. Professor für Psychiatrie und Psychotherapie an der Medizinischen Hochschule Hannover und Visiting Scientist an der Goethe-Universität Frankfurt am Main. Er forscht seit mehr als 35 Jahren zu Psychedelika und gilt international als anerkannter Experte für die Pharmakologie und therapeutische Anwendung halluzinogener und entaktogener Substanzen.",
     registrationUrl: "https://luma.com/event/evt-ebeCkgyBvDwslja",
     assets: {
       speakerPhoto: torstenPassiePhoto,
