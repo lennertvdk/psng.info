@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import cameronImg from "@/assets/Cameron.webp";
 import ivanaImg from "@/assets/Ivana.webp";
 import lennertImg from "@/assets/Lennert.webp";
@@ -114,7 +115,10 @@ const TeamSection = () => {
                   <img
                     src={member.image}
                     alt={member.name}
+                    width={160}
+                    height={160}
                     loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -145,12 +149,12 @@ const TeamSection = () => {
                         LinkedIn →
                       </a>
                     ) : (
-                      <a
-                        href="/?subject=team#kontakt"
+                      <Link
+                        to="/?subject=team#kontakt"
                         className="inline-flex items-center justify-center px-5 py-2 rounded-lg border border-primary/30 text-primary font-heading font-medium text-xs hover:bg-primary/5 transition-colors"
                       >
                         Kontakt aufnehmen
-                      </a>
+                      </Link>
                     )}
                   </div>
                 )}

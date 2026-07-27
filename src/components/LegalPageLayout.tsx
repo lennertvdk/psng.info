@@ -25,7 +25,7 @@ const LegalPageLayout = ({ title, children }: LegalPageLayoutProps) => {
           <h1 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-10">
             {title}
           </h1>
-          <div className="prose prose-sm md:prose-base prose-neutral dark:prose-invert max-w-none font-body prose-headings:font-heading prose-a:text-primary">
+          <div className="prose prose-sm md:prose-base prose-neutral max-w-none font-body prose-headings:font-heading prose-a:text-primary">
             {children}
           </div>
         </div>

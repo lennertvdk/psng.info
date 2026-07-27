@@ -11,8 +11,7 @@ import PartnersSection from "@/components/PartnersSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import PartnerStripe from "@/components/PartnerStripe";
-
-const WHATSAPP_LINK = "https://chat.whatsapp.com/LBUA3UpzOV9BW1v59EZK8w?s=cl&p=i&ilr=1";
+import { WHATSAPP_LINK } from "@/lib/links";
 
 const Index = () => {
   return (

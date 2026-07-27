@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { ExternalLink } from "lucide-react";
 import {
   Carousel,
@@ -119,7 +120,10 @@ const PartnersSection = () => {
                       <img
                         src={partner.logo}
                         alt={`${partner.name} Logo`}
+                        width={280}
+                        height={112}
                         loading="lazy"
+                        decoding="async"
                         className="h-28 max-w-full object-contain"
                       />
                     </div>
@@ -192,12 +196,12 @@ const PartnersSection = () => {
           <p className="text-muted-foreground text-sm">
             Du möchtest mit uns kooperieren für Events, Reichweite, Forschung
             oder Ideen-Sparring?{" "}
-            <a
-              href="/?subject=kooperation#kontakt"
+            <Link
+              to="/?subject=kooperation#kontakt"
               className="text-primary font-medium hover:underline"
             >
               Schreib uns!
-            </a>
+            </Link>
           </p>
         </motion.div>
       </div>

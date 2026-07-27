@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Rocket, Target, Handshake, FileText, BookOpen, Users, MessageSquare, ClipboardList } from "lucide-react";
+import { WHATSAPP_LINK } from "@/lib/links";
 
 const principles = [
   {
@@ -24,8 +26,6 @@ const principles = [
   },
 ];
 
-const WHATSAPP_LINK = "https://chat.whatsapp.com/LBUA3UpzOV9BW1v59EZK8w?s=cl&p=i&ilr=1";
-
 const steps = [
   {
     icon: Users,
@@ -49,7 +49,7 @@ const steps = [
     icon: BookOpen,
     title: "4. Ressourcen nutzen",
     desc: "Der Leitfaden gibt euch Struktur, das Curriculum liefert Themen-Inspiration, und unsere vergangenen Events sind ein guter erster inhaltlicher Aufschlag.",
-    link: { label: "Leitfaden", href: "/leitfaden", external: false },
+    link: { label: "Leitfaden", href: "/leitfaden", route: true },
   },
 ];
 
@@ -103,12 +103,12 @@ const GuideSection = () => {
                   ))}
                 </div>
               </div>
-              <a
-                href="/leitfaden"
+              <Link
+                to="/leitfaden"
                 className="shrink-0 inline-flex items-center justify-center px-6 py-3 rounded-lg gradient-psychedelic text-primary-foreground font-heading font-medium text-sm hover:opacity-90 transition-opacity"
               >
                 Leitfaden lesen →
-              </a>
+              </Link>
             </div>
           </div>
         </motion.div>
@@ -176,13 +176,22 @@ const GuideSection = () => {
                 <div className="flex flex-col flex-1">
                   <h4 className="font-heading text-sm font-semibold text-foreground mb-1">{s.title}</h4>
                   <p className="text-muted-foreground text-sm leading-relaxed flex-1">{s.desc}</p>
-                  <a
-                    href={s.link.href}
-                    {...(s.link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    className="mt-auto pt-3 border-t border-border/50 inline-flex items-center text-xs font-medium text-primary hover:underline"
-                  >
-                    {s.link.label} →
-                  </a>
+                  {s.link.route ? (
+                    <Link
+                      to={s.link.href}
+                      className="mt-auto pt-3 border-t border-border/50 inline-flex items-center text-xs font-medium text-primary hover:underline"
+                    >
+                      {s.link.label} →
+                    </Link>
+                  ) : (
+                    <a
+                      href={s.link.href}
+                      {...(s.link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      className="mt-auto pt-3 border-t border-border/50 inline-flex items-center text-xs font-medium text-primary hover:underline"
+                    >
+                      {s.link.label} →
+                    </a>
+                  )}
                 </div>
               </motion.div>
             ))}
@@ -196,12 +205,12 @@ const GuideSection = () => {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <a
-            href="/?subject=gruppe#kontakt"
+          <Link
+            to="/?subject=gruppe#kontakt"
             className="inline-flex items-center justify-center px-8 py-3 rounded-lg gradient-psychedelic text-primary-foreground font-heading font-medium text-sm hover:opacity-90 transition-opacity"
           >
             Jetzt Gruppe gründen – Kontakt aufnehmen
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

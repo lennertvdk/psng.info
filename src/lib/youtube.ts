@@ -17,8 +17,15 @@ export function getYouTubeId(url: string): string | null {
   }
 }
 
-/** Thumbnail-URL. hqdefault existiert praktisch immer (maxres oft nicht). */
-export function getYouTubeThumbnail(url: string): string | null {
+/**
+ * URL des Vorschaubilds auf YouTube. Bewusst NICHT im Seitenrendering benutzt:
+ * Ein Bild von i.ytimg.com würde die IP-Adresse jedes Besuchers an Google
+ * übertragen, bevor er überhaupt etwas angeklickt hat – im Widerspruch zu
+ * unserer Datenschutzerklärung. Die Vorschaubilder liegen deshalb als
+ * `assets.youtubeThumbnail` lokal im Repo; diese Funktion dient nur dazu, sie
+ * beim Hinzufügen neuer Events einmalig herunterzuladen.
+ */
+export function getRemoteYouTubeThumbnail(url: string): string | null {
   const id = getYouTubeId(url);
   return id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : null;
 }

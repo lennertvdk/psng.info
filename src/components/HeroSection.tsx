@@ -1,61 +1,56 @@
-import { motion } from "framer-motion";
 import psngLogo from "@/assets/PSNG-Logo-centered-transparent.webp";
+import { WHATSAPP_LINK } from "@/lib/links";
 
-const whatsappLink = "https://chat.whatsapp.com/LBUA3UpzOV9BW1v59EZK8w?s=cl&p=i&ilr=1";
-
+/*
+ * Der Hero nutzt CSS-Animationen statt framer-motion. Grund: Die Elemente sind
+ * ohne laufende Animation sichtbar – ein Besucher, dessen Browser die Animation
+ * nicht ausführt (Tab im Hintergrund geöffnet, angehaltene Frames), sieht
+ * trotzdem Überschrift und Buttons statt einer leeren Seite.
+ */
 const HeroSection = () => {
   return (
-    <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden px-6">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8 }}
-        className="relative w-56 md:w-80 flex items-center justify-center"
-      >
+    <section className="relative min-h-[100svh] flex flex-col items-center justify-center overflow-hidden px-6 py-24">
+      <div className="animate-rise-in relative w-56 md:w-80 flex items-center justify-center">
         <div className="absolute w-[82%] h-[82%] rounded-full bg-white" />
+        {/* Wird in index.html vorgeladen – es ist das LCP-Element der Seite. */}
         <img
           src={psngLogo}
           alt="PSNG Logo"
+          width={640}
+          height={630}
+          decoding="async"
           className="relative w-full object-contain"
         />
-      </motion.div>
+      </div>
 
-      <motion.div className="mt-6 text-center max-w-2xl mx-auto">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="font-heading text-3xl md:text-5xl font-bold text-foreground leading-tight mb-4"
+      <div className="mt-6 text-center max-w-2xl mx-auto">
+        <h1
+          className="animate-rise-in font-heading text-3xl md:text-5xl font-bold text-foreground leading-tight mb-4"
+          style={{ animationDelay: "0.15s" }}
         >
           Psychedelische <span className="gradient-text">Forschung</span> verbindet
-        </motion.h1>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.45 }}
-          className="flex justify-center gap-3 font-heading text-sm text-foreground/50 mb-5"
+        </h1>
+        <div
+          className="animate-rise-in flex justify-center gap-3 font-heading text-sm text-foreground/50 mb-5"
+          style={{ animationDelay: "0.2s" }}
         >
           <span>250+ Studierende</span>
           <span>·</span>
           <span>13+ Städte</span>
-        </motion.div>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-foreground/70 text-base md:text-lg max-w-xl mx-auto mb-8 font-body"
+        </div>
+        <p
+          className="animate-rise-in text-foreground/70 text-base md:text-lg max-w-xl mx-auto mb-8 font-body"
+          style={{ animationDelay: "0.25s" }}
         >
           Deutschlands erstes bundesweites studentisches Netzwerk für
           psychedelische Wissenschaft. Seit März 2026 aktiv.
-        </motion.p>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+        </p>
+        <div
+          className="animate-rise-in flex flex-col sm:flex-row gap-4 justify-center"
+          style={{ animationDelay: "0.3s" }}
         >
           <a
-            href={whatsappLink}
+            href={WHATSAPP_LINK}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center px-8 py-3 rounded-lg gradient-psychedelic text-primary-foreground font-heading font-medium text-sm hover:opacity-90 transition-opacity"
@@ -68,8 +63,8 @@ const HeroSection = () => {
           >
             Gründe deine Gruppe
           </a>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </section>
   );
 };

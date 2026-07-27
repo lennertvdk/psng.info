@@ -1,22 +1,19 @@
 import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import SectionHeader from "@/components/SectionHeader";
 import {
   eventColumnLabels,
   formatEventDate,
+  getEventAnchor,
   getHighlightEvents,
   getUpcomingEventsByColumn,
   speakerTypeLabels,
   type EventColumn,
   type PsngEvent,
 } from "@/data/events";
-import { getYouTubeThumbnail, getYouTubeEmbedUrl } from "@/lib/youtube";
-
-const WHATSAPP_LINK = "https://chat.whatsapp.com/LBUA3UpzOV9BW1v59EZK8w?s=cl&p=i&ilr=1";
-const PAST_EVENT_ANCHORS: Record<string, string> = {
-  "kickoff-2026-03-03": "kickoff",
-  "lecture-lonergan-2026-06": "lonergan-lecture",
-};
+import { getYouTubeEmbedUrl } from "@/lib/youtube";
+import { WHATSAPP_LINK, INSTAGRAM_LINK } from "@/lib/links";
 
 type Tab = "kommend" | "vergangen";
 
@@ -61,6 +58,10 @@ function EventCard({ event, i }: { event: PsngEvent; i: number }) {
           <img
             src={event.assets.partnerLogo}
             alt={event.assets.partnerLogoAlt ?? "Partner-Logo"}
+            width={105}
+            height={105}
+            loading="lazy"
+            decoding="async"
             className="float-right ml-3 mb-1 h-[105px] w-[105px] rounded-full object-cover shadow-sm"
           />
         )}
@@ -68,6 +69,10 @@ function EventCard({ event, i }: { event: PsngEvent; i: number }) {
           <img
             src={event.assets.speakerPhoto}
             alt={event.speaker ?? "Speaker"}
+            width={105}
+            height={105}
+            loading="lazy"
+            decoding="async"
             className="float-right ml-3 mb-1 h-[105px] w-[105px] rounded-2xl object-cover shadow-sm"
           />
         )}
@@ -235,7 +240,9 @@ function PlayIcon() {
 function HighlightCard({ ev }: { ev: PsngEvent }) {
   const [playing, setPlaying] = useState(false);
   const a = ev.assets ?? {};
-  const thumb = a.youtubeUrl ? getYouTubeThumbnail(a.youtubeUrl) : null;
+  // Nur lokale Vorschaubilder – fehlt eins, zeigen wir lieber gar keins, als
+  // beim Seitenaufruf eine Anfrage an Google auszulösen.
+  const thumb = a.youtubeThumbnail ?? null;
   const embed = a.youtubeUrl ? getYouTubeEmbedUrl(a.youtubeUrl) : null;
   const heroPhoto = a.photos?.[0];
 
@@ -262,7 +269,10 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
                 <img
                   src={thumb}
                   alt=""
+                  width={480}
+                  height={360}
                   loading="lazy"
+                  decoding="async"
                   className="absolute inset-0 h-full w-full object-cover"
                 />
               )}
@@ -278,7 +288,10 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
           <img
             src={heroPhoto}
             alt={ev.title}
+            width={1200}
+            height={800}
             loading="lazy"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
           />
         </div>
@@ -343,7 +356,7 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
               rel="noopener noreferrer"
               className="font-medium text-primary hover:underline"
             >
-              Eric's LinkedIn →
+              {ev.speaker ? `LinkedIn von ${ev.speaker}` : "LinkedIn"} →
             </a>
           ) : null}
           {a.externalUrl ? (
@@ -372,7 +385,7 @@ function PastEvents() {
         {items.map((ev) => (
           <motion.div
             key={ev.id}
-            id={PAST_EVENT_ANCHORS[ev.id]}
+            id={getEventAnchor(ev)}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -389,12 +402,12 @@ function PastEvents() {
           Unsere Lectures kommen aus der Community – Bachelor-, Master- oder Promotionsthemen, ein spannendes Paper, ein eigenes Projekt. Melde dich, wir geben dir die Bühne.
         </p>
         <div className="mt-5 flex flex-wrap justify-center gap-3">
-          <a
-            href="/?subject=vortrag#kontakt"
+          <Link
+            to="/?subject=vortrag#kontakt"
             className="rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
             Vortrag vorschlagen
-          </a>
+          </Link>
           <a
             href={WHATSAPP_LINK}
             target="_blank"
@@ -426,7 +439,7 @@ const tabCopy: Record<Tab, { eyebrow: string; title: string; intro: React.ReactN
         </a>{" "}
         und{" "}
         <a
-          href="https://www.instagram.com/psng.info/"
+          href={INSTAGRAM_LINK}
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary underline hover:no-underline"
@@ -445,23 +458,38 @@ const tabCopy: Record<Tab, { eyebrow: string; title: string; intro: React.ReactN
   },
 };
 
+const tabLabels: Record<Tab, string> = {
+  kommend: "Kommend",
+  vergangen: "Vergangen",
+};
+
 const EventsSection = () => {
-  const [tab, setTab] = useState<Tab>("kommend");
+  // Der Tab liegt in der URL, damit man auf die Aufnahmen verlinken kann und
+  // der Zurück-Button den Wechsel rückgängig macht.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get("tab");
+  const [hashTab, setHashTab] = useState<Tab | null>(null);
 
   useEffect(() => {
     const hash = window.location.hash.replace("#", "");
-    if (hash === "aufnahmen" || Object.values(PAST_EVENT_ANCHORS).includes(hash)) {
-      setTab("vergangen");
+    if (hash === "aufnahmen" || hash.startsWith("event-")) {
+      setHashTab("vergangen");
     }
   }, []);
 
-  useEffect(() => {
-    if (tab !== "vergangen") return;
-    const hash = window.location.hash.replace("#", "");
-    if (Object.values(PAST_EVENT_ANCHORS).includes(hash)) {
-      requestAnimationFrame(() => document.getElementById(hash)?.scrollIntoView());
-    }
-  }, [tab]);
+  const tab: Tab = tabParam === "vergangen" ? "vergangen" : hashTab ?? "kommend";
+
+  const selectTab = (next: Tab) => {
+    setHashTab(null);
+    setSearchParams(
+      (params) => {
+        if (next === "kommend") params.delete("tab");
+        else params.set("tab", next);
+        return params;
+      },
+      { replace: false, preventScrollReset: true },
+    );
+  };
 
   return (
     <section id="events" className="py-24 md:py-32">
@@ -474,14 +502,15 @@ const EventsSection = () => {
               <button
                 key={t}
                 type="button"
-                onClick={() => setTab(t)}
+                onClick={() => selectTab(t)}
+                aria-pressed={tab === t}
                 className={`px-5 py-2 rounded-full font-heading text-sm font-medium transition-colors ${
                   tab === t
                     ? "bg-card text-primary shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {t === "kommend" ? "Kommend" : "Vergangen"}
+                {tabLabels[t]}
               </button>
             ))}
           </div>

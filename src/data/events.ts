@@ -1,7 +1,10 @@
 import trypPhoto1 from "@/assets/tryp-1.webp";
 import icprPhoto from "@/assets/icpr-1.webp";
-import psngBpsaLogo from "@/assets/PSNG-BPSA-Logo.png";
-import torstenPassiePhoto from "@/assets/Torsten-Passie-Talk-Asset-3-v1.png";
+import psngBpsaLogo from "@/assets/PSNG-BPSA-Logo.webp";
+import torstenPassiePhoto from "@/assets/Torsten-Passie.webp";
+import ytKickoff from "@/assets/yt-fH9gMcj65l4.webp";
+import ytLonergan from "@/assets/yt-LftC0jVmxuI.webp";
+import ytTransformation from "@/assets/yt-vhPzjy2N2mM.webp";
 
 export type EventCategory =
   | "kickoff"
@@ -43,6 +46,12 @@ export interface EventAssets {
   partnerLogoAlt?: string;
   /** Portraitfoto des Speakers, quadratisch dargestellt. */
   speakerPhoto?: string;
+  /**
+   * Lokal gehostetes Vorschaubild für `youtubeUrl`. Ohne das würde beim reinen
+   * Betrachten der Seite schon ein Thumbnail von i.ytimg.com geladen und damit
+   * die IP-Adresse an Google übertragen – vor jeder Nutzerinteraktion.
+   */
+  youtubeThumbnail?: string;
 }
 
 export interface PsngEvent {
@@ -92,6 +101,7 @@ export const events: PsngEvent[] = [
       "Unser allererstes Event – und ein besonderer Moment. Beim Kick-off hat sich das PSNG erstmals vorgestellt: wer wir sind, was unsere Mission ist und wie du aktiv werden, einer Lokalgruppe beitreten oder deine eigene gründen kannst. Danke an alle, die dabei waren!",
     assets: {
       youtubeUrl: "https://www.youtube.com/watch?v=fH9gMcj65l4",
+      youtubeThumbnail: ytKickoff,
       slidesUrl: "https://www.canva.com/design/DAHBkDM0-8o/t39605od4UYhUdlL0MnidQ/view",
     },
   },
@@ -218,6 +228,7 @@ export const events: PsngEvent[] = [
       "Ein breiter Überblick: Was Psychedelika sind und wie sie im Gehirn wirken – wie sie Wahrnehmung verändern und psychische Erkrankungen behandeln können. Eric forscht am Decision Circuits Lab (Einstein Center for Neurosciences Berlin) zu den neuronalen und serotonergen Mechanismen von Halluzinationen.",
     assets: {
       youtubeUrl: "https://www.youtube.com/watch?v=LftC0jVmxuI",
+      youtubeThumbnail: ytLonergan,
       speakerLinkedinUrl: "https://www.linkedin.com/in/eric-lonergan-563b0683/",
     },
   },
@@ -234,6 +245,7 @@ export const events: PsngEvent[] = [
       "Von individueller Heilung zu kollektiver Verbundenheit: Wie können Psychedelika unser Gehirn, unsere Beziehungen und unsere Gemeinschaften verändern, um ein Gefühl von Zugehörigkeit wiederherzustellen? Eric forscht am Decision Circuits Lab (Einstein Center for Neurosciences Berlin) zu den neuronalen und serotonergen Mechanismen von Halluzinationen.",
     assets: {
       youtubeUrl: "https://youtu.be/vhPzjy2N2mM",
+      youtubeThumbnail: ytTransformation,
       speakerLinkedinUrl: "https://www.linkedin.com/in/eric-lonergan-563b0683/",
     },
   },
@@ -289,8 +301,18 @@ export const events: PsngEvent[] = [
   },
 ];
 
-function startOfToday(): number {
-  const d = new Date();
+/**
+ * `new Date("2026-07-28")` wird als UTC-Mitternacht geparst und anschließend in
+ * Lokalzeit formatiert – westlich von UTC ergibt das den Vortag. Die Datums-
+ * angaben sind aber kalendarisch gemeint, also explizit lokal konstruieren.
+ */
+function parseEventDate(iso: string): Date {
+  const [year, month, day] = iso.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function startOfDay(date: Date): number {
+  const d = new Date(date);
   d.setHours(0, 0, 0, 0);
   return d.getTime();
 }
@@ -304,30 +326,39 @@ export function hasAssets(e: PsngEvent): boolean {
 }
 
 export function getUpcomingEvents(referenceDate: Date = new Date()): PsngEvent[] {
-  const t = startOfToday();
+  const t = startOfDay(referenceDate);
   return events
-    .filter((e) => new Date(e.date).getTime() >= t)
+    .filter((e) => parseEventDate(e.date).getTime() >= t)
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 
-export function getUpcomingEventsByColumn(column: EventColumn): PsngEvent[] {
-  return getUpcomingEvents().filter((e) => e.column === column);
+export function getUpcomingEventsByColumn(
+  column: EventColumn,
+  referenceDate?: Date,
+): PsngEvent[] {
+  return getUpcomingEvents(referenceDate).filter((e) => e.column === column);
 }
 
 /** Nächstes Event mit Anmeldelink, für die Ankündigungsleiste. Verschwindet automatisch, sobald das Datum vorbei ist. */
-export function getNextBannerEvent(): PsngEvent | undefined {
-  return getUpcomingEvents().find((e) => e.registrationUrl);
+export function getNextBannerEvent(referenceDate?: Date): PsngEvent | undefined {
+  return getUpcomingEvents(referenceDate).find((e) => e.registrationUrl);
 }
 
-export function getHighlightEvents(): PsngEvent[] {
-  const t = startOfToday();
+/** Vergangene Events mit Material – neueste zuerst, wie man ein Archiv liest. */
+export function getHighlightEvents(referenceDate: Date = new Date()): PsngEvent[] {
+  const t = startOfDay(referenceDate);
   return events
-    .filter((e) => new Date(e.date).getTime() < t && hasAssets(e))
-    .sort((a, b) => a.date.localeCompare(b.date));
+    .filter((e) => parseEventDate(e.date).getTime() < t && hasAssets(e))
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+
+/** Stabiler Anker für Deep-Links auf ein vergangenes Event. */
+export function getEventAnchor(event: PsngEvent): string {
+  return `event-${event.id}`;
 }
 
 export function formatEventDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("de-DE", {
+  return parseEventDate(iso).toLocaleDateString("de-DE", {
     day: "2-digit",
     month: "long",
     year: "numeric",

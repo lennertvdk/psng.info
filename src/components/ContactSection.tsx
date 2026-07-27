@@ -1,4 +1,5 @@
 import { useState, useEffect, FormEvent } from "react";
+import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { CONTACT_EMAIL } from "@/lib/links";
 
 const subjectOptions = [
   { value: "Gruppe gründen", label: "Ich möchte eine Lokalgruppe gründen" },
@@ -41,13 +43,17 @@ type Status = "idle" | "submitting" | "success" | "error";
 const ContactSection = () => {
   const [status, setStatus] = useState<Status>("idle");
   const [subject, setSubject] = useState("");
+  const { search } = useLocation();
 
+  // Reagiert auch auf Client-seitige Navigation (?subject=… aus den CTAs),
+  // nicht nur auf den ersten Seitenaufruf.
   useEffect(() => {
-    const param = new URLSearchParams(window.location.search).get("subject");
+    const param = new URLSearchParams(search).get("subject");
     if (param && subjectParamMap[param]) {
       setSubject(subjectParamMap[param]);
+      setStatus("idle");
     }
-  }, []);
+  }, [search]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -69,12 +75,29 @@ const ContactSection = () => {
 
       if (!response.ok) throw new Error("Submission failed");
 
+      /*
+       * `_redirects` leitet jede unbekannte Route mit Status 200 auf
+       * index.html um. Ein `response.ok` allein beweist deshalb nicht, dass
+       * Netlify Forms die Nachricht wirklich entgegengenommen hat – wenn die
+       * Formularerkennung fehlschlägt, bekämen wir die SPA-Shell zurück und
+       * würden dem Absender fälschlich Erfolg melden. Also gegenprüfen.
+       */
+      const body = await response.text();
+      if (body.includes('<div id="root">')) {
+        throw new Error("Received SPA shell instead of a form confirmation");
+      }
+
       setStatus("success");
       form.reset();
       setSubject("");
     } catch {
       setStatus("error");
     }
+  };
+
+  const resetForm = () => {
+    setStatus("idle");
+    setSubject("");
   };
 
   return (
@@ -107,13 +130,24 @@ const ContactSection = () => {
           className="max-w-xl mx-auto"
         >
           {status === "success" ? (
-            <div className="bg-card rounded-2xl border border-border p-8 text-center hover:shadow-lg transition-shadow">
+            <div
+              role="status"
+              aria-live="polite"
+              className="bg-card rounded-2xl border border-border p-8 text-center hover:shadow-lg transition-shadow"
+            >
               <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
                 Danke für deine Nachricht!
               </h3>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-sm mb-5">
                 Wir melden uns so bald wie möglich bei dir.
               </p>
+              <button
+                type="button"
+                onClick={resetForm}
+                className="text-sm font-heading font-medium text-primary hover:underline"
+              >
+                Weitere Nachricht senden
+              </button>
             </div>
           ) : (
             <form
@@ -177,24 +211,33 @@ const ContactSection = () => {
                 />
               </div>
 
-              {status === "error" && (
-                <p className="text-destructive text-sm">
-                  Etwas ist schiefgelaufen. Bitte versuch es erneut oder
-                  schreib uns direkt an{" "}
-                  <a href="mailto:kontakt@psng.info" className="underline">
-                    kontakt@psng.info
-                  </a>
-                  .
-                </p>
-              )}
+              <div role="status" aria-live="polite">
+                {status === "error" && (
+                  <p className="text-destructive text-sm">
+                    Etwas ist schiefgelaufen. Bitte versuch es erneut oder
+                    schreib uns direkt an{" "}
+                    <a href={`mailto:${CONTACT_EMAIL}`} className="underline">
+                      {CONTACT_EMAIL}
+                    </a>
+                    .
+                  </p>
+                )}
+              </div>
 
-              <Button
-                type="submit"
-                disabled={status === "submitting" || !subject}
-                className="w-full gradient-psychedelic text-primary-foreground font-heading"
-              >
-                {status === "submitting" ? "Wird gesendet…" : "Nachricht senden"}
-              </Button>
+              <div>
+                <Button
+                  type="submit"
+                  disabled={status === "submitting" || !subject}
+                  className="w-full gradient-psychedelic text-primary-foreground font-heading"
+                >
+                  {status === "submitting" ? "Wird gesendet…" : "Nachricht senden"}
+                </Button>
+                {!subject && (
+                  <p className="text-muted-foreground text-xs mt-2 text-center">
+                    Bitte wähle zuerst dein Anliegen aus.
+                  </p>
+                )}
+              </div>
             </form>
           )}
         </motion.div>

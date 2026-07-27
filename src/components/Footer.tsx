@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import { Mail, Instagram, Youtube, Linkedin } from "lucide-react";
-
-const whatsappLink = "https://chat.whatsapp.com/LBUA3UpzOV9BW1v59EZK8w?s=cl&p=i&ilr=1";
+import {
+  WHATSAPP_LINK,
+  INSTAGRAM_LINK,
+  YOUTUBE_LINK,
+  LINKEDIN_LINK,
+  CONTACT_EMAIL,
+} from "@/lib/links";
 
 const Footer = () => {
   return (
@@ -10,14 +15,14 @@ const Footer = () => {
         <div className="max-w-3xl mx-auto text-center">
           <div className="flex flex-wrap items-center justify-center gap-6 mb-8">
             <a
-              href="mailto:kontakt@psng.info"
+              href={`mailto:${CONTACT_EMAIL}`}
               className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors text-sm"
             >
               <Mail size={16} />
-              kontakt@psng.info
+              {CONTACT_EMAIL}
             </a>
             <a
-              href="https://www.instagram.com/psng.info/"
+              href={INSTAGRAM_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors text-sm"
@@ -26,7 +31,7 @@ const Footer = () => {
               @psng.info
             </a>
             <a
-              href="https://www.youtube.com/channel/UCMHHH4dOREJTJF_ySpgV7mA"
+              href={YOUTUBE_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors text-sm"
@@ -35,7 +40,7 @@ const Footer = () => {
               YouTube
             </a>
             <a
-              href="https://www.linkedin.com/company/111432265"
+              href={LINKEDIN_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors text-sm"
@@ -46,7 +51,7 @@ const Footer = () => {
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
             <a
-              href={whatsappLink}
+              href={WHATSAPP_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-8 py-3 rounded-lg bg-primary-foreground text-primary font-heading font-medium text-sm hover:opacity-90 transition-opacity"
@@ -85,7 +90,7 @@ const Footer = () => {
               © {new Date().getFullYear()} Psychedelic Student Network Germany
               (PSNG). Alle Rechte vorbehalten.
             </p>
-            <p className="text-transparent text-xs font-heading mt-2">
+            <p className="text-primary-foreground/50 text-xs font-heading mt-2">
               Mit Dank an David Frank aus Basel.
             </p>
           </div>

@@ -54,24 +54,12 @@ const Datenschutz = () => {
         erforderlich sind.
       </p>
 
-      <h2>4. Eingebundene Schriftarten (Google Fonts)</h2>
+      <h2>4. Schriftarten</h2>
       <p>
-        Diese Website bindet Schriftarten ("Google Fonts") des Anbieters
-        Google Ireland Limited, Gordon House, Barrow Street, Dublin 4,
-        Irland ein. Beim Laden der Seite stellt dein Browser eine
-        Verbindung zu den Servern von Google her, wobei deine IP-Adresse
-        übermittelt werden kann. Rechtsgrundlage ist unser berechtigtes
-        Interesse an einer einheitlichen und ansprechenden Darstellung
-        unserer Website (Art. 6 Abs. 1 lit. f DSGVO). Weitere Informationen
-        findest du in der{" "}
-        <a
-          href="https://policies.google.com/privacy"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Datenschutzerklärung von Google
-        </a>
-        .
+        Die auf dieser Website verwendeten Schriftarten werden lokal von
+        unserem Server ausgeliefert. Es wird dabei keine Verbindung zu
+        Servern Dritter (etwa Google Fonts) hergestellt und es werden keine
+        Daten an Dritte übermittelt.
       </p>
 
       <h2>5. Eingebettete Inhalte und externe Links</h2>
@@ -80,16 +68,34 @@ const Datenschutz = () => {
         Communitys, u. a. WhatsApp, Instagram, YouTube und LinkedIn. Beim
         Anklicken dieser Links verlässt du unsere Website. Für die dortige
         Verarbeitung deiner Daten ist der jeweilige Anbieter verantwortlich;
-        es gelten dessen Datenschutzbestimmungen. Eingebettete Inhalte (z. B.
-        Videos) werden erst nach Anklicken geladen, sodass keine Daten an den
-        jeweiligen Anbieter übertragen werden, solange du den Inhalt nicht
-        aktiv aufrufst.
+        es gelten dessen Datenschutzbestimmungen.
+      </p>
+      <p>
+        Videoaufzeichnungen unserer Veranstaltungen sind als YouTube-Videos
+        eingebunden. Solange du ein Video nicht aktiv startest, wird kein
+        Inhalt von YouTube geladen: Die Vorschaubilder liegen auf unserem
+        eigenen Server. Erst wenn du auf das Abspielen-Symbol klickst, wird
+        ein Player von YouTube (google.com) nachgeladen und deine IP-Adresse
+        an den Anbieter übermittelt. Wir nutzen dafür die Domain
+        youtube-nocookie.com, die vor dem Abspielen keine Cookies setzt.
+        Rechtsgrundlage ist deine Einwilligung durch den Klick auf das Video
+        (Art. 6 Abs. 1 lit. a DSGVO).
       </p>
 
       <h2>6. Cookies und Tracking</h2>
       <p>
         Diese Website verwendet keine Analyse- oder Tracking-Tools und setzt
-        keine Cookies zu Marketing- oder Analysezwecken ein.
+        keine Cookies zu Marketing- oder Analysezwecken ein. Wir erstellen
+        keine Nutzungsprofile und werten das Verhalten unserer Besucher*innen
+        nicht aus.
+      </p>
+      <p>
+        Lediglich für die Ankündigungsleiste am oberen Seitenrand speichern
+        wir im lokalen Speicher deines Browsers (localStorage), ob du sie
+        bereits geschlossen hast, damit sie nicht bei jedem Seitenaufruf
+        erneut erscheint. Diese Information verlässt dein Gerät nicht und
+        wird nicht an uns übertragen. Du kannst sie jederzeit über die
+        Einstellungen deines Browsers löschen.
       </p>
 
       <h2>7. Deine Rechte</h2>

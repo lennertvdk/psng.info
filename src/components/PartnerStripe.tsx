@@ -30,10 +30,15 @@ const PartnerStripe = () => (
             target="_blank"
             rel="noopener noreferrer"
             aria-label={partner.name}
+            className="flex h-11 items-center px-1"
           >
             <img
               src={partner.logo}
               alt={partner.name}
+              width={90}
+              height={32}
+              loading="lazy"
+              decoding="async"
               className="h-8 max-w-[90px] object-contain hover:scale-[1.25] transition"
             />
           </a>

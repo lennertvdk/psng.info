@@ -89,13 +89,13 @@ const Leitfaden = () => {
       <p>
         <strong>Wir stehen an deiner Seite!</strong> Du hast eine Idee, weißt aber nicht, wie du sie
         formulieren oder umsetzen sollst? Du brauchst Kontakt zu anderen Gruppen? Schreib uns über das{" "}
-        <a href="/?subject=gruppe#kontakt" className="text-primary hover:underline">
+        <Link to="/?subject=gruppe#kontakt" className="text-primary hover:underline">
           Kontaktformular
-        </a>{" "}
+        </Link>{" "}
         oder komm zu einem unserer monatlichen{" "}
-        <a href="/#events" className="text-primary hover:underline">
+        <Link to="/#events" className="text-primary hover:underline">
           Community Calls
-        </a>
+        </Link>
         .
       </p>
 
@@ -157,9 +157,9 @@ const Leitfaden = () => {
         <li>
           Wir bieten gerne an, dass deine Gruppe auf psng.info erscheint, mit oder ohne Kontaktperson.
           Meld dich einfach über unser{" "}
-          <a href="/?subject=gruppe#kontakt" className="text-primary hover:underline">
+          <Link to="/?subject=gruppe#kontakt" className="text-primary hover:underline">
             Kontaktformular
-          </a>
+          </Link>
           .
         </li>
       </ul>
@@ -228,9 +228,9 @@ const Leitfaden = () => {
         <li>
           <strong>Nutze das Netzwerk:</strong> Möchtest du dein Event live-streamen oder einer größeren
           Audience zugänglich machen? Lass es in den{" "}
-          <a href="/#events" className="text-primary hover:underline">
+          <Link to="/#events" className="text-primary hover:underline">
             PSNG-Eventkalender
-          </a>{" "}
+          </Link>{" "}
           eintragen. Wir bauen außerdem eine netzwerkweite Lecture-Reihe auf, an die du dich anhängen
           kannst, frag uns einfach.
         </li>
@@ -445,18 +445,18 @@ const Leitfaden = () => {
           Fragen, Ideen oder einfach Lust auf Austausch? Schreib uns oder komm zum nächsten Community Call.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <a
-            href="/?subject=gruppe#kontakt"
+          <Link
+            to="/?subject=gruppe#kontakt"
             className="inline-flex items-center justify-center px-6 py-2.5 rounded-lg bg-foreground text-background font-heading font-medium text-sm hover:opacity-80 transition-opacity"
           >
             Kontakt aufnehmen
-          </a>
-          <a
-            href="/#events"
+          </Link>
+          <Link
+            to="/#events"
             className="inline-flex items-center justify-center px-6 py-2.5 rounded-lg border border-primary/30 text-primary font-heading font-medium text-sm hover:bg-primary/5 transition-colors"
           >
             Nächster Community Call →
-          </a>
+          </Link>
         </div>
       </div>
     </LegalPageLayout>
