@@ -23,23 +23,23 @@ const targets = [
   ["Stela.png", 400, 85],
   ["tryp-1.jpg", 1200, 80],
   ["icpr-1.jpg", 1200, 80],
-  // Wird mit 105x105 gerendert – 240px reicht auch auf Retina-Displays.
+  // Werden mit 105x105 gerendert – 240px reicht auch auf Retina-Displays.
+  // Nicht zuschneiden: Die Talk-Assets sind bereits final gesetzt, ein eigener
+  // Ausschnitt schneidet sonst oben die Haare ab.
   ["PSNG-BPSA-Logo.png", 240, 88],
-  // Hinweis: Torsten-Passie.webp entsteht nicht hier. Das Talk-Asset zeigt den
-  // Speaker klein und aus der Mitte gerückt; ein reines Verkleinern würde im
-  // 105px-Rahmen überwiegend Hintergrund zeigen. Der Zuschnitt ist deshalb von
-  // Hand gesetzt (Quadrat 944px ab 300/220) und wird bei einem neuen Foto
-  // einmalig neu bestimmt.
+  // Vierter Wert: abweichender Ausgabename, damit der Import im Code stabil
+  // bleibt, auch wenn das Talk-Asset in v3, v4, … neu geliefert wird.
+  ["Torsten-Passie-Talk-Asset-3-v2.png", 240, 88, "Torsten-Passie"],
 ];
 
-for (const [file, maxDim, quality] of targets) {
+for (const [file, maxDim, quality, outputName] of targets) {
   const input = path.join(dir, file);
   if (!fs.existsSync(input)) {
     console.log(`skip (missing): ${file}`);
     continue;
   }
   const ext = path.extname(file);
-  const output = path.join(dir, path.basename(file, ext) + ".webp");
+  const output = path.join(dir, (outputName ?? path.basename(file, ext)) + ".webp");
   const before = fs.statSync(input).size;
 
   await sharp(input)
