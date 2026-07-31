@@ -23,9 +23,13 @@ const targets = [
   ["Stela.png", 400, 85],
   ["tryp-1.jpg", 1200, 80],
   ["icpr-1.jpg", 1200, 80],
-  // Werden beide mit 105x105 gerendert – 240px reicht auch auf Retina-Displays.
+  // Wird mit 105x105 gerendert – 240px reicht auch auf Retina-Displays.
   ["PSNG-BPSA-Logo.png", 240, 88],
-  ["Torsten-Passie.png", 240, 88],
+  // Hinweis: Torsten-Passie.webp entsteht nicht hier. Das Talk-Asset zeigt den
+  // Speaker klein und aus der Mitte gerückt; ein reines Verkleinern würde im
+  // 105px-Rahmen überwiegend Hintergrund zeigen. Der Zuschnitt ist deshalb von
+  // Hand gesetzt (Quadrat 944px ab 300/220) und wird bei einem neuen Foto
+  // einmalig neu bestimmt.
 ];
 
 for (const [file, maxDim, quality] of targets) {

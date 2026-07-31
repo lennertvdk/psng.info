@@ -79,6 +79,11 @@ function EventCard({ event, i }: { event: PsngEvent; i: number }) {
         <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
           {event.title}
         </h3>
+        {event.subtitle && (
+          <p className="text-sm text-foreground/80 font-medium mb-2 leading-relaxed">
+            {event.subtitle}
+          </p>
+        )}
         {event.speaker && (
           <p className="text-sm text-primary font-medium mb-2">
             {event.speakerWebsiteUrl ? (
@@ -98,6 +103,11 @@ function EventCard({ event, i }: { event: PsngEvent; i: number }) {
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
           {event.description ?? "Weitere Details folgen bald."}
         </p>
+        {event.speakerBio && (
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            {event.speakerBio}
+          </p>
+        )}
         {event.audienceNote && (
           <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
             {event.audienceNote}
