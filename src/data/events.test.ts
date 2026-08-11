@@ -19,11 +19,11 @@ describe("formatEventDate", () => {
 });
 
 describe("getUpcomingEvents", () => {
-  const ref = new Date(2026, 6, 28); // 28. Juli 2026, lokal
+  const ref = new Date(2026, 7, 11); // 11. August 2026, lokal
 
   it("includes an event happening today", () => {
     const ids = getUpcomingEvents(ref).map((e) => e.id);
-    expect(ids).toContain("community-call-5"); // 2026-07-28
+    expect(ids).toContain("lecture-5"); // 2026-08-11
   });
 
   it("excludes events that are already over", () => {
@@ -38,7 +38,7 @@ describe("getUpcomingEvents", () => {
 
   it("honours the reference date it is given", () => {
     const later = getUpcomingEvents(new Date(2026, 8, 1)); // 1. September
-    expect(later.map((e) => e.id)).not.toContain("community-call-5");
+    expect(later.map((e) => e.id)).not.toContain("lecture-5");
   });
 });
 

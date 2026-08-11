@@ -4,23 +4,20 @@ import psngBpsaLogo from "@/assets/PSNG-BPSA-Logo.webp";
 import torstenPassiePhoto from "@/assets/Torsten-Passie.webp";
 import ytKickoff from "@/assets/yt-fH9gMcj65l4.webp";
 import ytLonergan from "@/assets/yt-LftC0jVmxuI.webp";
-import ytTransformation from "@/assets/yt-vhPzjy2N2mM.webp";
 
 export type EventCategory =
   | "kickoff"
   | "lecture"
-  | "community-call"
   | "gathering"
   | "workshop"
   | "other";
 
-/** Die drei Spalten der Events-Sektion – Einordnung nach Veranstaltungstyp, nicht nach Speaker-Status. */
-export type EventColumn = "vortraege" | "community" | "social";
+/** Die Spalten der Events-Sektion – Einordnung nach Veranstaltungstyp, nicht nach Speaker-Status. */
+export type EventColumn = "vortraege" | "community";
 
 export const eventColumnLabels: Record<EventColumn, string> = {
   vortraege: "Vorträge",
   community: "Community",
-  social: "Social",
 };
 
 export type SpeakerType = "student" | "gast";
@@ -144,62 +141,6 @@ export const events: PsngEvent[] = [
     },
   },
 
-  // ── Community Calls (4. Dienstag des Monats) ──────────────────────────────
-  {
-    id: "community-call-1",
-    title: "1. PSNG Community Call",
-    category: "community-call",
-    column: "community",
-    date: "2026-03-17",
-    time: "19:00 – 20:00",
-    location: "Zoom",
-  },
-  {
-    id: "community-call-2",
-    title: "2. PSNG Community Call",
-    category: "community-call",
-    column: "community",
-    date: "2026-04-28",
-    time: "19:00 – 20:00",
-    location: "Zoom",
-  },
-  {
-    id: "community-call-3",
-    title: "3. PSNG Community Call",
-    category: "community-call",
-    column: "community",
-    date: "2026-05-26",
-    time: "19:00 – 20:00",
-    location: "Zoom",
-  },
-  {
-    id: "community-call-4",
-    title: "4. PSNG Community Call",
-    category: "community-call",
-    column: "community",
-    date: "2026-06-23",
-    time: "19:00 – 20:00",
-    location: "Zoom",
-  },
-  {
-    id: "community-call-5",
-    title: "5. PSNG Community Call",
-    category: "community-call",
-    column: "community",
-    date: "2026-07-28",
-    time: "19:00 – 20:00",
-    location: "Zoom",
-  },
-  {
-    id: "community-call-6",
-    title: "6. PSNG Community Call",
-    category: "community-call",
-    column: "community",
-    date: "2026-08-25",
-    time: "19:00 – 20:00",
-    location: "Zoom",
-  },
-
   // ── Lectures (2. Dienstag des Monats) ─────────────────────────────────────
   {
     id: "lecture-1",
@@ -233,23 +174,6 @@ export const events: PsngEvent[] = [
     assets: {
       youtubeUrl: "https://www.youtube.com/watch?v=LftC0jVmxuI",
       youtubeThumbnail: ytLonergan,
-      speakerLinkedinUrl: "https://www.linkedin.com/in/eric-lonergan-563b0683/",
-    },
-  },
-  {
-    id: "lecture-4",
-    title: "Psychedelics as Tools for Personal and Social Transformation",
-    category: "lecture",
-    column: "vortraege",
-    date: "2026-07-14",
-    time: "19:00 – 20:00",
-    speaker: "Eric Lonergan, PhD cand.",
-    speakerType: "student",
-    description:
-      "Von individueller Heilung zu kollektiver Verbundenheit: Wie können Psychedelika unser Gehirn, unsere Beziehungen und unsere Gemeinschaften verändern, um ein Gefühl von Zugehörigkeit wiederherzustellen? Eric forscht am Decision Circuits Lab (Einstein Center for Neurosciences Berlin) zu den neuronalen und serotonergen Mechanismen von Halluzinationen.",
-    assets: {
-      youtubeUrl: "https://youtu.be/vhPzjy2N2mM",
-      youtubeThumbnail: ytTransformation,
       speakerLinkedinUrl: "https://www.linkedin.com/in/eric-lonergan-563b0683/",
     },
   },
@@ -291,7 +215,7 @@ export const events: PsngEvent[] = [
     id: "gathering-2026-08-08",
     title: "Ein Abend rund um Psychedelika, Forschung, Verbindung & Austausch",
     category: "gathering",
-    column: "social",
+    column: "community",
     highlightBadge: "Erstes eigenes In-Person-Event, PSNG x BPSA",
     date: "2026-08-08",
     weekdayLabel: "Samstag",

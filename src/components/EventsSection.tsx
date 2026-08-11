@@ -21,9 +21,7 @@ const columnIntros: Record<EventColumn, string> = {
   vortraege:
     "Jeden 2. Dienstag im Monat. Fachlicher Input zu Forschung, Projekten und psychedelischer Wissenschaft, studentisch und von eingeladenen Expert:innen.",
   community:
-    "Jeden 4. Dienstag im Monat. Austausch zwischen den Hochschulgruppen, aktuelle Projekte, gemeinsames Engagement.",
-  social:
-    "Treffen zum Kennenlernen und Austauschen abseits des Vortragsformats.",
+    "Treffen, Konferenzbesuche und gemeinsames Engagement der Hochschulgruppen, online und vor Ort.",
 };
 
 function isFeaturedEvent(event: PsngEvent): boolean {
@@ -213,8 +211,16 @@ function EventsColumnCards({ column }: { column: EventColumn }) {
       {featured.length === 0 && !nextPlain && (
         <div className="rounded-2xl border border-border bg-card p-6 text-center">
           <p className="text-sm text-muted-foreground">
-            Aktuell sind keine Termine geplant.
+            Aktuell sind keine Termine geplant. Neue Treffen kündigen wir in der Community an.
           </p>
+          <a
+            href={WHATSAPP_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-lg border border-primary/30 text-primary font-heading font-medium text-sm hover:bg-primary/5 transition-colors px-4 py-2 mt-4"
+          >
+            WhatsApp-Community beitreten
+          </a>
         </div>
       )}
     </div>
@@ -222,15 +228,15 @@ function EventsColumnCards({ column }: { column: EventColumn }) {
 }
 
 function UpcomingEvents() {
-  const columns: EventColumn[] = ["vortraege", "community", "social"];
+  const columns: EventColumn[] = ["vortraege", "community"];
   return (
     <>
-      <div className="grid gap-4 lg:grid-cols-3 mb-6">
+      <div className="grid gap-4 lg:grid-cols-2 mb-6">
         {columns.map((column) => (
           <EventsColumnHeader key={column} column={column} />
         ))}
       </div>
-      <div className="grid gap-8 lg:grid-cols-3 items-start">
+      <div className="grid gap-8 lg:grid-cols-2 items-start">
         {columns.map((column) => (
           <EventsColumnCards key={column} column={column} />
         ))}
