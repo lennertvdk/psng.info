@@ -3,11 +3,20 @@ import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import SectionHeader from "@/components/SectionHeader";
 import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import {
   eventColumnLabels,
   formatEventDate,
   getEventAnchor,
   getHighlightEvents,
+  getPastPlainEvents,
   getUpcomingEventsByColumn,
+  hasContent,
   speakerTypeLabels,
   type EventColumn,
   type PsngEvent,
@@ -24,11 +33,16 @@ const columnIntros: Record<EventColumn, string> = {
     "Treffen, Konferenzbesuche und gemeinsames Engagement der Hochschulgruppen, online und vor Ort.",
 };
 
-function isFeaturedEvent(event: PsngEvent): boolean {
-  return Boolean(event.description || event.speaker || event.registrationUrl);
-}
-
-function EventCard({ event, i }: { event: PsngEvent; i: number }) {
+function EventCard({
+  event,
+  i,
+  past = false,
+}: {
+  event: PsngEvent;
+  i: number;
+  /** Blendet Anmelde-CTA und Luma-Hinweis aus – nach dem Termin sind sie hinfällig. */
+  past?: boolean;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -37,8 +51,8 @@ function EventCard({ event, i }: { event: PsngEvent; i: number }) {
       transition={{ duration: 0.4, delay: i * 0.08 }}
       className="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow"
     >
-      {(event.highlightBadge || event.speakerType) && (
-        <div className="mb-3">
+      {(event.highlightBadge || event.speakerType || past) && (
+        <div className="mb-3 flex flex-wrap items-center gap-2">
           {event.highlightBadge && (
             <span className="inline-block px-2 py-1 rounded-full gradient-psychedelic text-primary-foreground text-xs font-heading font-medium">
               {event.highlightBadge}
@@ -49,6 +63,7 @@ function EventCard({ event, i }: { event: PsngEvent; i: number }) {
               {speakerTypeLabels[event.speakerType]}
             </span>
           )}
+          {past && <span className="text-xs text-muted-foreground">{formatEventDate(event.date)}</span>}
         </div>
       )}
       <div>
@@ -132,12 +147,12 @@ function EventCard({ event, i }: { event: PsngEvent; i: number }) {
       {event.disclaimer && (
         <p className="text-xs text-muted-foreground italic mt-3">{event.disclaimer}</p>
       )}
-      {event.registrationUrl?.includes("luma.com") && (
+      {!past && event.registrationUrl?.includes("luma.com") && (
         <p className="text-xs text-muted-foreground mt-3">
           Alle weiteren Infos und das vollständige Programm gibt's auf Luma.
         </p>
       )}
-      {event.registrationUrl && (
+      {!past && event.registrationUrl && (
         <div className="flex flex-wrap gap-3 mt-4">
           <a
             href={event.registrationUrl}
@@ -146,6 +161,18 @@ function EventCard({ event, i }: { event: PsngEvent; i: number }) {
             className="inline-flex items-center justify-center rounded-lg gradient-psychedelic px-4 py-2 text-sm font-heading font-medium text-primary-foreground hover:opacity-90 transition-opacity"
           >
             {event.registrationLabel ?? "Jetzt anmelden"}
+          </a>
+        </div>
+      )}
+      {past && event.registrationUrl && (
+        <div className="mt-4">
+          <a
+            href={event.registrationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium text-primary hover:underline"
+          >
+            Event auf Luma ansehen →
           </a>
         </div>
       )}
@@ -197,8 +224,8 @@ function EventsColumnHeader({ column }: { column: EventColumn }) {
 
 function EventsColumnCards({ column }: { column: EventColumn }) {
   const upcoming = getUpcomingEventsByColumn(column);
-  const featured = upcoming.filter(isFeaturedEvent);
-  const nextPlain = upcoming.find((e) => !isFeaturedEvent(e));
+  const featured = upcoming.filter(hasContent);
+  const nextPlain = upcoming.find((e) => !hasContent(e));
 
   return (
     <div className="flex flex-col gap-4">
@@ -391,26 +418,190 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
   );
 }
 
+function GatheringPhotoCarousel({
+  photos,
+  alts,
+  title,
+}: {
+  photos: string[];
+  alts?: string[];
+  title: string;
+}) {
+  return (
+    <Carousel opts={{ loop: true }} className="w-full">
+      <CarouselContent>
+        {photos.map((src, i) => (
+          <CarouselItem key={src}>
+            {/* object-contain statt object-cover: Quellfotos haben unterschiedliche
+                Seitenverhältnisse, ein hartes Cover-Crop hätte sonst regelmäßig Köpfe
+                abgeschnitten. Überschüssiger Raum wird gelettert, nicht zugeschnitten. */}
+            <div className="flex h-72 w-full items-center justify-center overflow-hidden rounded-lg bg-muted sm:h-96 md:h-[28rem]">
+              <img
+                src={src}
+                alt={alts?.[i] ?? `${title} – Foto ${i + 1}`}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-contain"
+              />
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious className="left-2" />
+      <CarouselNext className="right-2" />
+    </Carousel>
+  );
+}
+
+function GatheringAftermovie({ ev }: { ev: PsngEvent }) {
+  const [playing, setPlaying] = useState(false);
+  const a = ev.assets ?? {};
+  if (!a.youtubeUrl) return null;
+  const embed = getYouTubeEmbedUrl(a.youtubeUrl);
+
+  return (
+    <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted">
+      {playing && embed ? (
+        <iframe
+          src={embed}
+          title={`Aftermovie: ${ev.title}`}
+          className="absolute inset-0 h-full w-full"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowFullScreen
+        />
+      ) : (
+        <button
+          type="button"
+          onClick={() => setPlaying(true)}
+          className="group absolute inset-0 flex items-center justify-center"
+          aria-label={`Aftermovie abspielen: ${ev.title}`}
+        >
+          {a.youtubeThumbnail && (
+            <img
+              src={a.youtubeThumbnail}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          )}
+          <span className="absolute inset-0 bg-black/25 transition-colors group-hover:bg-black/40" />
+          <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-foreground shadow-lg transition-transform group-hover:scale-110">
+            <PlayIcon />
+          </span>
+        </button>
+      )}
+    </div>
+  );
+}
+
+/** Große Feature-Karte für ein einzelnes, besonders großes vergangenes Event (Aftermovie + Foto-Karussell). */
+function GatheringFeatureCard({ ev }: { ev: PsngEvent }) {
+  const a = ev.assets ?? {};
+
+  return (
+    <div className="overflow-hidden rounded-xl border border-border/60 bg-card hover:shadow-lg transition-shadow">
+      <div className="space-y-3 p-5 pb-0">
+        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+          <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
+            {eventColumnLabels[ev.column]}
+          </span>
+          {ev.highlightBadge && (
+            <span className="rounded-full gradient-psychedelic px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
+              {ev.highlightBadge}
+            </span>
+          )}
+          <span>{formatEventDate(ev.date)}</span>
+        </div>
+
+        <h3 className="text-xl font-semibold leading-snug">{ev.title}</h3>
+        {ev.location ? <p className="text-sm text-muted-foreground">{ev.location}</p> : null}
+        {ev.description ? <p className="text-sm text-muted-foreground">{ev.description}</p> : null}
+        {(a.attendees || a.rating || a.recommendPercent) && (
+          <p className="text-sm text-muted-foreground">
+            {[
+              a.attendees ? `${a.attendees} Teilnehmende` : null,
+              a.rating ? `${a.rating} Bewertung` : null,
+              a.recommendPercent ? `${a.recommendPercent}% Weiterempfehlung` : null,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          </p>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-4 p-5">
+        {a.youtubeUrl ? <GatheringAftermovie ev={ev} /> : null}
+        {a.photos?.length ? (
+          <GatheringPhotoCarousel photos={a.photos} alts={a.photoAlts} title={ev.title} />
+        ) : null}
+        {ev.registrationUrl && (
+          <a
+            href={ev.registrationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium text-primary hover:underline"
+          >
+            Event auf Luma ansehen →
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function PastEvents() {
-  const items = getHighlightEvents();
-  if (items.length === 0) return null;
+  const highlights = getHighlightEvents();
+  const large = highlights.filter((ev) => ev.featuredLarge);
+  const rest = highlights.filter((ev) => !ev.featuredLarge);
+  const plain = getPastPlainEvents();
+  if (highlights.length === 0 && plain.length === 0) return null;
 
   return (
     <>
-      <div className="grid gap-6 sm:grid-cols-2">
-        {items.map((ev) => (
-          <motion.div
-            key={ev.id}
-            id={getEventAnchor(ev)}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-          >
-            <HighlightCard ev={ev} />
-          </motion.div>
-        ))}
-      </div>
+      {large.length > 0 && (
+        <div className="flex flex-col gap-6 mb-6">
+          {large.map((ev) => (
+            <motion.div
+              key={ev.id}
+              id={getEventAnchor(ev)}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
+              <GatheringFeatureCard ev={ev} />
+            </motion.div>
+          ))}
+        </div>
+      )}
+
+      {rest.length > 0 && (
+        <div className="grid gap-6 sm:grid-cols-2">
+          {rest.map((ev) => (
+            <motion.div
+              key={ev.id}
+              id={getEventAnchor(ev)}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
+              <HighlightCard ev={ev} />
+            </motion.div>
+          ))}
+        </div>
+      )}
+
+      {plain.length > 0 && (
+        <div className="flex flex-col gap-4 mt-6">
+          {plain.map((event, i) => (
+            <div key={event.id} id={getEventAnchor(event)}>
+              <EventCard event={event} i={i} past />
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="mt-14 rounded-2xl border border-border/60 bg-muted/40 p-8 text-center">
         <h3 className="text-xl font-semibold">Du willst selbst eine Lecture geben?</h3>

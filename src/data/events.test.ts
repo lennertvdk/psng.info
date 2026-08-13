@@ -4,7 +4,9 @@ import {
   getEventAnchor,
   getHighlightEvents,
   getNextBannerEvent,
+  getPastPlainEvents,
   getUpcomingEvents,
+  hasContent,
   events,
 } from "./events";
 
@@ -55,6 +57,46 @@ describe("getHighlightEvents", () => {
       expect(e.date < "2026-07-28").toBe(true);
       expect(Boolean(e.assets)).toBe(true);
     }
+  });
+});
+
+describe("getPastPlainEvents", () => {
+  const ref = new Date(2026, 7, 13); // 13. August 2026
+
+  it("includes past events with real content but no material yet", () => {
+    // Torsten Passies Lecture (11.8.) hat noch keine Aufzeichnung.
+    expect(getPastPlainEvents(ref).map((e) => e.id)).toContain("lecture-5");
+  });
+
+  it("excludes empty placeholder lectures", () => {
+    expect(getPastPlainEvents(ref).map((e) => e.id)).not.toContain("lecture-1");
+  });
+
+  it("never overlaps with getHighlightEvents", () => {
+    const plainIds = new Set(getPastPlainEvents(ref).map((e) => e.id));
+    const highlightIds = new Set(getHighlightEvents(ref).map((e) => e.id));
+    for (const id of plainIds) {
+      expect(highlightIds.has(id)).toBe(false);
+    }
+  });
+});
+
+describe("hasContent", () => {
+  it("is true for events with a description, speaker, or registration link", () => {
+    expect(hasContent(events.find((e) => e.id === "lecture-5")!)).toBe(true);
+  });
+
+  it("is false for bare placeholder lectures", () => {
+    expect(hasContent(events.find((e) => e.id === "lecture-1")!)).toBe(false);
+  });
+});
+
+describe("gathering-2026-08-08", () => {
+  it("carries a full photo gallery, with alt text for every photo", () => {
+    const ev = events.find((e) => e.id === "gathering-2026-08-08")!;
+    expect(ev.featuredLarge).toBe(true);
+    expect(ev.assets?.photos?.length).toBeGreaterThan(0);
+    expect(ev.assets?.photoAlts?.length).toBe(ev.assets?.photos?.length);
   });
 });
 

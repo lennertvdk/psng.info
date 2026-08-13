@@ -4,6 +4,33 @@ import psngBpsaLogo from "@/assets/PSNG-BPSA-Logo.webp";
 import torstenPassiePhoto from "@/assets/Torsten-Passie.webp";
 import ytKickoff from "@/assets/yt-fH9gMcj65l4.webp";
 import ytLonergan from "@/assets/yt-LftC0jVmxuI.webp";
+import abendPhoto01 from "@/assets/abend-rund-um-psychedelika/abend-01.webp";
+import abendPhoto04 from "@/assets/abend-rund-um-psychedelika/abend-04.webp";
+import abendPhoto06 from "@/assets/abend-rund-um-psychedelika/abend-06.webp";
+import abendPhoto07 from "@/assets/abend-rund-um-psychedelika/abend-07.webp";
+import abendPhoto09 from "@/assets/abend-rund-um-psychedelika/abend-09.webp";
+import abendPhoto10 from "@/assets/abend-rund-um-psychedelika/abend-10.webp";
+import abendPhoto11 from "@/assets/abend-rund-um-psychedelika/abend-11.webp";
+import abendPhoto12 from "@/assets/abend-rund-um-psychedelika/abend-12.webp";
+import abendPhoto15 from "@/assets/abend-rund-um-psychedelika/abend-15.webp";
+import abendPhoto16 from "@/assets/abend-rund-um-psychedelika/abend-16.webp";
+import abendPhoto17 from "@/assets/abend-rund-um-psychedelika/abend-17.webp";
+import abendPhoto18 from "@/assets/abend-rund-um-psychedelika/abend-18.webp";
+import abendPhoto19 from "@/assets/abend-rund-um-psychedelika/abend-19.webp";
+import abendPhoto20 from "@/assets/abend-rund-um-psychedelika/abend-20.webp";
+import abendPhoto21 from "@/assets/abend-rund-um-psychedelika/abend-21.webp";
+import abendPhoto22 from "@/assets/abend-rund-um-psychedelika/abend-22.webp";
+import abendPhoto23 from "@/assets/abend-rund-um-psychedelika/abend-23.webp";
+import abendPhoto24 from "@/assets/abend-rund-um-psychedelika/abend-24.webp";
+import abendPhoto25 from "@/assets/abend-rund-um-psychedelika/abend-25.webp";
+import abendPhoto26 from "@/assets/abend-rund-um-psychedelika/abend-26.webp";
+import abendPhoto27 from "@/assets/abend-rund-um-psychedelika/abend-27.webp";
+import abendPhoto28 from "@/assets/abend-rund-um-psychedelika/abend-28.webp";
+import abendPhoto29 from "@/assets/abend-rund-um-psychedelika/abend-29.webp";
+import abendPhoto30 from "@/assets/abend-rund-um-psychedelika/abend-30.webp";
+import abendPhoto31 from "@/assets/abend-rund-um-psychedelika/abend-31.webp";
+import abendPhoto32 from "@/assets/abend-rund-um-psychedelika/abend-32.webp";
+import abendPhoto33 from "@/assets/abend-rund-um-psychedelika/abend-33.webp";
 
 export type EventCategory =
   | "kickoff"
@@ -32,7 +59,13 @@ export interface EventAssets {
   youtubeUrl?: string;
   slidesUrl?: string;
   photos?: string[];
+  /** Alt-Texte parallel zu `photos`, gleicher Index. Fehlt einer, greift ein generischer Fallback. */
+  photoAlts?: string[];
   attendees?: number;
+  /** Durchschnittsbewertung der Teilnehmenden, z. B. "9/10". */
+  rating?: string;
+  /** Anteil der Teilnehmenden, die das Event weiterempfehlen würden, in Prozent. */
+  recommendPercent?: number;
   recapUrl?: string;
   speakerLinkedinUrl?: string;
   /** Link zu einer externen Website (z. B. Partner-Konferenz), mit eigenem Linktext. */
@@ -74,6 +107,8 @@ export interface PsngEvent {
   highlightBadge?: string;
   /** hebt das Event in den Aufnahmen hervor (z. B. der Kick-off) */
   featured?: boolean;
+  /** rendert das Event in den vergangenen Events als große Feature-Karte (Foto-Karussell + Video), statt im normalen 2-Spalten-Grid */
+  featuredLarge?: boolean;
   description?: string;
   /** kurzer Hinweis, für wen das Event gedacht ist, direkt unter der Beschreibung */
   audienceNote?: string;
@@ -220,16 +255,86 @@ export const events: PsngEvent[] = [
     date: "2026-08-08",
     weekdayLabel: "Samstag",
     time: "16:00 bis 20:00 Uhr (Einlass ab 15:30)",
-    location: "König Galerie, Alexandrinenstraße 118–121, 10969 Berlin",
+    location: "Molecule Office @ König Galerie, Alexandrinenstraße 118–121, 10969 Berlin",
     contribution: "5 bis 10 € empfohlen, freiwillig, niemand wird abgewiesen",
     registrationUrl: "https://luma.com/n6io5052",
     description:
-      "Das erste eigene In-Person-Treffen des PSNG, gemeinsam mit der Berlin Psychedelic Science Association (BPSA). Ein Abend zum Ankommen, Kennenlernen und Austauschen, mit einem Vortrag zu den prosozialen Effekten von Psychedelika, einem interaktiven Workshop und einer Klangmeditation zur Integration mit Lucie André (Beyond Yoga). Danach Apéro und gemeinsames Abendessen für alle, die möchten.",
+      "Unser erstes eigenes In-Person-Treffen, gemeinsam mit der Berlin Psychedelic Science Association (BPSA), zu Gast im Molecule Office. Ein Abend zum Ankommen, Kennenlernen und Austauschen: mit einem Vortrag von Dr. Prateep Beed zu den prosozialen Effekten von Psychedelika, einem interaktiven Workshop von Eric Lonergan (PhD cand.) und Jennifer Them (PhD cand.), einem Impuls-Talk von Stela Malvasija, M.Sc. zur Integration und einer Klangmeditation mit Journalling, geleitet von Lucie André (Beyond Yoga) und Daniel Burckhardt (HRL). Durch den Abend führte Lennert van de Kreeke. Dazu ein mit viel Liebe selbstgemachtes veganes Fingerfood-Buffet und ein Büchertisch vom Nachtschatten Verlag mit psychedelischer Literatur zum Stöbern. Danach gemeinsames Abendessen auswärts für alle, die mochten. Danke an alle, die dabei waren!",
     audienceNote: "Für Studierende und alle Interessierten, Vorwissen braucht ihr keins.",
-    disclaimer: "Vorläufiges Programm, Änderungen möglich.",
+    featuredLarge: true,
     assets: {
       partnerLogo: psngBpsaLogo,
       partnerLogoAlt: "PSNG × BPSA",
+      rating: "9/10",
+      recommendPercent: 83,
+      attendees: 30,
+      // Reihenfolge kuratiert: stärkstes Foto zuerst (Weitwinkel-Abschlusskreis),
+      // dann Team, Sprecherin, Talk, Abschlusskreis, Gong, Garten, Banner,
+      // danach chronologisch durch den Abend. DSLR-Fotos (18–30) ersetzen die
+      // schwächeren Handy-Aufnahmen derselben Momente.
+      photos: [
+        abendPhoto31,
+        abendPhoto09,
+        abendPhoto29,
+        abendPhoto32,
+        abendPhoto04,
+        abendPhoto17,
+        abendPhoto11,
+        abendPhoto16,
+        abendPhoto10,
+        abendPhoto01,
+        abendPhoto18,
+        abendPhoto19,
+        abendPhoto20,
+        abendPhoto27,
+        abendPhoto06,
+        abendPhoto21,
+        abendPhoto22,
+        abendPhoto23,
+        abendPhoto24,
+        abendPhoto33,
+        abendPhoto07,
+        abendPhoto26,
+        abendPhoto25,
+        abendPhoto28,
+        abendPhoto12,
+        abendPhoto30,
+        abendPhoto15,
+      ],
+      photoAlts: [
+        "Weitwinkelblick von der Empore auf den vollen Raum im Abschlusskreis",
+        "Gruppenfoto auf der Bühne",
+        "Sprecherin am Mikrofon zur Klangmeditation",
+        "Folie 'Prosocial Effects' während des Vortrags von Prateep Beed",
+        "Sprecher mit Klangschale während des Vortrags",
+        "Abschlusskreis im Innenraum",
+        "Loungebereich mit Gong für die Klangmeditation",
+        "Gruppe im Garten nach der Veranstaltung",
+        "Banner der Community am Eingang",
+        "Leuchtschild von Molecule am Eingang des Veranstaltungsorts",
+        "Vorbereiteter Raum mit Sitzkissen für den Workshop",
+        "Folie mit Vergleich potenzieller Risiken verschiedener Substanzen",
+        "Publikum aufmerksam beim Vortrag",
+        "Publikum vor der Folie zu Psilocybin",
+        "Teilnehmende im Gespräch beim Empfang",
+        "Teilnehmende im lebhaften Gespräch",
+        "Teilnehmende beim Get-together",
+        "Teilnehmerin im Gespräch",
+        "Teilnehmerinnen im herzlichen Gespräch",
+        "Reich gedeckter Fingerfood-Tisch im Garten",
+        "Veganes Fingerfood für den Abend",
+        "Büchertisch mit psychedelischer Literatur",
+        "Teilnehmerin im Garten des Veranstaltungsorts",
+        "Teilnehmende beim Austausch im Garten",
+        "Teilnehmende im Stehkreis zur Klangmeditation",
+        "Teilnehmende im Workshop auf dem Boden",
+        "Teilnehmer im Gespräch",
+      ],
+      // TODO: Aftermovie einbinden, sobald der Schnitt fertig ist – als
+      // unlisted YouTube-Video (16:9) hochladen und hier ergänzen:
+      // youtubeUrl: "https://www.youtube.com/watch?v=XXXXXXXXXXX",
+      // youtubeThumbnail: <lokal importiertes Standbild aus dem Video, siehe
+      //   Kommentar bei EventAssets.youtubeThumbnail für den Datenschutzgrund>,
     },
   },
 ];
@@ -258,6 +363,11 @@ export function hasAssets(e: PsngEvent): boolean {
   );
 }
 
+/** Ob ein Event mehr als nur Titel/Datum trägt (Beschreibung, Speaker oder Anmeldelink). */
+export function hasContent(e: PsngEvent): boolean {
+  return Boolean(e.description || e.speaker || e.registrationUrl);
+}
+
 export function getUpcomingEvents(referenceDate: Date = new Date()): PsngEvent[] {
   const t = startOfDay(referenceDate);
   return events
@@ -282,6 +392,19 @@ export function getHighlightEvents(referenceDate: Date = new Date()): PsngEvent[
   const t = startOfDay(referenceDate);
   return events
     .filter((e) => parseEventDate(e.date).getTime() < t && hasAssets(e))
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+
+/**
+ * Vergangene Events ohne Material (kein Video/Foto/Link), aber mit echtem
+ * Inhalt (Beschreibung, Speaker o. Ä.) – z. B. eine gehaltene Lecture, für
+ * die noch keine Aufzeichnung vorliegt. Reine Platzhalter-Termine ohne
+ * Inhalt bleiben unsichtbar, statt als leere Karten aufzutauchen.
+ */
+export function getPastPlainEvents(referenceDate: Date = new Date()): PsngEvent[] {
+  const t = startOfDay(referenceDate);
+  return events
+    .filter((e) => parseEventDate(e.date).getTime() < t && !hasAssets(e) && hasContent(e))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
