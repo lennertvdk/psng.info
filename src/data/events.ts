@@ -57,6 +57,7 @@ export const speakerTypeLabels: Record<SpeakerType, string> = {
 
 export interface EventAssets {
   youtubeUrl?: string;
+  shortsUrl?: string;
   slidesUrl?: string;
   photos?: string[];
   /** Alt-Texte parallel zu `photos`, gleicher Index. Fehlt einer, greift ein generischer Fallback. */
@@ -268,6 +269,7 @@ export const events: PsngEvent[] = [
       rating: "9/10",
       recommendPercent: 83,
       attendees: 30,
+      shortsUrl: "https://youtube.com/shorts/T5r5fJ9OOm0?feature=share",
       // Reihenfolge kuratiert: stärkstes Foto zuerst (Weitwinkel-Abschlusskreis),
       // dann Team, Sprecherin, Talk, Abschlusskreis, Gong, Garten, Banner,
       // danach chronologisch durch den Abend. DSLR-Fotos (18–30) ersetzen die
@@ -359,7 +361,7 @@ export function hasAssets(e: PsngEvent): boolean {
   const a = e.assets;
   if (!a) return false;
   return Boolean(
-    a.youtubeUrl || a.slidesUrl || a.recapUrl || a.attendees || a.photos?.length || a.externalUrl,
+    a.youtubeUrl || a.shortsUrl || a.slidesUrl || a.recapUrl || a.attendees || a.photos?.length || a.externalUrl,
   );
 }
 

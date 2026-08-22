@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import SectionHeader from "@/components/SectionHeader";
 import {
@@ -495,39 +495,78 @@ function GatheringAftermovie({ ev }: { ev: PsngEvent }) {
   );
 }
 
+function GatheringShort({ url, title }: { url: string; title: string }) {
+  const [playing, setPlaying] = useState(false);
+  const embed = getYouTubeEmbedUrl(url);
+
+  return (
+    <div className="border-t border-border/60 pt-5">
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold">Mini-Aftermovie</h3>
+      </div>
+      <div className="relative mx-auto aspect-[9/16] w-full max-w-[18rem] overflow-hidden rounded-lg bg-muted">
+        {playing && embed ? (
+          <iframe
+            src={embed}
+            title={`Mini-Aftermovie: ${title}`}
+            className="absolute inset-0 h-full w-full"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowFullScreen
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setPlaying(true)}
+            className="group absolute inset-0 flex items-center justify-center bg-foreground/10"
+            aria-label={`Mini-Aftermovie abspielen: ${title}`}
+          >
+            <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-foreground shadow-lg transition-transform group-hover:scale-110">
+              <PlayIcon />
+            </span>
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /** Große Feature-Karte für ein einzelnes, besonders großes vergangenes Event (Aftermovie + Foto-Karussell). */
 function GatheringFeatureCard({ ev }: { ev: PsngEvent }) {
   const a = ev.assets ?? {};
 
   return (
     <div className="overflow-hidden rounded-xl border border-border/60 bg-card hover:shadow-lg transition-shadow">
-      <div className="space-y-3 p-5 pb-0">
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-          <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
-            {eventColumnLabels[ev.column]}
-          </span>
-          {ev.highlightBadge && (
-            <span className="rounded-full gradient-psychedelic px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
-              {ev.highlightBadge}
+      <div className="grid items-start gap-6 p-5 lg:grid-cols-2">
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+            <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
+              {eventColumnLabels[ev.column]}
             </span>
+            {ev.highlightBadge && (
+              <span className="rounded-full gradient-psychedelic px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
+                {ev.highlightBadge}
+              </span>
+            )}
+            <span>{formatEventDate(ev.date)}</span>
+          </div>
+
+          <h3 className="text-xl font-semibold leading-snug">{ev.title}</h3>
+          {ev.location ? <p className="text-sm text-muted-foreground">{ev.location}</p> : null}
+          {ev.description ? <p className="text-sm text-muted-foreground">{ev.description}</p> : null}
+          {(a.attendees || a.rating || a.recommendPercent) && (
+            <p className="text-sm text-muted-foreground">
+              {[
+                a.attendees ? `${a.attendees} Teilnehmende` : null,
+                a.rating ? `${a.rating} Bewertung` : null,
+                a.recommendPercent ? `${a.recommendPercent}% Weiterempfehlung` : null,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </p>
           )}
-          <span>{formatEventDate(ev.date)}</span>
         </div>
 
-        <h3 className="text-xl font-semibold leading-snug">{ev.title}</h3>
-        {ev.location ? <p className="text-sm text-muted-foreground">{ev.location}</p> : null}
-        {ev.description ? <p className="text-sm text-muted-foreground">{ev.description}</p> : null}
-        {(a.attendees || a.rating || a.recommendPercent) && (
-          <p className="text-sm text-muted-foreground">
-            {[
-              a.attendees ? `${a.attendees} Teilnehmende` : null,
-              a.rating ? `${a.rating} Bewertung` : null,
-              a.recommendPercent ? `${a.recommendPercent}% Weiterempfehlung` : null,
-            ]
-              .filter(Boolean)
-              .join(" · ")}
-          </p>
-        )}
+        {a.shortsUrl ? <GatheringShort url={a.shortsUrl} title={ev.title} /> : null}
       </div>
 
       <div className="flex flex-col gap-4 p-5">
@@ -552,56 +591,41 @@ function GatheringFeatureCard({ ev }: { ev: PsngEvent }) {
 
 function PastEvents() {
   const highlights = getHighlightEvents();
-  const large = highlights.filter((ev) => ev.featuredLarge);
-  const rest = highlights.filter((ev) => !ev.featuredLarge);
   const plain = getPastPlainEvents();
-  if (highlights.length === 0 && plain.length === 0) return null;
+  const highlightIds = new Set(highlights.map((ev) => ev.id));
+  const pastEvents = [...highlights, ...plain].sort((a, b) =>
+    b.date.localeCompare(a.date),
+  );
+  if (pastEvents.length === 0) return null;
 
   return (
     <>
-      {large.length > 0 && (
-        <div className="flex flex-col gap-6 mb-6">
-          {large.map((ev) => (
+      <div className="grid gap-6 sm:grid-cols-2">
+        {pastEvents.map((event, i) => {
+          const isHighlight = highlightIds.has(event.id);
+          const fullWidth = event.featuredLarge || !isHighlight;
+
+          return (
             <motion.div
-              key={ev.id}
-              id={getEventAnchor(ev)}
+              key={event.id}
+              id={getEventAnchor(event)}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4 }}
+              className={fullWidth ? "sm:col-span-2" : undefined}
             >
-              <GatheringFeatureCard ev={ev} />
+              {event.featuredLarge ? (
+                <GatheringFeatureCard ev={event} />
+              ) : isHighlight ? (
+                <HighlightCard ev={event} />
+              ) : (
+                <EventCard event={event} i={i} past />
+              )}
             </motion.div>
-          ))}
-        </div>
-      )}
-
-      {rest.length > 0 && (
-        <div className="grid gap-6 sm:grid-cols-2">
-          {rest.map((ev) => (
-            <motion.div
-              key={ev.id}
-              id={getEventAnchor(ev)}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4 }}
-            >
-              <HighlightCard ev={ev} />
-            </motion.div>
-          ))}
-        </div>
-      )}
-
-      {plain.length > 0 && (
-        <div className="flex flex-col gap-4 mt-6">
-          {plain.map((event, i) => (
-            <div key={event.id} id={getEventAnchor(event)}>
-              <EventCard event={event} i={i} past />
-            </div>
-          ))}
-        </div>
-      )}
+          );
+        })}
+      </div>
 
       <div className="mt-14 rounded-2xl border border-border/60 bg-muted/40 p-8 text-center">
         <h3 className="text-xl font-semibold">Du willst selbst eine Lecture geben?</h3>
@@ -673,7 +697,9 @@ const tabLabels: Record<Tab, string> = {
 const EventsSection = () => {
   // Der Tab liegt in der URL, damit man auf die Aufnahmen verlinken kann und
   // der Zurück-Button den Wechsel rückgängig macht.
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const tabParam = searchParams.get("tab");
   const [hashTab, setHashTab] = useState<Tab | null>(null);
 
@@ -688,11 +714,14 @@ const EventsSection = () => {
 
   const selectTab = (next: Tab) => {
     setHashTab(null);
-    setSearchParams(
-      (params) => {
-        if (next === "kommend") params.delete("tab");
-        else params.set("tab", next);
-        return params;
+    const params = new URLSearchParams(searchParams);
+    if (next === "kommend") params.delete("tab");
+    else params.set("tab", next);
+    navigate(
+      {
+        pathname: location.pathname,
+        search: params.toString() ? `?${params.toString()}` : "",
+        hash: location.hash,
       },
       { replace: false, preventScrollReset: true },
     );

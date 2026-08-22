@@ -84,10 +84,19 @@ const Datenschutz = () => {
 
       <h2>6. Cookies und Tracking</h2>
       <p>
-        Diese Website verwendet keine Analyse- oder Tracking-Tools und setzt
-        keine Cookies zu Marketing- oder Analysezwecken ein. Wir erstellen
-        keine Nutzungsprofile und werten das Verhalten unserer Besucher*innen
-        nicht aus.
+        Diese Website verwendet GoatCounter zur datenschutzfreundlichen
+        Auswertung von Seitenaufrufen. GoatCounter setzt keine Cookies und
+        erstellt keine Nutzungsprofile. Dabei werden ausschließlich
+        zusammengefasste, nicht-personenbezogene Statistiken erstellt. Weitere
+        Informationen findest du in der{" "}
+        <a
+          href="https://www.goatcounter.com/help/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Datenschutzerklärung von GoatCounter
+        </a>
+        .
       </p>
       <p>
         Lediglich für die Ankündigungsleiste am oberen Seitenrand speichern
