@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import SectionHeader from "@/components/SectionHeader";
@@ -495,13 +495,23 @@ function GatheringAftermovie({ ev }: { ev: PsngEvent }) {
   );
 }
 
-function GatheringShort({ url, title }: { url: string; title: string }) {
+function GatheringShort({
+  url,
+  title,
+  thumbnail,
+}: {
+  url: string;
+  title: string;
+  /** Lokales Standbild – wie beim Aftermovie, siehe EventAssets.shortsThumbnail. */
+  thumbnail?: string;
+}) {
   const [playing, setPlaying] = useState(false);
   const embed = getYouTubeEmbedUrl(url);
 
   return (
     <div className="border-t border-border/60 pt-5">
-      <div className="mb-4">
+      {/* Zentriert wie das Video darunter, das mit max-w-[18rem] mittig in der Spalte sitzt. */}
+      <div className="mb-4 text-center">
         <h3 className="text-lg font-semibold">Mini-Aftermovie</h3>
       </div>
       <div className="relative mx-auto aspect-[9/16] w-full max-w-[18rem] overflow-hidden rounded-lg bg-muted">
@@ -517,10 +527,20 @@ function GatheringShort({ url, title }: { url: string; title: string }) {
           <button
             type="button"
             onClick={() => setPlaying(true)}
-            className="group absolute inset-0 flex items-center justify-center bg-foreground/10"
+            className="group absolute inset-0 flex items-center justify-center"
             aria-label={`Mini-Aftermovie abspielen: ${title}`}
           >
-            <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-foreground shadow-lg transition-transform group-hover:scale-110">
+            {thumbnail && (
+              <img
+                src={thumbnail}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            )}
+            <span className="absolute inset-0 bg-foreground/10 transition-colors group-hover:bg-black/40" />
+            <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-foreground shadow-lg transition-transform group-hover:scale-110">
               <PlayIcon />
             </span>
           </button>
@@ -566,7 +586,9 @@ function GatheringFeatureCard({ ev }: { ev: PsngEvent }) {
           )}
         </div>
 
-        {a.shortsUrl ? <GatheringShort url={a.shortsUrl} title={ev.title} /> : null}
+        {a.shortsUrl ? (
+          <GatheringShort url={a.shortsUrl} title={ev.title} thumbnail={a.shortsThumbnail} />
+        ) : null}
       </div>
 
       <div className="flex flex-col gap-4 p-5">
@@ -694,6 +716,24 @@ const tabLabels: Record<Tab, string> = {
   vergangen: "Vergangen",
 };
 
+/**
+ * Tab ohne `?tab` in der URL. Bewusst eine Konstante: Der Wert wird beim Lesen
+ * *und* beim Schreiben des Parameters gebraucht (der Standard bekommt keinen).
+ * Als Literal an zwei Stellen sind die beiden schon einmal auseinandergelaufen –
+ * dann war "Kommend" nicht mehr anwählbar, weil der Klick den Parameter löschte
+ * und damit wieder auf dem Standard landete.
+ */
+const DEFAULT_TAB: Tab = "vergangen";
+
+const isTab = (value: string | null): value is Tab =>
+  value === "kommend" || value === "vergangen";
+
+/** Anker, die es nur im Vergangen-Tab gibt – ein Deep-Link darauf soll dort landen. */
+const isPastAnchor = (hash: string) => {
+  const id = hash.replace("#", "");
+  return id === "aufnahmen" || id.startsWith("event-");
+};
+
 const EventsSection = () => {
   // Der Tab liegt in der URL, damit man auf die Aufnahmen verlinken kann und
   // der Zurück-Button den Wechsel rückgängig macht.
@@ -701,21 +741,21 @@ const EventsSection = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const tabParam = searchParams.get("tab");
-  const [hashTab, setHashTab] = useState<Tab | null>(null);
 
-  useEffect(() => {
-    const hash = window.location.hash.replace("#", "");
-    if (hash === "aufnahmen" || hash.startsWith("event-")) {
-      setHashTab("vergangen");
-    }
-  }, []);
-
-  const tab: Tab = tabParam === "kommend" ? "kommend" : hashTab ?? "vergangen";
+  // Rein aus der URL abgeleitet, kein State: Sonst müsste ein Effekt den Hash
+  // nachziehen, und der Hash ändert sich auch ohne Remount – die Navbar
+  // verlinkt Sektionen als reine #-Anker. Ein ausdrücklicher ?tab schlägt den
+  // Hash, damit ein Klick auf den Umschalter immer gewinnt.
+  const tab: Tab = isTab(tabParam)
+    ? tabParam
+    : isPastAnchor(location.hash)
+      ? "vergangen"
+      : DEFAULT_TAB;
 
   const selectTab = (next: Tab) => {
-    setHashTab(null);
     const params = new URLSearchParams(searchParams);
-    if (next === "kommend") params.delete("tab");
+    // Der Standard-Tab braucht keinen Parameter, jeder andere schon.
+    if (next === DEFAULT_TAB) params.delete("tab");
     else params.set("tab", next);
     navigate(
       {

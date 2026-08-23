@@ -4,6 +4,7 @@ import psngBpsaLogo from "@/assets/PSNG-BPSA-Logo.webp";
 import torstenPassiePhoto from "@/assets/Torsten-Passie.webp";
 import ytKickoff from "@/assets/yt-fH9gMcj65l4.webp";
 import ytLonergan from "@/assets/yt-LftC0jVmxuI.webp";
+import ytShortGathering from "@/assets/yt-T5r5fJ9OOm0.webp";
 import abendPhoto01 from "@/assets/abend-rund-um-psychedelika/abend-01.webp";
 import abendPhoto04 from "@/assets/abend-rund-um-psychedelika/abend-04.webp";
 import abendPhoto06 from "@/assets/abend-rund-um-psychedelika/abend-06.webp";
@@ -83,6 +84,8 @@ export interface EventAssets {
    * die IP-Adresse an Google übertragen – vor jeder Nutzerinteraktion.
    */
   youtubeThumbnail?: string;
+  /** Dasselbe für `shortsUrl`. Hochkant (9:16), sonst füllt es den Rahmen nicht. */
+  shortsThumbnail?: string;
 }
 
 export interface PsngEvent {
@@ -270,6 +273,7 @@ export const events: PsngEvent[] = [
       recommendPercent: 83,
       attendees: 30,
       shortsUrl: "https://youtube.com/shorts/T5r5fJ9OOm0?feature=share",
+      shortsThumbnail: ytShortGathering,
       // Reihenfolge kuratiert: stärkstes Foto zuerst (Weitwinkel-Abschlusskreis),
       // dann Team, Sprecherin, Talk, Abschlusskreis, Gong, Garten, Banner,
       // danach chronologisch durch den Abend. DSLR-Fotos (18–30) ersetzen die
