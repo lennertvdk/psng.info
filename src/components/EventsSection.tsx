@@ -710,7 +710,7 @@ const EventsSection = () => {
     }
   }, []);
 
-  const tab: Tab = tabParam === "vergangen" ? "vergangen" : hashTab ?? "kommend";
+  const tab: Tab = tabParam === "kommend" ? "kommend" : hashTab ?? "vergangen";
 
   const selectTab = (next: Tab) => {
     setHashTab(null);
