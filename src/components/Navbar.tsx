@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { ExternalLink, Menu, X } from "lucide-react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import psngLogo from "@/assets/PSNG-Logo-centered.webp";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
@@ -80,6 +80,15 @@ const Navbar = () => {
               </Link>
             ),
           )}
+          <a
+            href="https://literatur.psng.info"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${linkClass} inline-flex items-center gap-1 md:mr-4`}
+          >
+            Medien
+            <ExternalLink size={13} aria-hidden="true" />
+          </a>
         </div>
         <button
           type="button"
@@ -92,6 +101,17 @@ const Navbar = () => {
           {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
+      <a
+        href="https://literatur.psng.info"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center justify-center gap-2 bg-gradient-to-r from-[hsl(var(--pink))] via-[hsl(var(--coral))] to-[hsl(var(--salmon))] px-6 py-[0.4rem] text-center font-heading text-xs font-medium text-primary-foreground hover:opacity-90 transition-opacity md:text-sm"
+      >
+        <span className="underline underline-offset-2">
+          Unser neuer Medien-Blog ist jetzt online: literatur.psng.info
+        </span>
+        <ExternalLink size={14} aria-hidden="true" />
+      </a>
       {/*
         Bewusst ohne Auf-/Zuklapp-Animation: Die Navigation auf dem Handy darf
         nicht davon abhängen, dass eine Animation tatsächlich läuft – sonst
@@ -121,6 +141,16 @@ const Navbar = () => {
                 </Link>
               ),
             )}
+            <a
+              href="https://literatur.psng.info"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className={`${linkClass} inline-flex items-center gap-1 md:mr-4`}
+            >
+              Medien
+              <ExternalLink size={13} aria-hidden="true" />
+            </a>
           </div>
         </div>
       )}
