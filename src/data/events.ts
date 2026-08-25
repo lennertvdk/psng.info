@@ -270,7 +270,7 @@ export const events: PsngEvent[] = [
       partnerLogo: psngBpsaLogo,
       partnerLogoAlt: "PSNG × BPSA",
       rating: "9/10",
-      recommendPercent: 83,
+      recommendPercent: 81,
       attendees: 30,
       shortsUrl: "https://youtube.com/shorts/T5r5fJ9OOm0?feature=share",
       shortsThumbnail: ytShortGathering,
