@@ -81,7 +81,7 @@ const Navbar = () => {
             ),
           )}
           <a
-            href="https://literatur.psng.info"
+            href="https://medien.psng.info"
             target="_blank"
             rel="noopener noreferrer"
             className={`${linkClass} inline-flex items-center gap-1 md:mr-4`}
@@ -102,13 +102,13 @@ const Navbar = () => {
         </button>
       </div>
       <a
-        href="https://literatur.psng.info"
+        href="https://medien.psng.info"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center justify-center gap-2 bg-gradient-to-r from-[hsl(var(--pink))] via-[hsl(var(--coral))] to-[hsl(var(--salmon))] px-6 py-[0.4rem] text-center font-heading text-xs font-medium text-primary-foreground hover:opacity-90 transition-opacity md:text-sm"
       >
         <span className="underline underline-offset-2">
-          Unser neuer Medien-Blog ist jetzt online: literatur.psng.info
+          Unser neuer Medien-Blog ist jetzt online: medien.psng.info
         </span>
         <ExternalLink size={14} aria-hidden="true" />
       </a>
@@ -142,7 +142,7 @@ const Navbar = () => {
               ),
             )}
             <a
-              href="https://literatur.psng.info"
+              href="https://medien.psng.info"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
