@@ -58,6 +58,53 @@ export const speakerTypeLabels: Record<SpeakerType, string> = {
   gast: "Expertenvortrag",
 };
 
+/**
+ * Ein Eintrag im Zeitstrahl, der kein Termin ist – ein Launch, ein Projektstart.
+ * Bewusst ein eigener Typ statt eines Events ohne Uhrzeit und Ort: Ein Event,
+ * bei dem die Hälfte der Pflichtfelder nicht zutrifft, lädt zu leeren Karten ein.
+ */
+export interface PsngMilestone {
+  id: string;
+  date: string;
+  title: string;
+  description: string;
+  /** Gleiche Achse wie bei Events, damit der Filter auch Meilensteine erfasst. */
+  column: EventColumn;
+  /** Kurzes Label auf dem Verlaufs-Chip, z. B. "Launch". */
+  badge?: string;
+  links?: { label: string; url: string }[];
+}
+
+/**
+ * Die Lecture-Reihe hat einen festen Takt: jeder 2. Dienstag im Monat. Die
+ * Termine stehen damit fest, lange bevor Thema und Speaker feststehen –
+ * deshalb werden sie berechnet statt gepflegt. Als leere Platzhalter-Events in
+ * `events` waren sie zweimal unbrauchbar: Sie verschwanden beim Verstreichen
+ * wieder, und die Liste endete irgendwann dort, wo jemand aufgehört hat, sie
+ * zu pflegen. Berechnet reißt der Takt nie ab.
+ */
+export const LECTURE_SERIES = {
+  /** Wochentag nach `Date#getDay`: 2 = Dienstag. */
+  weekday: 2,
+  /** Der wievielte dieses Wochentags im Monat. */
+  ordinal: 2,
+  time: "19:00 – 20:00",
+  location: "Zoom",
+  column: "vortraege" as EventColumn,
+  label: "PSNG Lecture",
+  note: "Termin steht. Thema und Speaker geben wir rechtzeitig bekannt.",
+};
+
+/** Ein berechneter Termin der Reihe – kein Event, solange kein Thema feststeht. */
+export interface SeriesDate {
+  id: string;
+  date: string;
+  time: string;
+  location: string;
+  column: EventColumn;
+  label: string;
+}
+
 export interface EventAssets {
   youtubeUrl?: string;
   shortsUrl?: string;
@@ -374,6 +421,22 @@ export const events: PsngEvent[] = [
   },
 ];
 
+export const milestones: PsngMilestone[] = [
+  {
+    id: "milestone-medien-blog-2026-09-01",
+    date: "2026-09-01",
+    title: "Medien-Blog ist online",
+    column: "community",
+    badge: "Launch",
+    description:
+      "Unser gemeinsames Projekt mit PARAB: Beiträge rund um psychedelische Wissenschaft zum Lesen, Hören und Sehen. Dort liegen auch alle Aufnahmen unserer Lectures gesammelt.",
+    links: [
+      { label: "medien.psng.info", url: "https://medien.psng.info" },
+      { label: "parab.ch", url: "https://parab.ch" },
+    ],
+  },
+];
+
 /**
  * `new Date("2026-07-28")` wird als UTC-Mitternacht geparst und anschließend in
  * Lokalzeit formatiert – westlich von UTC ergibt das den Vortag. Die Datums-
@@ -408,13 +471,6 @@ export function getUpcomingEvents(referenceDate: Date = new Date()): PsngEvent[]
   return events
     .filter((e) => parseEventDate(e.date).getTime() >= t)
     .sort((a, b) => a.date.localeCompare(b.date));
-}
-
-export function getUpcomingEventsByColumn(
-  column: EventColumn,
-  referenceDate?: Date,
-): PsngEvent[] {
-  return getUpcomingEvents(referenceDate).filter((e) => e.column === column);
 }
 
 /** Nächstes Event mit Anmeldelink, für die Ankündigungsleiste. Verschwindet automatisch, sobald das Datum vorbei ist. */
@@ -454,4 +510,164 @@ export function formatEventDate(iso: string): string {
     month: "long",
     year: "numeric",
   });
+}
+
+export function formatEventDateShort(iso: string): string {
+  return parseEventDate(iso).toLocaleDateString("de-DE", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+/**
+ * Abstand zu heute, nur für kommende Termine. Macht „liegt noch weit weg"
+ * lesbar statt bloß sichtbar – verlässlicher als jede Abstufung über Farbe
+ * oder Transparenz, die im Zweifel nur wie ein Rendering-Fehler aussieht.
+ */
+export function formatRelativeToToday(
+  iso: string,
+  referenceDate: Date = new Date(),
+): string {
+  const dayMs = 24 * 60 * 60 * 1000;
+  const days = Math.round(
+    (startOfDay(parseEventDate(iso)) - startOfDay(referenceDate)) / dayMs,
+  );
+  if (days <= 0) return "heute";
+  if (days === 1) return "morgen";
+  if (days < 14) return `in ${days} Tagen`;
+  const weeks = Math.round(days / 7);
+  if (weeks < 9) return `in ${weeks} Wochen`;
+  return `in ${Math.round(days / 30.44)} Monaten`;
+}
+
+/** Datum des n-ten `weekday` eines Monats. `month` ist 0-basiert wie bei `Date`. */
+function nthWeekdayOfMonth(
+  year: number,
+  month: number,
+  weekday: number,
+  ordinal: number,
+): Date {
+  const first = new Date(year, month, 1);
+  const offset = (weekday - first.getDay() + 7) % 7;
+  return new Date(year, month, 1 + offset + (ordinal - 1) * 7);
+}
+
+function toIsoDate(d: Date): string {
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}-${month}-${day}`;
+}
+
+/**
+ * Die nächsten Termine der Lecture-Reihe, aufsteigend. Termine, für die schon
+ * ein echtes Event in `events` steht, fallen raus – sonst stünde derselbe
+ * Dienstag zweimal im Zeitstrahl, einmal mit Thema und einmal ohne.
+ */
+export function getUpcomingSeriesDates(
+  count = 3,
+  referenceDate: Date = new Date(),
+): SeriesDate[] {
+  const today = startOfDay(referenceDate);
+  const booked = new Set(events.map((e) => e.date));
+  const out: SeriesDate[] = [];
+
+  // Der Deckel begrenzt die Suche auf ein Jahr im Voraus: Wären alle Termine
+  // belegt, liefe die Schleife sonst endlos.
+  for (let i = 0; out.length < count && i < count + 12; i++) {
+    const d = nthWeekdayOfMonth(
+      referenceDate.getFullYear(),
+      referenceDate.getMonth() + i,
+      LECTURE_SERIES.weekday,
+      LECTURE_SERIES.ordinal,
+    );
+    const iso = toIsoDate(d);
+    if (startOfDay(d) < today || booked.has(iso)) continue;
+    out.push({
+      id: `series-${iso}`,
+      date: iso,
+      time: LECTURE_SERIES.time,
+      location: LECTURE_SERIES.location,
+      column: LECTURE_SERIES.column,
+      label: LECTURE_SERIES.label,
+    });
+  }
+  return out;
+}
+
+/** Wie eine vergangene Veranstaltung im Zeitstrahl gerendert wird. */
+export type EventVariant = "feature" | "highlight" | "plain";
+
+export type TimelineEntry =
+  | {
+      kind: "event";
+      id: string;
+      date: string;
+      column: EventColumn;
+      variant: EventVariant;
+      event: PsngEvent;
+    }
+  | { kind: "series"; id: string; date: string; column: EventColumn; series: SeriesDate }
+  | {
+      kind: "milestone";
+      id: string;
+      date: string;
+      column: EventColumn;
+      milestone: PsngMilestone;
+    };
+
+function toEventEntry(event: PsngEvent): TimelineEntry {
+  return {
+    kind: "event",
+    id: getEventAnchor(event),
+    date: event.date,
+    column: event.column,
+    variant: event.featuredLarge ? "feature" : hasAssets(event) ? "highlight" : "plain",
+    event,
+  };
+}
+
+/**
+ * Der Zeitstrahl in zwei Hälften, beide absteigend sortiert. Aneinandergehängt
+ * ergeben sie einen durchgehend chronologischen Strang: der am weitesten
+ * entfernte Termin oben, direkt darunter der nächste, dann heute, dann rückwärts
+ * durch alles Gewesene.
+ */
+export function getTimelineEntries(referenceDate: Date = new Date()): {
+  upcoming: TimelineEntry[];
+  past: TimelineEntry[];
+} {
+  const today = startOfDay(referenceDate);
+  const byDateDesc = (a: TimelineEntry, b: TimelineEntry) => b.date.localeCompare(a.date);
+
+  const upcoming: TimelineEntry[] = [
+    ...getUpcomingEvents(referenceDate).map(toEventEntry),
+    ...getUpcomingSeriesDates(3, referenceDate).map(
+      (series): TimelineEntry => ({
+        kind: "series",
+        id: series.id,
+        date: series.date,
+        column: series.column,
+        series,
+      }),
+    ),
+  ].sort(byDateDesc);
+
+  const past: TimelineEntry[] = [
+    ...getHighlightEvents(referenceDate).map(toEventEntry),
+    ...getPastPlainEvents(referenceDate).map(toEventEntry),
+    // Ein Meilenstein von heute ist bereits passiert – anders als ein Termin,
+    // der heute erst noch stattfindet.
+    ...milestones
+      .filter((m) => startOfDay(parseEventDate(m.date)) <= today)
+      .map((milestone): TimelineEntry => ({
+        kind: "milestone",
+        id: milestone.id,
+        date: milestone.date,
+        column: milestone.column,
+        milestone,
+      })),
+  ].sort(byDateDesc);
+
+  return { upcoming, past };
 }
