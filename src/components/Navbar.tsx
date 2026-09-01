@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import { ExternalLink, Menu, X } from "lucide-react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import psngLogo from "@/assets/PSNG-Logo-centered.webp";
-import AnnouncementBanner from "@/components/AnnouncementBanner";
 
 const navLinks = [
   { label: "Über uns", hash: "#uber-uns" },
@@ -51,7 +50,6 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
-      <AnnouncementBanner />
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         <Link
           to="/"

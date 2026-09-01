@@ -493,11 +493,6 @@ export function getUpcomingEvents(referenceDate: Date = new Date()): PsngEvent[]
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 
-/** Nächstes Event mit Anmeldelink, für die Ankündigungsleiste. Verschwindet automatisch, sobald das Datum vorbei ist. */
-export function getNextBannerEvent(referenceDate?: Date): PsngEvent | undefined {
-  return getUpcomingEvents(referenceDate).find((e) => e.registrationUrl);
-}
-
 /** Vergangene Events mit Material – neueste zuerst, wie man ein Archiv liest. */
 export function getHighlightEvents(referenceDate: Date = new Date()): PsngEvent[] {
   const t = startOfDay(referenceDate);

@@ -4,7 +4,6 @@ import {
   formatRelativeToToday,
   getEventAnchor,
   getHighlightEvents,
-  getNextBannerEvent,
   getPastPlainEvents,
   getTimelineEntries,
   getUpcomingEvents,
@@ -100,17 +99,6 @@ describe("gathering-2026-08-08", () => {
     expect(ev.featuredLarge).toBe(true);
     expect(ev.assets?.photos?.length).toBeGreaterThan(0);
     expect(ev.assets?.photoAlts?.length).toBe(ev.assets?.photos?.length);
-  });
-});
-
-describe("getNextBannerEvent", () => {
-  it("picks the soonest upcoming event that has a registration link", () => {
-    const ev = getNextBannerEvent(new Date(2026, 6, 28));
-    expect(ev?.id).toBe("gathering-2026-08-08");
-  });
-
-  it("disappears once every registrable event has passed", () => {
-    expect(getNextBannerEvent(new Date(2027, 0, 1))).toBeUndefined();
   });
 });
 
