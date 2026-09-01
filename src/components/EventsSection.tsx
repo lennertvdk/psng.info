@@ -43,6 +43,10 @@ function EventCard({
   /** Blendet Anmelde-CTA und Luma-Hinweis aus – nach dem Termin sind sie hinfällig. */
   past?: boolean;
 }) {
+  // Hat jemand keine eigene Website, ist das LinkedIn-Profil der nächstbeste
+  // Beleg – in der Highlight-Karte steht es ohnehin schon als eigener Link.
+  const speakerLink = event.speakerWebsiteUrl ?? event.assets?.speakerLinkedinUrl;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -99,9 +103,9 @@ function EventCard({
         )}
         {event.speaker && (
           <p className="text-sm text-primary font-medium mb-2">
-            {event.speakerWebsiteUrl ? (
+            {speakerLink ? (
               <a
-                href={event.speakerWebsiteUrl}
+                href={speakerLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline"

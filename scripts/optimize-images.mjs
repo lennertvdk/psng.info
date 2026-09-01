@@ -4,7 +4,7 @@ import fs from "fs";
 
 const dir = path.resolve("src/assets");
 
-// [filename, maxDimension, quality]
+// [filename, maxDimension, quality, outputName?, crop?]
 const targets = [
   ["PSNG-Logo-centered.png", 120, 85],
   ["PSNG-Logo-centered-transparent.png", 640, 85],
@@ -30,9 +30,19 @@ const targets = [
   // Vierter Wert: abweichender Ausgabename, damit der Import im Code stabil
   // bleibt, auch wenn das Talk-Asset in v3, v4, … neu geliefert wird.
   ["Torsten-Passie-Talk-Asset-3-v2.png", 240, 88, "Torsten-Passie"],
+  // Fünfter Wert: Zuschnitt vor dem Skalieren. Miguels Rohbild ist quadratisch,
+  // die Person steht aber klein in der Mitte – ohne Crop wäre der Kopf in der
+  // 105px-Kachel der Eventkarte kaum zu erkennen.
+  [
+    "Miguel-E-Headshot-blue-bg.png",
+    240,
+    88,
+    "Miguel-Mora-Vera",
+    { left: 149, top: 129, width: 560, height: 560 },
+  ],
 ];
 
-for (const [file, maxDim, quality, outputName] of targets) {
+for (const [file, maxDim, quality, outputName, crop] of targets) {
   const input = path.join(dir, file);
   if (!fs.existsSync(input)) {
     console.log(`skip (missing): ${file}`);
@@ -42,7 +52,10 @@ for (const [file, maxDim, quality, outputName] of targets) {
   const output = path.join(dir, (outputName ?? path.basename(file, ext)) + ".webp");
   const before = fs.statSync(input).size;
 
-  await sharp(input)
+  const pipeline = sharp(input);
+  if (crop) pipeline.extract(crop);
+
+  await pipeline
     .resize({ width: maxDim, height: maxDim, fit: "inside", withoutEnlargement: true })
     .webp({ quality })
     .toFile(output);

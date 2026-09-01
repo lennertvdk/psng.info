@@ -1,7 +1,9 @@
+import { WHATSAPP_LINK } from "@/lib/links";
 import trypPhoto1 from "@/assets/tryp-1.webp";
 import icprPhoto from "@/assets/icpr-1.webp";
 import psngBpsaLogo from "@/assets/PSNG-BPSA-Logo.webp";
 import torstenPassiePhoto from "@/assets/Torsten-Passie.webp";
+import miguelMoraVeraPhoto from "@/assets/Miguel-Mora-Vera.webp";
 import ytKickoff from "@/assets/yt-fH9gMcj65l4.webp";
 import ytLonergan from "@/assets/yt-LftC0jVmxuI.webp";
 import ytShortGathering from "@/assets/yt-T5r5fJ9OOm0.webp";
@@ -241,12 +243,39 @@ export const events: PsngEvent[] = [
   },
   {
     id: "lecture-6",
-    title: "6. PSNG Lecture",
+    title: "Logos und Ekstase. Zur Genealogie eines akademischen Tabus",
+    subtitle:
+      "Was hat die Geschichte des Denkens mit psychedelischer Erfahrung zu tun?",
     category: "lecture",
     column: "vortraege",
+    highlightBadge: "BPSA × PSNG",
     date: "2026-09-08",
+    weekdayLabel: "Dienstag",
     time: "19:00 – 20:00",
     location: "Zoom",
+    speaker: "Miguel Estéfano Mora Vera",
+    speakerType: "student",
+    description:
+      "Ein interdisziplinärer Vortrag über Philosophie, Religion, Geschichte und die Frage, was überhaupt als legitime Form von Erkenntnis gilt.",
+    speakerBio:
+      "Philosoph, Musiker und Komponist. Er promoviert an der Universität Freiburg und lebt in Berlin.",
+    audienceNote: "Auf Deutsch. Kostenlos und offen für alle.",
+    // Kleingedrucktes am Kartenende: wer einlädt, und der Hinweis auf die
+    // Aufzeichnung – den sollten Teilnehmende vor dem Beitreten lesen können.
+    disclaimer:
+      "Eine Lecture der Berlin Psychedelic Science Association (BPSA), gestreamt über das PSNG-Netzwerk. Der Vortrag wird aufgezeichnet und später auf YouTube veröffentlicht.",
+    // Keine Anmeldung: Der Zoom-Link wird kurz vorher in der WhatsApp-Gruppe
+    // und auf Instagram geteilt. Der Button führt deshalb in die Community,
+    // nicht auf ein Anmeldeformular.
+    registrationUrl: WHATSAPP_LINK,
+    registrationLabel: "Zoom-Link via WhatsApp",
+    assets: {
+      speakerLinkedinUrl: "https://www.linkedin.com/in/miguel-estefano-mora-vera/",
+      speakerPhoto: miguelMoraVeraPhoto,
+      // Nach dem Talk ergänzen, siehe Kommentar bei EventAssets.youtubeThumbnail:
+      // youtubeUrl: "https://www.youtube.com/watch?v=XXXXXXXXXXX",
+      // youtubeThumbnail: <lokal importiertes Standbild aus dem Video>,
+    },
   },
 
   // ── Gatherings ────────────────────────────────────────────────────────────
