@@ -312,8 +312,8 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
                 <img
                   src={thumb}
                   alt=""
-                  width={480}
-                  height={360}
+                  width={960}
+                  height={540}
                   loading="lazy"
                   decoding="async"
                   className="absolute inset-0 h-full w-full object-cover"
