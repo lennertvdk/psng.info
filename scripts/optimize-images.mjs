@@ -40,6 +40,20 @@ const targets = [
     "Miguel-Mora-Vera",
     { left: 149, top: 129, width: 560, height: 560 },
   ],
+  // Vorschaubild des Kick-off-Videos. YouTubes eigenes Standbild war für die
+  // 16:9-Kachel zu grob; deshalb ein eigenes Motiv, lokal gehostet – siehe
+  // Kommentar bei EventAssets.youtubeThumbnail zum Datenschutzgrund.
+  ["PSNG-kickoff-thumbnail.jpg", 960, 82, "yt-fH9gMcj65l4"],
+  // Screengrab des Medien-Blogs für die Launch-Karte. Der Zuschnitt bringt das
+  // 1804x1164-Bild auf 16:9, damit es dieselbe Kachelform hat wie die Videos
+  // daneben – und nicht das CSS entscheiden muss, was weggeschnitten wird.
+  [
+    "Medien-Blog-Screengrab-thumbnail.png",
+    960,
+    82,
+    "Medien-Blog",
+    { left: 0, top: 74, width: 1804, height: 1015 },
+  ],
 ];
 
 for (const [file, maxDim, quality, outputName, crop] of targets) {
