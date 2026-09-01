@@ -22,7 +22,10 @@ const AnnouncementBanner = () => {
 
   // Lange Eventtitel würden das fixierte Menü auf dem Handy auf drei Zeilen
   // aufblähen; eine Zeile mit Ellipse reicht als Teaser.
-  const label = `${event.title} · ${formatEventDate(event.date)}. Jetzt anmelden →`;
+  // Nicht jedes Event hat ein Anmeldeformular – bei Online-Talks führt der Link
+  // in die WhatsApp-Gruppe, in der der Zoom-Link geteilt wird.
+  const cta = event.registrationLabel ?? "Jetzt anmelden";
+  const label = `${event.title} · ${formatEventDate(event.date)}. ${cta} →`;
   const linkClass =
     "flex-1 min-w-0 truncate text-center font-heading text-xs md:text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity";
 
