@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ExternalLink } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import {
   Carousel,
@@ -48,7 +49,7 @@ function ColumnChip({ column }: { column: EventColumn }) {
  */
 function PartnerBadge({ badge }: { badge: { label: string; url?: string } }) {
   const className =
-    "inline-block rounded-full badge-bpsa px-2 py-1 text-xs font-heading font-medium";
+    "inline-flex items-center gap-1 rounded-full badge-bpsa px-2 py-1 text-xs font-heading font-medium";
 
   if (!badge.url) return <span className={className}>{badge.label}</span>;
 
@@ -59,7 +60,8 @@ function PartnerBadge({ badge }: { badge: { label: string; url?: string } }) {
       rel="noopener noreferrer"
       className={`${className} hover:opacity-90 transition-opacity`}
     >
-      {badge.label} ↗
+      {badge.label}
+      <ExternalLink size={12} aria-hidden="true" />
     </a>
   );
 }
@@ -694,7 +696,7 @@ function TimelineRow({
       <div className="flex justify-center pt-2">
         <span className={`h-3 w-3 shrink-0 rounded-full ${dot}`} aria-hidden="true" />
       </div>
-      <div className={`min-w-0 pb-8 pl-3 md:pl-4 ${isNext ? "rounded-2xl" : ""}`}>
+      <div className={`min-w-0 pb-8 pl-3 md:pl-4 ${isNext ? "next-event-glow" : ""}`}>
         <EntryCard entry={entry} i={i} />
       </div>
     </motion.li>

@@ -147,6 +147,17 @@
     background: linear-gradient(135deg, hsl(var(--pink)), hsl(var(--coral)), hsl(var(--salmon)));
   }
 
+  /*
+   * Der nächste anstehende Termin. Der Schatten greift aufs Kind, nicht auf die
+   * Zeile: Die Zeile trägt noch Abstände zur Datumsschiene, ein Schatten darauf
+   * läge als Rechteck neben der Karte. Bewusst drop-shadow statt box-shadow –
+   * es folgt den runden Ecken und kollidiert nicht mit dem Hover-Schatten der
+   * Karte, der sonst denselben Wert überschreiben würde.
+   */
+  .next-event-glow > * {
+    filter: drop-shadow(0 6px 14px hsl(var(--pink) / 0.3));
+  }
+
   .gradient-bpsa {
     background: linear-gradient(
       135deg,

@@ -319,7 +319,7 @@ export const events: PsngEvent[] = [
     weekdayLabel: "Dienstag",
     time: "19:00 – 20:00",
     location: "Zoom",
-    speaker: "Miguel Estéfano Mora Vera",
+    speaker: "Miguel Estéfano Mora Vera, PhD cand.",
     speakerType: "student",
     description:
       "Ein interdisziplinärer Vortrag über Philosophie, Religion, Geschichte und die Frage, was überhaupt als legitime Form von Erkenntnis gilt.",
