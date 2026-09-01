@@ -10,8 +10,9 @@ export const INSTAGRAM_LINK = "https://www.instagram.com/psng.info/";
 
 /**
  * Auftritt der Berlin Psychedelic Science Association (BPSA) unter der
- * PSNG-Domain. ACHTUNG: Die Subdomain ist noch nicht aufgesetzt – der Link
- * geht ins Leere, bis der DNS-Eintrag steht.
+ * PSNG-Domain. Liegt auf GitHub Pages. Wirft der Link eine Zertifikats-
+ * warnung, ist die Custom Domain dort nicht eingetragen – Pages stellt das
+ * Let's-Encrypt-Zertifikat erst aus, wenn sie in den Repo-Einstellungen steht.
  */
 export const BPSA_LINK = "https://bpsa.psng.info";
 export const YOUTUBE_LINK =
