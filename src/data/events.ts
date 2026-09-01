@@ -1,9 +1,10 @@
-import { WHATSAPP_LINK } from "@/lib/links";
+import { BPSA_LINK, WHATSAPP_LINK } from "@/lib/links";
 import trypPhoto1 from "@/assets/tryp-1.webp";
 import icprPhoto from "@/assets/icpr-1.webp";
 import psngBpsaLogo from "@/assets/PSNG-BPSA-Logo.webp";
 import torstenPassiePhoto from "@/assets/Torsten-Passie.webp";
 import miguelMoraVeraPhoto from "@/assets/Miguel-Mora-Vera.webp";
+import medienBlogThumb from "@/assets/Medien-Blog.webp";
 import ytKickoff from "@/assets/yt-fH9gMcj65l4.webp";
 import ytLonergan from "@/assets/yt-LftC0jVmxuI.webp";
 import ytShortGathering from "@/assets/yt-T5r5fJ9OOm0.webp";
@@ -50,6 +51,15 @@ export const eventColumnLabels: Record<EventColumn, string> = {
   community: "Community",
 };
 
+/**
+ * Dieselbe Achse, aber im Singular. Der Filter darüber fasst mehrere Einträge
+ * zusammen ("Vorträge"), eine einzelne Karte ist genau einer ("Vortrag").
+ */
+export const eventColumnCardLabels: Record<EventColumn, string> = {
+  vortraege: "Vortrag",
+  community: "Community",
+};
+
 export type SpeakerType = "student" | "gast";
 
 /** Badge innerhalb der Vorträge-Spalte, rein beschreibend, ohne Rangfolge. */
@@ -72,6 +82,8 @@ export interface PsngMilestone {
   column: EventColumn;
   /** Kurzes Label auf dem Verlaufs-Chip, z. B. "Launch". */
   badge?: string;
+  /** Vorschaubild, 16:9, lokal im Repo – z. B. ein Screengrab des Launches. */
+  image?: string;
   links?: { label: string; url: string }[];
 }
 
@@ -158,6 +170,13 @@ export interface PsngEvent {
   speakerBio?: string;
   /** kurzes Label für besonders hervorgehobene Events (z. B. "Erstes eigenes In-Person-Event") */
   highlightBadge?: string;
+  /**
+   * Chip in der Farbwelt einer Partnerorganisation, optional verlinkt. Der
+   * Verlaufs-Chip gehört zur PSNG-Marke; eine Lecture, die die BPSA hält,
+   * soll sich davon absetzen, statt darin unterzugehen. Die Gestaltung
+   * (`badge-bpsa` in index.css) ist derzeit auf die BPSA gemünzt.
+   */
+  partnerBadge?: { label: string; url?: string };
   /** hebt das Event in den Aufnahmen hervor (z. B. der Kick-off) */
   featured?: boolean;
   /** rendert das Event in den vergangenen Events als große Feature-Karte (Foto-Karussell + Video), statt im normalen 2-Spalten-Grid */
@@ -295,7 +314,7 @@ export const events: PsngEvent[] = [
       "Was hat die Geschichte des Denkens mit psychedelischer Erfahrung zu tun?",
     category: "lecture",
     column: "vortraege",
-    highlightBadge: "BPSA × PSNG",
+    partnerBadge: { label: "BPSA", url: BPSA_LINK },
     date: "2026-09-08",
     weekdayLabel: "Dienstag",
     time: "19:00 – 20:00",
@@ -428,6 +447,7 @@ export const milestones: PsngMilestone[] = [
     title: "Medien-Blog ist online",
     column: "community",
     badge: "Launch",
+    image: medienBlogThumb,
     description:
       "Unser gemeinsames Projekt mit PARAB: Beiträge rund um psychedelische Wissenschaft zum Lesen, Hören und Sehen. Dort liegen auch alle Aufnahmen unserer Lectures gesammelt.",
     links: [

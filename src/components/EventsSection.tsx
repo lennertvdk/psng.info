@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/carousel";
 import {
   LECTURE_SERIES,
+  eventColumnCardLabels,
   eventColumnLabels,
   formatEventDate,
   formatEventDateShort,
@@ -27,15 +28,39 @@ import { getYouTubeEmbedUrl } from "@/lib/youtube";
 import { WHATSAPP_LINK, INSTAGRAM_LINK } from "@/lib/links";
 
 /**
- * Der Typ-Chip. Steht auf jeder Karte und trägt exakt die Beschriftung der
- * Filter darüber – sonst bleibt unklar, warum eine Karte aus einem Filter
- * herausfällt.
+ * Der Typ-Chip. Steht auf jeder Karte und benennt dieselbe Achse wie der
+ * Filter darüber – nur im Singular, weil eine Karte genau ein Eintrag ist.
+ * Wortstamm und Reihenfolge bleiben gleich, damit weiterhin erkennbar ist,
+ * warum eine Karte aus einem Filter herausfällt.
  */
 function ColumnChip({ column }: { column: EventColumn }) {
   return (
     <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
-      {eventColumnLabels[column]}
+      {eventColumnCardLabels[column]}
     </span>
+  );
+}
+
+/**
+ * Chip einer Partnerorganisation, in deren eigener Farbwelt. Verlinkt, wenn
+ * die Organisation eine eigene Seite hat – so führt die Karte auch dorthin,
+ * ohne dass der Fließtext einen weiteren Link tragen muss.
+ */
+function PartnerBadge({ badge }: { badge: { label: string; url?: string } }) {
+  const className =
+    "inline-block rounded-full badge-bpsa px-2 py-1 text-xs font-heading font-medium";
+
+  if (!badge.url) return <span className={className}>{badge.label}</span>;
+
+  return (
+    <a
+      href={badge.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${className} hover:opacity-90 transition-opacity`}
+    >
+      {badge.label} ↗
+    </a>
   );
 }
 
@@ -69,6 +94,7 @@ function EventCard({
             {event.highlightBadge}
           </span>
         )}
+        {event.partnerBadge && <PartnerBadge badge={event.partnerBadge} />}
         {event.speakerType && (
           <span className="inline-block px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-heading font-medium">
             {speakerTypeLabels[event.speakerType]}
@@ -574,6 +600,19 @@ function MilestoneCard({ milestone }: { milestone: PsngMilestone }) {
           {formatEventDate(milestone.date)}
         </span>
       </div>
+      {milestone.image && (
+        <div className="mb-4 overflow-hidden rounded-lg border border-border/60 bg-muted">
+          <img
+            src={milestone.image}
+            alt=""
+            width={960}
+            height={540}
+            loading="lazy"
+            decoding="async"
+            className="aspect-video w-full object-cover"
+          />
+        </div>
+      )}
       <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
         {milestone.title}
       </h3>
