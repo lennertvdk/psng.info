@@ -7,6 +7,13 @@ export const WHATSAPP_LINK =
   "https://chat.whatsapp.com/LBUA3UpzOV9BW1v59EZK8w?s=cl&p=i&ilr=1";
 
 export const INSTAGRAM_LINK = "https://www.instagram.com/psng.info/";
+
+/**
+ * Auftritt der Berlin Psychedelic Science Association (BPSA) unter der
+ * PSNG-Domain. ACHTUNG: Die Subdomain ist noch nicht aufgesetzt – der Link
+ * geht ins Leere, bis der DNS-Eintrag steht.
+ */
+export const BPSA_LINK = "https://bpsa.psng.info";
 export const YOUTUBE_LINK =
   "https://www.youtube.com/channel/UCMHHH4dOREJTJF_ySpgV7mA";
 export const LINKEDIN_LINK = "https://www.linkedin.com/company/111432265";

@@ -41,6 +41,18 @@
     --blush: 340 30% 96%;
     --deep-rose: 340 60% 35%;
 
+    /*
+     * BPSA-Palette, entnommen aus dem Logo der Berlin Psychedelic Science
+     * Association. Bewusst eine eigene Achse neben den PSNG-Rosétönen: Inhalte
+     * der BPSA sollen als solche erkennbar bleiben, statt in der PSNG-Marke
+     * unterzugehen. Anders als die PSNG-Töne als Hex hinterlegt: Es sind
+     * fremde Markenfarben, die exakt bleiben sollen – der Umweg über
+     * HSL-Tripletts verschiebt sie beim Runden um ein bis zwei Stufen.
+     */
+    --bpsa-navy: #071030;
+    --bpsa-cyan: #47cddb;
+    --bpsa-violet: #8f49b9;
+
     --font-heading: 'Space Grotesk', sans-serif;
     --font-body: 'DM Sans', sans-serif;
 
@@ -133,6 +145,35 @@
 
   .gradient-psychedelic {
     background: linear-gradient(135deg, hsl(var(--pink)), hsl(var(--coral)), hsl(var(--salmon)));
+  }
+
+  .gradient-bpsa {
+    background: linear-gradient(
+      135deg,
+      var(--bpsa-cyan),
+      var(--bpsa-violet),
+      var(--bpsa-cyan)
+    );
+  }
+
+  /*
+   * Chip für BPSA-Inhalte: Navy-Fläche wie im Logohintergrund, weiße Schrift,
+   * dazu ein Rahmen aus den beiden Logofarben. Der Verlauf liegt im Rahmen
+   * statt in der Fläche, weil weiße Schrift auf dem hellen Cyan nicht mehr
+   * lesbar wäre.
+   */
+  .badge-bpsa {
+    color: hsl(0 0% 100%);
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--bpsa-navy), var(--bpsa-navy)) padding-box,
+      linear-gradient(
+          90deg,
+          var(--bpsa-cyan),
+          var(--bpsa-violet),
+          var(--bpsa-cyan)
+        )
+        border-box;
   }
 
   .gradient-text {
