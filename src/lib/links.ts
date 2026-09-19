@@ -15,6 +15,12 @@ export const INSTAGRAM_LINK = "https://www.instagram.com/psng.info/";
  * Let's-Encrypt-Zertifikat erst aus, wenn sie in den Repo-Einstellungen steht.
  */
 export const BPSA_LINK = "https://bpsa.psng.info";
+export const BPSA_INSTAGRAM_LINK = "https://www.instagram.com/bpsa.berlin/";
+/** PARAB – Psychedelic Awareness & Research Association Basel. */
+export const PARAB_LINK = "https://parab.ch";
+export const PARAB_INSTAGRAM_LINK =
+  "https://www.instagram.com/psychedelicassociationbasel/";
+
 export const YOUTUBE_LINK =
   "https://www.youtube.com/channel/UCMHHH4dOREJTJF_ySpgV7mA";
 export const LINKEDIN_LINK = "https://www.linkedin.com/company/111432265";

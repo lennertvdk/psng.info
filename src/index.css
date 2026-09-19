@@ -52,6 +52,13 @@
     --bpsa-navy: #071030;
     --bpsa-cyan: #47cddb;
     --bpsa-violet: #8f49b9;
+    /*
+     * Aufgehellte Variante des Navys, nur für den Chip. Das Original ist als
+     * Logohintergrund gedacht, auf einer 2 cm breiten Fläche in hellem Umfeld
+     * liest es sich schwarz statt blau. Keine Markenfarbe, deshalb hier
+     * abgeleitet statt oben mitgeführt. Weißer Text darauf: Kontrast 13:1.
+     */
+    --bpsa-navy-chip: #1b2c6b;
 
     --font-heading: 'Space Grotesk', sans-serif;
     --font-body: 'DM Sans', sans-serif;
@@ -168,7 +175,7 @@
   }
 
   /*
-   * Chip für BPSA-Inhalte: Navy-Fläche wie im Logohintergrund, weiße Schrift,
+   * Chip für BPSA-Inhalte: aufgehelltes Navy der Marke, weiße Schrift,
    * dazu ein Rahmen aus den beiden Logofarben. Der Verlauf liegt im Rahmen
    * statt in der Fläche, weil weiße Schrift auf dem hellen Cyan nicht mehr
    * lesbar wäre.
@@ -177,7 +184,7 @@
     color: hsl(0 0% 100%);
     border: 1px solid transparent;
     background:
-      linear-gradient(var(--bpsa-navy), var(--bpsa-navy)) padding-box,
+      linear-gradient(var(--bpsa-navy-chip), var(--bpsa-navy-chip)) padding-box,
       linear-gradient(
           90deg,
           var(--bpsa-cyan),
@@ -185,6 +192,51 @@
           var(--bpsa-cyan)
         )
         border-box;
+  }
+
+  /*
+   * Die Kooperationsleiste am Kartenfuß. Die Tönung sitzt hier statt auf der
+   * ganzen Karte: Über den vollen Kartenhintergrund gelegt war sie zu schwach,
+   * um als Aussage zu taugen, und zu breit, um etwas abzugrenzen. Auf dem
+   * schmalen Band trennt dieselbe Farbmenge sichtbar den Beitrag der
+   * Partnerorganisation vom eigenen Inhalt.
+   *
+   * Der Verlauf geht nach rechts durch die BPSA-Farben – erst Cyan, dann
+   * Violett. Links bleibt ein weißes Stück stehen: Dort sitzt das Logo, und
+   * das trägt dieselben beiden Farben, die sich hinter ihm sonst mit ihm
+   * beißen. Die Stopps sind in Prozent gesetzt, damit dieses Stück bei jeder
+   * Breite ungefähr dort endet, wo das Logo aufhört.
+   *
+   * Der Verlauf beginnt bei deckungslosem Cyan statt bei `transparent`: Sonst
+   * interpoliert er über die Nullfarbe und legt einen Grauschleier über den
+   * Anfang. Die Kartenfarbe liegt als unterste Schicht darunter, damit nichts
+   * durchscheint. Rahmen und Hintergrund gehören zusammen und stehen deshalb
+   * beide hier, nicht als Utility-Klassen am Element: Sonst entscheidet die
+   * Reihenfolge im erzeugten CSS, wer gewinnt.
+   */
+  .surface-bpsa {
+    border-top: 2px solid rgb(71 205 219 / 0.65);
+    background:
+      linear-gradient(
+        90deg,
+        rgb(71 205 219 / 0) 0%,
+        rgb(71 205 219 / 0) 20%,
+        rgb(71 205 219 / 0.2) 58%,
+        rgb(143 73 185 / 0.18) 100%
+      ),
+      hsl(var(--card));
+  }
+
+  /*
+   * Chip für PARAB-Inhalte. Das PARAB-Logo ist reine Strichzeichnung in
+   * Schwarzweiß – es gibt keine Markenfarbe, aus der sich eine Fläche ableiten
+   * ließe. Deshalb neutral dunkel, aber in derselben Form wie der BPSA-Chip,
+   * damit beide als dieselbe Sorte Hinweis gelesen werden.
+   */
+  .badge-parab {
+    color: hsl(0 0% 100%);
+    border: 1px solid transparent;
+    background: hsl(var(--foreground));
   }
 
   .gradient-text {

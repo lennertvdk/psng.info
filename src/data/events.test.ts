@@ -10,6 +10,7 @@ import {
   getUpcomingSeriesDates,
   hasContent,
   events,
+  SERIES_OVERRIDES,
 } from "./events";
 
 describe("formatEventDate", () => {
@@ -116,16 +117,33 @@ describe("getEventAnchor", () => {
 describe("getUpcomingSeriesDates", () => {
   const ref = new Date(2026, 8, 1); // 1. September 2026
 
-  it("computes the second Tuesday of each month", () => {
+  it("computes the first Tuesday of each month", () => {
+    // Der 20.10. statt des 6.10. ist der Semesterauftakt aus SERIES_OVERRIDES.
     expect(getUpcomingSeriesDates(3, ref).map((s) => s.date)).toEqual([
-      "2026-10-13",
-      "2026-11-10",
-      "2026-12-08",
+      "2026-09-01",
+      "2026-10-20",
+      "2026-11-03",
     ]);
   });
 
+  it("lets an override replace its month's date instead of adding to it", () => {
+    const dates = getUpcomingSeriesDates(6, ref).map((s) => s.date);
+    for (const { date } of SERIES_OVERRIDES) {
+      expect(dates).toContain(date);
+      // Der berechnete Termin desselben Monats darf nicht daneben stehen.
+      expect(dates.filter((d) => d.startsWith(date.slice(0, 7)))).toEqual([date]);
+    }
+  });
+
+  it("carries the override's own label", () => {
+    const semesterStart = getUpcomingSeriesDates(3, ref).find(
+      (s) => s.date === "2026-10-20",
+    );
+    expect(semesterStart?.label).toBe("PSNG Lecture zum Semesterauftakt");
+  });
+
   it("skips dates that already carry a real event", () => {
-    // Der 8.9. ist ein zweiter Dienstag – dort steht aber schon lecture-6 mit
+    // Der 8.9. wäre ein Reihentermin – dort steht aber schon lecture-6 mit
     // Thema und Speaker. Der Termin darf nicht doppelt im Zeitstrahl landen.
     expect(getUpcomingSeriesDates(3, ref).map((s) => s.date)).not.toContain(
       "2026-09-08",
@@ -134,10 +152,17 @@ describe("getUpcomingSeriesDates", () => {
   });
 
   it("never looks backwards", () => {
-    // Mitten im Monat, nachdem der zweite Dienstag durch ist.
-    for (const s of getUpcomingSeriesDates(3, new Date(2026, 9, 20))) {
-      expect(s.date > "2026-10-20").toBe(true);
+    // Mitten im Monat, nachdem der Oktobertermin durch ist.
+    for (const s of getUpcomingSeriesDates(3, new Date(2026, 9, 21))) {
+      expect(s.date > "2026-10-21").toBe(true);
     }
+  });
+
+  it("still lists a date that falls on the reference day", () => {
+    // Eine Lecture heute Abend ist kein vergangener Termin.
+    expect(getUpcomingSeriesDates(1, new Date(2026, 9, 20))[0]?.date).toBe(
+      "2026-10-20",
+    );
   });
 });
 

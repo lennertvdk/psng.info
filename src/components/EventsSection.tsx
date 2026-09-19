@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
@@ -14,12 +14,18 @@ import {
   LECTURE_SERIES,
   eventColumnCardLabels,
   eventColumnLabels,
+  eventLanguageLabels,
   formatEventDate,
   formatEventDateShort,
   formatRelativeToToday,
+  getEventAnchor,
+  getEventById,
   getTimelineEntries,
   speakerTypeLabels,
   type EventColumn,
+  type EventLanguage,
+  type PartnerCredit,
+  type PartnerTone,
   type PsngEvent,
   type PsngMilestone,
   type SeriesDate,
@@ -47,25 +53,159 @@ function ColumnChip({ column }: { column: EventColumn }) {
  * die Organisation eine eigene Seite hat – so führt die Karte auch dorthin,
  * ohne dass der Fließtext einen weiteren Link tragen muss.
  */
-function PartnerBadge({ badge }: { badge: { label: string; url?: string } }) {
-  const className =
-    "inline-flex items-center gap-1 rounded-full badge-bpsa px-2 py-1 text-xs font-heading font-medium";
+/**
+ * Weist die Vortragssprache aus, wenn sie nicht die der Seite ist. Steht vor
+ * der Beschreibung, damit die Erklärung kommt, bevor jemand auf den englischen
+ * Text stößt und ihn für ein Versehen hält. Die Sprache selbst ist
+ * hervorgehoben – im Überfliegen ist sie das Einzige, worauf es hier ankommt.
+ */
+function LanguageNote({ language }: { language: EventLanguage }) {
+  return (
+    <p className="text-sm text-muted-foreground">
+      Der Vortrag ist{" "}
+      <span className="font-medium text-foreground">
+        auf {eventLanguageLabels[language]}
+      </span>
+      .
+    </p>
+  );
+}
 
-  if (!badge.url) return <span className={className}>{badge.label}</span>;
+/**
+ * Als Literale und nicht als `badge-${tone}` zusammengesetzt: Die Klassen
+ * stehen in `@layer utilities`, und was Tailwind im Quelltext nicht
+ * ausgeschrieben findet, wirft es beim Bauen weg.
+ */
+const partnerToneClass: Record<PartnerTone, string> = {
+  bpsa: "badge-bpsa",
+  parab: "badge-parab",
+};
+
+function PartnerBadge({
+  short,
+  name,
+  url,
+  tone,
+}: {
+  short: string;
+  /** Ausgeschrieben für Screenreader – das Kürzel allein sagt dort nichts. */
+  name: string;
+  url?: string;
+  tone: PartnerTone;
+}) {
+  const className = `inline-flex items-center gap-1 rounded-full ${partnerToneClass[tone]} px-2 py-1 text-xs font-heading font-medium`;
+
+  if (!url) return <span className={className}>{short}</span>;
 
   return (
     <a
-      href={badge.url}
+      href={url}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label={name}
       className={`${className} hover:opacity-90 transition-opacity`}
     >
-      {badge.label}
+      {short}
       <ExternalLink size={12} aria-hidden="true" />
     </a>
   );
 }
 
+/** Der Chip zu einer Kooperationsleiste – dieselbe Organisation, kurz gefasst. */
+function CreditBadge({ credit }: { credit: PartnerCredit }) {
+  return (
+    <PartnerBadge
+      short={credit.short}
+      name={credit.name}
+      url={credit.url}
+      tone={credit.tone}
+    />
+  );
+}
+
+
+/**
+ * `registrationUrl` führt nicht immer auf eine Luma-Seite – bei Miguels Lecture
+ * etwa in die WhatsApp-Gruppe, weil es für den Abend nie eine Luma-Seite gab.
+ * Der Hinweistext und der Rückblick-Link behaupteten das trotzdem und führten
+ * dann auf etwas, das nichts mit Luma zu tun hat.
+ */
+/**
+ * Die Kooperationsleiste am Kartenfuß: Logo, was die Organisation beigetragen
+ * hat, und die Wege zu ihr. Trägt als einziger Teil der Karte die Farben der
+ * Partnerorganisation (`surface-bpsa`) – damit hebt sich der fremde Beitrag
+ * vom eigenen Inhalt ab, statt in einer flächigen Tönung mit ihm zu verschwimmen.
+ */
+function PartnerCreditStrip({ credit }: { credit: PartnerCredit }) {
+  return (
+    <div className="surface-bpsa flex flex-wrap items-center gap-x-5 gap-y-3 px-5 py-4">
+      <img
+        src={credit.logo}
+        alt={`Logo ${credit.name}`}
+        width={80}
+        height={80}
+        loading="lazy"
+        decoding="async"
+        className="h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20"
+      />
+      <div className="min-w-0 flex-1 basis-56">
+        <p className="font-heading text-sm font-medium text-foreground">
+          In Kooperation mit der {credit.name}
+        </p>
+        {credit.role ? (
+          <p className="mt-0.5 text-sm text-muted-foreground">{credit.role}</p>
+        ) : null}
+        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+          {credit.url ? (
+            <a
+              href={credit.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              {credit.url.replace(/^https?:\/\//, "").replace(/\/$/, "")} →
+            </a>
+          ) : null}
+          {credit.instagramUrl ? (
+            <a
+              href={credit.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              Instagram →
+            </a>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Rückverweis auf den Abend, aus dem ein Vortrag stammt. Reiner Anker statt
+ * Router-Link: Das Ziel steht auf derselben Seite und trägt die ID schon.
+ */
+function PartOfLine({ event }: { event: PsngEvent }) {
+  const parent = event.partOfEventId ? getEventById(event.partOfEventId) : undefined;
+  if (!parent) return null;
+
+  return (
+    <p className="text-sm text-muted-foreground">
+      Teil von{" "}
+      <a
+        href={`#${getEventAnchor(parent)}`}
+        className="font-medium text-primary hover:underline"
+      >
+        {parent.title}
+      </a>
+    </p>
+  );
+}
+
+function isLumaLink(url?: string): boolean {
+  return Boolean(url?.includes("luma.com"));
+}
 
 function EventCard({
   event,
@@ -96,25 +236,14 @@ function EventCard({
             {event.highlightBadge}
           </span>
         )}
-        {event.partnerBadge && <PartnerBadge badge={event.partnerBadge} />}
         {event.speakerType && (
           <span className="inline-block px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-heading font-medium">
             {speakerTypeLabels[event.speakerType]}
           </span>
         )}
+        {event.partnerCredit && <CreditBadge credit={event.partnerCredit} />}
       </div>
       <div>
-        {event.assets?.partnerLogo && (
-          <img
-            src={event.assets.partnerLogo}
-            alt={event.assets.partnerLogoAlt ?? "Partner-Logo"}
-            width={105}
-            height={105}
-            loading="lazy"
-            decoding="async"
-            className="float-right ml-3 mb-1 h-[105px] w-[105px] rounded-full object-cover shadow-sm"
-          />
-        )}
         {event.assets?.speakerPhoto && (
           <img
             src={event.assets.speakerPhoto}
@@ -150,6 +279,11 @@ function EventCard({
             )}
           </p>
         )}
+        {event.language && (
+          <div className="mb-2">
+            <LanguageNote language={event.language} />
+          </div>
+        )}
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
           {event.description ?? "Weitere Details folgen bald."}
         </p>
@@ -163,6 +297,9 @@ function EventCard({
             {event.audienceNote}
           </p>
         )}
+        <div className="mb-4">
+          <PartOfLine event={event} />
+        </div>
       </div>
       <div className="space-y-1 text-sm text-muted-foreground">
         <p>
@@ -184,7 +321,14 @@ function EventCard({
       {event.disclaimer && (
         <p className="text-xs text-muted-foreground italic mt-3">{event.disclaimer}</p>
       )}
-      {!past && event.registrationUrl?.includes("luma.com") && (
+      {/* Die Karte trägt hier rundum Innenabstand, die Leiste zieht sich mit
+          negativen Rändern wieder an die Kanten. */}
+      {event.partnerCredit && (
+        <div className="-mx-6 -mb-6 mt-5 overflow-hidden rounded-b-2xl">
+          <PartnerCreditStrip credit={event.partnerCredit} />
+        </div>
+      )}
+      {!past && isLumaLink(event.registrationUrl) && (
         <p className="text-xs text-muted-foreground mt-3">
           Alle weiteren Infos und das vollständige Programm gibt's auf Luma.
         </p>
@@ -201,7 +345,7 @@ function EventCard({
           </a>
         </div>
       )}
-      {past && event.registrationUrl && (
+      {past && isLumaLink(event.registrationUrl) && (
         <div className="mt-4">
           <a
             href={event.registrationUrl}
@@ -293,6 +437,7 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
               {speakerTypeLabels[ev.speakerType]}
             </span>
           )}
+          {ev.partnerCredit && <CreditBadge credit={ev.partnerCredit} />}
           {ev.featured && (
             <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
               ✨ Unser erstes Event
@@ -301,14 +446,32 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
           <span>{formatEventDate(ev.date)}</span>
         </div>
 
-        <h3 className="text-lg font-semibold leading-snug">{ev.title}</h3>
-        {ev.speaker ? (
-          <p className="text-sm text-muted-foreground">mit {ev.speaker}</p>
-        ) : ev.location ? (
-          <p className="text-sm text-muted-foreground">{ev.location}</p>
-        ) : null}
+        <div className="space-y-2">
+          <h3 className="text-lg font-semibold leading-snug">{ev.title}</h3>
+          {ev.subtitle ? (
+            <p className="text-sm font-medium leading-relaxed text-foreground/80">
+              {ev.subtitle}
+            </p>
+          ) : null}
+          {/* Speaker und Ort nebeneinander statt entweder/oder: Sonst fällt bei
+              jedem Vortrag der Ort weg, weil ein Speaker davorsteht – und im
+              Rückblick ist gerade er die Angabe, die sonst nirgends mehr steht. */}
+          {ev.speaker ? (
+            <p className="text-sm text-muted-foreground">mit {ev.speaker}</p>
+          ) : null}
+          {ev.location ? (
+            <p className="text-sm text-muted-foreground">{ev.location}</p>
+          ) : null}
+          <PartOfLine event={ev} />
+          {ev.language ? <LanguageNote language={ev.language} /> : null}
+        </div>
         {ev.description ? (
           <p className="text-sm text-muted-foreground">{ev.description}</p>
+        ) : null}
+        {/* Die Kurzvita gehört auch in den Rückblick: Wer den Vortrag Monate
+            später findet, kennt den Namen darüber in der Regel nicht. */}
+        {ev.speakerBio ? (
+          <p className="text-sm text-muted-foreground">{ev.speakerBio}</p>
         ) : null}
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-sm">
@@ -356,7 +519,15 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
             </a>
           ) : null}
         </div>
+
+        {ev.disclaimer ? (
+          <p className="text-xs italic text-muted-foreground">{ev.disclaimer}</p>
+        ) : null}
       </div>
+
+      {/* Außerhalb des Textblocks, damit die Leiste die Karte in ganzer Breite
+          abschließt statt im Innenabstand zu schweben. */}
+      {ev.partnerCredit ? <PartnerCreditStrip credit={ev.partnerCredit} /> : null}
     </div>
   );
 }
@@ -508,6 +679,7 @@ function GatheringFeatureCard({ ev }: { ev: PsngEvent }) {
                 {ev.highlightBadge}
               </span>
             )}
+            {ev.partnerCredit && <CreditBadge credit={ev.partnerCredit} />}
             <span>{formatEventDate(ev.date)}</span>
           </div>
 
@@ -537,7 +709,7 @@ function GatheringFeatureCard({ ev }: { ev: PsngEvent }) {
         {a.photos?.length ? (
           <GatheringPhotoCarousel photos={a.photos} alts={a.photoAlts} title={ev.title} />
         ) : null}
-        {ev.registrationUrl && (
+        {isLumaLink(ev.registrationUrl) && (
           <a
             href={ev.registrationUrl}
             target="_blank"
@@ -548,6 +720,8 @@ function GatheringFeatureCard({ ev }: { ev: PsngEvent }) {
           </a>
         )}
       </div>
+
+      {ev.partnerCredit ? <PartnerCreditStrip credit={ev.partnerCredit} /> : null}
     </div>
   );
 }
@@ -587,6 +761,43 @@ function SeriesRow({ series }: { series: SeriesDate }) {
   );
 }
 
+/**
+ * Verlinkt die Nennung der Partnerorganisation im Fließtext. Der Name steht
+ * dort ohnehin, und aus dem Satz heraus verlinkt führt er weiter, ohne dass
+ * die Karte dafür eine zusätzliche Linkzeile braucht. Die URL kommt aus
+ * demselben Objekt wie der Chip – sie steht nicht zweimal in den Daten.
+ */
+function PartnerLinkedText({
+  text,
+  partner,
+}: {
+  text: string;
+  partner: { short: string; url: string };
+}) {
+  const parts = text.split(partner.short);
+  if (parts.length === 1) return <>{text}</>;
+
+  return (
+    <>
+      {parts.map((part, i) => (
+        <Fragment key={i}>
+          {i > 0 && (
+            <a
+              href={partner.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline hover:no-underline"
+            >
+              {partner.short}
+            </a>
+          )}
+          {part}
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
 /** Meilenstein: kein Termin, sondern etwas, das seitdem da ist. */
 function MilestoneCard({ milestone }: { milestone: PsngMilestone }) {
   return (
@@ -597,6 +808,14 @@ function MilestoneCard({ milestone }: { milestone: PsngMilestone }) {
           <span className="rounded-full gradient-psychedelic px-2.5 py-0.5 text-xs font-heading font-medium text-primary-foreground">
             {milestone.badge}
           </span>
+        )}
+        {milestone.partner && (
+          <PartnerBadge
+            short={milestone.partner.short}
+            name={milestone.partner.name}
+            url={milestone.partner.url}
+            tone={milestone.partner.tone}
+          />
         )}
         <span className="text-xs text-muted-foreground md:hidden">
           {formatEventDate(milestone.date)}
@@ -619,7 +838,11 @@ function MilestoneCard({ milestone }: { milestone: PsngMilestone }) {
         {milestone.title}
       </h3>
       <p className="text-sm text-muted-foreground leading-relaxed">
-        {milestone.description}
+        {milestone.partner ? (
+          <PartnerLinkedText text={milestone.description} partner={milestone.partner} />
+        ) : (
+          milestone.description
+        )}
       </p>
       {milestone.links?.length ? (
         <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1">
@@ -840,7 +1063,7 @@ const EventsSection = () => {
         />
 
         <p className="mx-auto mb-8 max-w-3xl text-center text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">Lectures:</span> jeden 2.
+          <span className="font-medium text-foreground">Lectures:</span> jeden 1.
           Dienstag im Monat, {LECTURE_SERIES.time} Uhr, auf {LECTURE_SERIES.location}.
           Fachlicher Input aus der Community und von eingeladenen Expert:innen.
         </p>

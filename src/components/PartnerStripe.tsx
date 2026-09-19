@@ -1,3 +1,5 @@
+import bpsaLogo from "@/assets/BPSA-Logo.webp";
+import parabLogo from "@/assets/PARAB-Logo.webp";
 import alpsLogo from "@/assets/ALPS-Logo.webp";
 import spsnLogo from "@/assets/SPSN-Logo.webp";
 import unepsiLogo from "@/assets/UNEPSI-Logo.webp";
@@ -5,8 +7,14 @@ import psychedelicareLogo from "@/assets/PsychedeliCare-Logo.webp";
 import psychedelicGermanyLogo from "@/assets/Psychedelic-Germany-Logo.webp";
 import nachtschattenLogo from "@/assets/Nachtschatten-Logo.webp";
 import psychedeliaStiftungLogo from "@/assets/Psychedelia-Stiftung-Logo.webp";
+import { BPSA_LINK, PARAB_LINK } from "@/lib/links";
 
 const partners = [
+  // Die BPSA zuerst: Mit ihr zusammen laufen die Lectures und das erste eigene
+  // In-Person-Event, und sie sitzt als einzige Partnerin unter psng.info.
+  { name: "Berlin Psychedelic Science Association", logo: bpsaLogo, url: BPSA_LINK },
+  // Direkt hinter der BPSA: Mit PARAB zusammen läuft der Medien-Blog.
+  { name: "PARAB – Psychedelic Awareness & Research Association Basel", logo: parabLogo, url: PARAB_LINK },
   { name: "ALPS Foundation", logo: alpsLogo, url: "https://alps.foundation" },
   { name: "Swiss Psychedelic Student Network", logo: spsnLogo, url: "https://www.instagram.com/swisspsychedelicstudentnetwork/" },
   { name: "UNePSI – Italy", logo: unepsiLogo, url: "https://www.instagram.com/_unepsi_/" },

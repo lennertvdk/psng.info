@@ -8,6 +8,8 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
+import bpsaLogo from "@/assets/BPSA-Logo.webp";
+import parabLogo from "@/assets/PARAB-Logo.webp";
 import alpsLogo from "@/assets/ALPS-Logo.webp";
 import spsnLogo from "@/assets/SPSN-Logo.webp";
 import unepsiLogo from "@/assets/UNEPSI-Logo.webp";
@@ -15,8 +17,28 @@ import psychedelicareLogo from "@/assets/PsychedeliCare-Logo.webp";
 import psychedelicGermanyLogo from "@/assets/Psychedelic-Germany-Logo.webp";
 import nachtschattenLogo from "@/assets/Nachtschatten-Logo.webp";
 import psychedeliaStiftungLogo from "@/assets/Psychedelia-Stiftung-Logo.webp";
+import { BPSA_LINK, PARAB_INSTAGRAM_LINK, PARAB_LINK } from "@/lib/links";
 
 const partners = [
+  // Die BPSA steht vorn: Sie ist die einzige Partnerin, mit der wir gemeinsam
+  // Veranstaltungen halten – die Lectures und das erste eigene In-Person-Event.
+  {
+    name: "Berlin Psychedelic Science Association (BPSA)",
+    description:
+      "Eine Gruppe Berliner Studierender, die psychedelische Wissenschaft an die Hochschulen der Stadt bringt. Ihre Lectures finden gelegentlich in Zusammenarbeit mit dem PSNG statt, und unser erstes eigenes In-Person-Event haben wir zusammen auf die Beine gestellt.",
+    logo: bpsaLogo,
+    url: BPSA_LINK,
+    instagram: "https://www.instagram.com/bpsa.berlin/",
+  },
+  // Ebenfalls vorn: Der Medien-Blog ist ein gemeinsames Projekt mit PARAB.
+  {
+    name: "PARAB – Psychedelic Awareness & Research Association Basel",
+    description:
+      "Multidisziplinäre Studierendenorganisation aus Basel und Teil des Swiss Psychedelic Student Network. PARAB bringt Wissen über die therapeutische Anwendung von Psychedelika zu Fachleuten wie Öffentlichkeit – und betreibt gemeinsam mit uns den Medien-Blog.",
+    logo: parabLogo,
+    url: PARAB_LINK,
+    instagram: PARAB_INSTAGRAM_LINK,
+  },
   {
     name: "ALPS Foundation",
     description:
