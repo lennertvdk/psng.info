@@ -5,31 +5,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useCopy } from "@/i18n/copy";
 
-const faqs = [
-  {
-    question: "Muss ich Student*in sein, um Teil des PSNG oder einer Lokalgruppe zu werden?",
-    answer:
-      "Nein, ein studentischer Status ist keine zwingende Voraussetzung, um Mitglied zu werden. Wenn es bereits eine Lokalgruppe an einer Uni in deiner Stadt gibt, helfen wir gerne dabei, den Kontakt herzustellen.",
-  },
-  {
-    question: "Muss ich Student*in sein, um eine Lokalgruppe gründen zu können?",
-    answer:
-      "Das PSNG richtet sich primär an Menschen im akademischen Kontext. Auch wenn ein Studierendenstatus keine formale Pflicht ist, liegt unser Fokus klar auf wissenschaftlichem Austausch und Nachwuchsförderung.",
-  },
-  {
-    question: "Wie ist eine Lokalgruppe organisiert?",
-    answer:
-      "Ganz individuell, je nach Lokalgruppe! Wir unterstützen euch bei der Gründung, z.B. durch Bereitstellung von Gründungsdokumenten bereits bestehender Studierendengruppen. Als Teil des PSNG erklären sich die Lokalgruppen bereit, den Code of Conduct zu wahren.",
-  },
-  {
-    question: "Welche Angebote bietet das PSNG selbst?",
-    answer:
-      "Wir bieten regelmäßige Calls für Fragen an sowie Unterstützung und Impulse zur Vernetzung. Außerdem teilen wir Journal-Clubs, Keynote-Lectures und weitere Formate der Lokalgruppen im PSNG-Netzwerk. Dadurch möchten wir den Lokalgruppen auch eine Plattform anbieten, auf der sie eine größere Reichweite erreichen.",
-  },
-];
 
 const FAQSection = () => {
+  const c = useCopy();
+
   return (
     <section id="faq" className="py-24 md:py-32">
       <div className="container mx-auto px-6">
@@ -41,10 +22,10 @@ const FAQSection = () => {
           className="max-w-3xl mx-auto text-center mb-12"
         >
           <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary mb-4">
-            Häufige Fragen
+            {c.faq.eyebrow}
           </p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground">
-            FAQ
+            {c.faq.title}
           </h2>
         </motion.div>
         <motion.div
@@ -55,10 +36,10 @@ const FAQSection = () => {
           className="max-w-2xl mx-auto"
         >
           <Accordion type="single" collapsible className="space-y-3">
-            {faqs.map((faq, i) => (
+            {c.faq.items.map((faq) => (
               <AccordionItem
-                key={i}
-                value={`faq-${i}`}
+                key={faq.key}
+                value={faq.key}
                 className="bg-card border border-border rounded-xl px-6 hover:shadow-lg transition-shadow data-[state=open]:shadow-sm"
               >
                 <AccordionTrigger className="font-heading text-sm font-medium text-foreground hover:text-primary hover:no-underline py-4">

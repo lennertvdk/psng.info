@@ -5,58 +5,90 @@ import ivanaImg from "@/assets/Ivana.webp";
 import lennertImg from "@/assets/Lennert.webp";
 import metaImg from "@/assets/Meta.webp";
 import stelaImg from "@/assets/Stela.webp";
+import { useCopy } from "@/i18n/copy";
+import { useLocale } from "@/i18n/locale";
+import { pathFor } from "@/i18n/routes";
+import { pick, type Localized } from "@/i18n/localized";
 
-const team = [
+interface TeamMember {
+  name: string;
+  role: Localized;
+  uni: Localized;
+  bio: Localized;
+  image: string | null;
+  linkedin: string | null;
+  isRecruiting: boolean;
+}
+
+const team: TeamMember[] = [
   {
     name: "Cameron Hornung",
-    role: "Klinischer Psychologe",
+    role: { de: "Klinischer Psychologe", en: "Clinical psychologist" },
     uni: "Charité Berlin",
-    bio: "Klinischer Psychologe in der Psychotherapie-Ausbildung in Berlin. Research Assistant der Psychedelic Substances Research Group der Charité. Setzt sich für einen Ort ein, an dem Menschen neugierig ihrer Leidenschaft an der Erforschung veränderter Bewusstseinszustände nachgehen können.",
-    image: cameronImg as string | null,
+    bio: {
+      de: "Klinischer Psychologe in der Psychotherapie-Ausbildung in Berlin. Research Assistant der Psychedelic Substances Research Group der Charité. Setzt sich für einen Ort ein, an dem Menschen neugierig ihrer Leidenschaft an der Erforschung veränderter Bewusstseinszustände nachgehen können.",
+      en: "Clinical psychologist training as a psychotherapist in Berlin. Research assistant with the Charité's Psychedelic Substances Research Group. Works towards a place where people can follow their curiosity about altered states of consciousness.",
+    },
+    image: cameronImg,
     linkedin: "https://www.linkedin.com/in/cameron-hornung-643514158/",
     isRecruiting: false,
   },
   {
     name: "Ivana Sterr",
-    role: "Medizinstudentin",
+    role: { de: "Medizinstudentin", en: "Medical student" },
     uni: "Charité Berlin",
-    bio: "Studiert Medizin und ist als studentische Hilfskraft an der Charité in der klinischen psychedelischen Forschung tätig. Inspiriert von der offenen, vernetzten Community bei Events der ALPS Foundation in der Schweiz.",
-    image: ivanaImg as string | null,
+    bio: {
+      de: "Studiert Medizin und ist als studentische Hilfskraft an der Charité in der klinischen psychedelischen Forschung tätig. Inspiriert von der offenen, vernetzten Community bei Events der ALPS Foundation in der Schweiz.",
+      en: "Studies medicine and works as a student assistant in clinical psychedelic research at the Charité. Inspired by the open, well-connected community at ALPS Foundation events in Switzerland.",
+    },
+    image: ivanaImg,
     linkedin: null,
     isRecruiting: false,
   },
   {
     name: "Lennert van de Kreeke",
-    role: "Medizinstudent",
+    role: { de: "Medizinstudent", en: "Medical student" },
     uni: "Charité Berlin",
-    bio: "Aktiv in der klinischen Psychedelikaforschung und engagiert bei der ALPS Foundation in der Schweiz. Studiert Medizin in Berlin und sieht im PSNG großes Potenzial für Verbindung, Austausch und gemeinsame Entwicklung.",
-    image: lennertImg as string | null,
+    bio: {
+      de: "Aktiv in der klinischen Psychedelikaforschung und engagiert bei der ALPS Foundation in der Schweiz. Studiert Medizin in Berlin und sieht im PSNG großes Potenzial für Verbindung, Austausch und gemeinsame Entwicklung.",
+      en: "Active in clinical psychedelic research and involved with the ALPS Foundation in Switzerland. Studies medicine in Berlin and sees great potential in the PSNG for connection, exchange and shared growth.",
+    },
+    image: lennertImg,
     linkedin: "https://www.linkedin.com/in/lennert-van-de-kreeke-1b860828b/",
     isRecruiting: false,
   },
   {
     name: "Meta Laubinger",
-    role: "Psychologie-Masterandin",
+    role: { de: "Psychologie-Masterandin", en: "Psychology master's student" },
     uni: "Bergische Universität Wuppertal",
-    bio: "Klinische Psychologie-Masterandin und wissenschaftliche Hilfskraft. Überzeugt, dass Psychedelika ein kraftvolles Werkzeug zur Erforschung des Bewusstseins sind, deren therapeutisches Potenzial durch systematische Forschung nutzbar gemacht werden kann.",
-    image: metaImg as string | null,
+    bio: {
+      de: "Klinische Psychologie-Masterandin und wissenschaftliche Hilfskraft. Überzeugt, dass Psychedelika ein kraftvolles Werkzeug zur Erforschung des Bewusstseins sind, deren therapeutisches Potenzial durch systematische Forschung nutzbar gemacht werden kann.",
+      en: "Master's student in clinical psychology and a research assistant. Convinced that psychedelics are a powerful tool for studying consciousness, and that systematic research can make their therapeutic potential usable.",
+    },
+    image: metaImg,
     linkedin: "https://www.linkedin.com/in/meta-laubinger-905634395/",
     isRecruiting: false,
   },
   {
     name: "Stela Malvasija",
-    role: "Klinische Psychologin",
+    role: { de: "Klinische Psychologin", en: "Clinical psychologist" },
     uni: "Euro-FH Europäische Fernhochschule Hamburg",
-    bio: "Klinische Psychologin mit besonderem Interesse an Psychedelika. Erforscht, wie veränderte Bewusstseinszustände Genesung, Verbundenheit und neue Narrative ermöglichen können – im Individuum und im Kollektiv.",
-    image: stelaImg as string | null,
+    bio: {
+      de: "Klinische Psychologin mit besonderem Interesse an Psychedelika. Erforscht, wie veränderte Bewusstseinszustände Genesung, Verbundenheit und neue Narrative ermöglichen können – im Individuum und im Kollektiv.",
+      en: "Clinical psychologist with a particular interest in psychedelics. Researches how altered states of consciousness can enable recovery, connectedness and new narratives, in the individual and in the collective.",
+    },
+    image: stelaImg,
     linkedin: "https://www.linkedin.com/in/stela-malvasija-5510011aa/",
     isRecruiting: false,
   },
   {
     name: "Teil des Teams werden",
-    role: "Wir suchen Verstärkung",
-    uni: "Bundesweit",
-    bio: "Du begeisterst dich für psychedelische Wissenschaft und möchtest das PSNG aktiv mitgestalten? Wir freuen uns über engagierte Studierende aus ganz Deutschland, die unser Netzwerk stärken wollen.",
+    role: { de: "Wir suchen Verstärkung", en: "We're looking for people" },
+    uni: { de: "Bundesweit", en: "Nationwide" },
+    bio: {
+      de: "Du begeisterst dich für psychedelische Wissenschaft und möchtest das PSNG aktiv mitgestalten? Wir freuen uns über engagierte Studierende aus ganz Deutschland, die unser Netzwerk stärken wollen.",
+      en: "Excited about psychedelic science and keen to help shape the PSNG? We'd love to hear from committed students across Germany who want to strengthen the network.",
+    },
     image: null,
     linkedin: null,
     isRecruiting: true,
@@ -79,6 +111,9 @@ const PlaceholderAvatar = () => (
 );
 
 const TeamSection = () => {
+  const c = useCopy();
+  const locale = useLocale();
+
   return (
     <section id="team" className="py-24 md:py-32">
       <div className="container mx-auto px-6">
@@ -90,14 +125,13 @@ const TeamSection = () => {
           className="max-w-3xl mx-auto text-center mb-4"
         >
           <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary mb-4">
-            Team (a – z)
+            {c.team.eyebrow}
           </p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
-            Wer steckt dahinter?
+            {c.team.title}
           </h2>
           <p className="text-muted-foreground text-lg mb-12">
-            Das PSNG wird organisiert durch Psychologie- und Medizinstudierende
-            aus Berlin und Wuppertal.
+            {c.team.intro}
           </p>
         </motion.div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -129,12 +163,16 @@ const TeamSection = () => {
                 <h3 className="font-heading text-base font-semibold text-foreground">
                   {member.name}
                 </h3>
-                <p className="text-primary text-sm font-medium mt-0.5">{member.role}</p>
+                <p className="text-primary text-sm font-medium mt-0.5">
+                  {pick(member.role, locale)}
+                </p>
                 {member.uni && (
-                  <p className="text-muted-foreground text-xs mt-0.5">{member.uni}</p>
+                  <p className="text-muted-foreground text-xs mt-0.5">
+                    {pick(member.uni, locale)}
+                  </p>
                 )}
                 <p className="text-muted-foreground text-sm leading-relaxed mt-3">
-                  {member.bio}
+                  {pick(member.bio, locale)}
                 </p>
                 <div className="flex-1" />
                 {(member.linkedin || member.isRecruiting) && (
@@ -146,14 +184,14 @@ const TeamSection = () => {
                         rel="noopener noreferrer"
                         className="inline-block text-xs font-medium text-primary hover:underline"
                       >
-                        LinkedIn →
+                        {c.team.linkedin}
                       </a>
                     ) : (
                       <Link
-                        to="/?subject=team#kontakt"
+                        to={`${pathFor("home", locale)}?subject=team#kontakt`}
                         className="inline-flex items-center justify-center px-5 py-2 rounded-lg border border-primary/30 text-primary font-heading font-medium text-xs hover:bg-primary/5 transition-colors"
                       >
-                        Kontakt aufnehmen
+                        {c.team.contactCta}
                       </Link>
                     )}
                   </div>

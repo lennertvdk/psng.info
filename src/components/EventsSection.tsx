@@ -12,16 +12,12 @@ import {
 } from "@/components/ui/carousel";
 import {
   LECTURE_SERIES,
-  eventColumnCardLabels,
-  eventColumnLabels,
-  eventLanguageLabels,
   formatEventDate,
   formatEventDateShort,
   formatRelativeToToday,
   getEventAnchor,
   getEventById,
   getTimelineEntries,
-  speakerTypeLabels,
   type EventColumn,
   type EventLanguage,
   type PartnerCredit,
@@ -33,6 +29,9 @@ import {
 } from "@/data/events";
 import { getYouTubeEmbedUrl } from "@/lib/youtube";
 import { WHATSAPP_LINK, INSTAGRAM_LINK } from "@/lib/links";
+import { useCopy } from "@/i18n/copy";
+import { useLocale, type Locale } from "@/i18n/locale";
+import { pick, type Localized } from "@/i18n/localized";
 
 /**
  * Der Typ-Chip. Steht auf jeder Karte und benennt dieselbe Achse wie der
@@ -41,9 +40,10 @@ import { WHATSAPP_LINK, INSTAGRAM_LINK } from "@/lib/links";
  * warum eine Karte aus einem Filter herausfällt.
  */
 function ColumnChip({ column }: { column: EventColumn }) {
+  const c = useCopy();
   return (
     <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
-      {eventColumnCardLabels[column]}
+      {column === "vortraege" ? c.events.columnsSingular.talks : c.events.columnsSingular.community}
     </span>
   );
 }
@@ -55,16 +55,24 @@ function ColumnChip({ column }: { column: EventColumn }) {
  */
 /**
  * Weist die Vortragssprache aus, wenn sie nicht die der Seite ist. Steht vor
- * der Beschreibung, damit die Erklärung kommt, bevor jemand auf den englischen
- * Text stößt und ihn für ein Versehen hält. Die Sprache selbst ist
- * hervorgehoben – im Überfliegen ist sie das Einzige, worauf es hier ankommt.
+ * der Beschreibung, damit die Erklärung kommt, bevor jemand auf einen Text in
+ * einer anderen Sprache stößt und ihn für ein Versehen hält. Stimmen beide
+ * überein, erscheint gar nichts – dann sagt der Satz nichts aus.
  */
-function LanguageNote({ language }: { language: EventLanguage }) {
+function LanguageNote({ language }: { language: EventLanguage | undefined }) {
+  const c = useCopy();
+  const locale = useLocale();
+  // Ohne Angabe gilt Deutsch: Die Reihe wird auf Deutsch gehalten, die
+  // Ausnahme wird markiert.
+  const spoken: EventLanguage = language ?? "de";
+  if (spoken === locale) return null;
+
   return (
     <p className="text-sm text-muted-foreground">
-      Der Vortrag ist{" "}
+      {c.events.languageNoteBefore}
       <span className="font-medium text-foreground">
-        auf {eventLanguageLabels[language]}
+        {c.events.languageNoteIn}
+        {c.events.languages[spoken]}
       </span>
       .
     </p>
@@ -137,6 +145,8 @@ function CreditBadge({ credit }: { credit: PartnerCredit }) {
  * vom eigenen Inhalt ab, statt in einer flächigen Tönung mit ihm zu verschwimmen.
  */
 function PartnerCreditStrip({ credit }: { credit: PartnerCredit }) {
+  const c = useCopy();
+  const locale = useLocale();
   return (
     <div className="surface-bpsa flex flex-wrap items-center gap-x-5 gap-y-3 px-5 py-4">
       <img
@@ -150,10 +160,12 @@ function PartnerCreditStrip({ credit }: { credit: PartnerCredit }) {
       />
       <div className="min-w-0 flex-1 basis-56">
         <p className="font-heading text-sm font-medium text-foreground">
-          In Kooperation mit der {credit.name}
+          {c.events.inCooperationWith} {credit.name}
         </p>
         {credit.role ? (
-          <p className="mt-0.5 text-sm text-muted-foreground">{credit.role}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">
+            {pick(credit.role, locale)}
+          </p>
         ) : null}
         <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
           {credit.url ? (
@@ -173,7 +185,7 @@ function PartnerCreditStrip({ credit }: { credit: PartnerCredit }) {
               rel="noopener noreferrer"
               className="text-sm font-medium text-primary hover:underline"
             >
-              Instagram →
+              {c.events.instagram}
             </a>
           ) : null}
         </div>
@@ -187,17 +199,19 @@ function PartnerCreditStrip({ credit }: { credit: PartnerCredit }) {
  * Router-Link: Das Ziel steht auf derselben Seite und trägt die ID schon.
  */
 function PartOfLine({ event }: { event: PsngEvent }) {
+  const c = useCopy();
+  const locale = useLocale();
   const parent = event.partOfEventId ? getEventById(event.partOfEventId) : undefined;
   if (!parent) return null;
 
   return (
     <p className="text-sm text-muted-foreground">
-      Teil von{" "}
+      {c.events.partOf}{" "}
       <a
         href={`#${getEventAnchor(parent)}`}
         className="font-medium text-primary hover:underline"
       >
-        {parent.title}
+        {pick(parent.title, locale)}
       </a>
     </p>
   );
@@ -220,6 +234,8 @@ function EventCard({
   // Hat jemand keine eigene Website, ist das LinkedIn-Profil der nächstbeste
   // Beleg – in der Highlight-Karte steht es ohnehin schon als eigener Link.
   const speakerLink = event.speakerWebsiteUrl ?? event.assets?.speakerLinkedinUrl;
+  const c = useCopy();
+  const locale = useLocale();
 
   return (
     <motion.div
@@ -233,12 +249,14 @@ function EventCard({
         <ColumnChip column={event.column} />
         {event.highlightBadge && (
           <span className="inline-block px-2 py-1 rounded-full gradient-psychedelic text-primary-foreground text-xs font-heading font-medium">
-            {event.highlightBadge}
+            {pick(event.highlightBadge, locale)}
           </span>
         )}
         {event.speakerType && (
           <span className="inline-block px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-heading font-medium">
-            {speakerTypeLabels[event.speakerType]}
+            {event.speakerType === "student"
+              ? c.events.speakerTypes.student
+              : c.events.speakerTypes.guest}
           </span>
         )}
         {event.partnerCredit && <CreditBadge credit={event.partnerCredit} />}
@@ -256,11 +274,11 @@ function EventCard({
           />
         )}
         <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
-          {event.title}
+          {pick(event.title, locale)}
         </h3>
         {event.subtitle && (
           <p className="text-sm text-foreground/80 font-medium mb-2 leading-relaxed">
-            {event.subtitle}
+            {pick(event.subtitle, locale)}
           </p>
         )}
         {event.speaker && (
@@ -279,22 +297,20 @@ function EventCard({
             )}
           </p>
         )}
-        {event.language && (
-          <div className="mb-2">
-            <LanguageNote language={event.language} />
-          </div>
-        )}
+        <div className="mb-2">
+          <LanguageNote language={event.language} />
+        </div>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          {event.description ?? "Weitere Details folgen bald."}
+          {pick(event.description, locale) ?? c.events.detailsSoon}
         </p>
         {event.speakerBio && (
           <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-            {event.speakerBio}
+            {pick(event.speakerBio, locale)}
           </p>
         )}
         {event.audienceNote && (
           <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-            {event.audienceNote}
+            {pick(event.audienceNote, locale)}
           </p>
         )}
         <div className="mb-4">
@@ -303,23 +319,29 @@ function EventCard({
       </div>
       <div className="space-y-1 text-sm text-muted-foreground">
         <p>
-          <span className="font-medium text-foreground">Datum:</span>{" "}
-          {event.weekdayLabel ? `${event.weekdayLabel}, ` : ""}
-          {formatEventDate(event.date)}, {event.time}
+          <span className="font-medium text-foreground">{c.events.dateLabel}</span>{" "}
+          {formatEventDate(event.date, locale, event.showWeekday)},{" "}
+          {pick(event.time, locale)}
         </p>
         {event.location ? (
           <p>
-            <span className="font-medium text-foreground">Ort:</span> {event.location}
+            <span className="font-medium text-foreground">{c.events.locationLabel}</span>{" "}
+            {pick(event.location, locale)}
           </p>
         ) : null}
         {event.contribution ? (
           <p>
-            <span className="font-medium text-foreground">Beitrag:</span> {event.contribution}
+            <span className="font-medium text-foreground">
+              {c.events.contributionLabel}
+            </span>{" "}
+            {pick(event.contribution, locale)}
           </p>
         ) : null}
       </div>
       {event.disclaimer && (
-        <p className="text-xs text-muted-foreground italic mt-3">{event.disclaimer}</p>
+        <p className="text-xs text-muted-foreground italic mt-3">
+          {pick(event.disclaimer, locale)}
+        </p>
       )}
       {/* Die Karte trägt hier rundum Innenabstand, die Leiste zieht sich mit
           negativen Rändern wieder an die Kanten. */}
@@ -330,7 +352,7 @@ function EventCard({
       )}
       {!past && isLumaLink(event.registrationUrl) && (
         <p className="text-xs text-muted-foreground mt-3">
-          Alle weiteren Infos und das vollständige Programm gibt's auf Luma.
+          {c.events.lumaHint}
         </p>
       )}
       {!past && event.registrationUrl && (
@@ -341,7 +363,7 @@ function EventCard({
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-lg gradient-psychedelic px-4 py-2 text-sm font-heading font-medium text-primary-foreground hover:opacity-90 transition-opacity"
           >
-            {event.registrationLabel ?? "Jetzt anmelden"}
+            {pick(event.registrationLabel, locale) ?? c.events.register}
           </a>
         </div>
       )}
@@ -353,7 +375,7 @@ function EventCard({
             rel="noopener noreferrer"
             className="text-sm font-medium text-primary hover:underline"
           >
-            Event auf Luma ansehen →
+            {c.events.lumaLink}
           </a>
         </div>
       )}
@@ -371,6 +393,8 @@ function PlayIcon() {
 
 function HighlightCard({ ev }: { ev: PsngEvent }) {
   const [playing, setPlaying] = useState(false);
+  const c = useCopy();
+  const locale = useLocale();
   const a = ev.assets ?? {};
   // Nur lokale Vorschaubilder – fehlt eins, zeigen wir lieber gar keins, als
   // beim Seitenaufruf eine Anfrage an Google auszulösen.
@@ -385,7 +409,7 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
           {playing && embed ? (
             <iframe
               src={embed}
-              title={ev.title}
+              title={pick(ev.title, locale)}
               className="absolute inset-0 h-full w-full"
               allow="autoplay; encrypted-media; picture-in-picture"
               allowFullScreen
@@ -395,7 +419,7 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
               type="button"
               onClick={() => setPlaying(true)}
               className="group absolute inset-0 flex items-center justify-center"
-              aria-label={`Aufnahme abspielen: ${ev.title}`}
+              aria-label={`${c.events.playRecording} ${pick(ev.title, locale)}`}
             >
               {thumb && (
                 <img
@@ -419,7 +443,7 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
         <div className="relative aspect-video w-full bg-muted">
           <img
             src={heroPhoto}
-            alt={ev.title}
+            alt={pick(ev.title, locale)}
             width={1200}
             height={800}
             loading="lazy"
@@ -434,49 +458,63 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
           <ColumnChip column={ev.column} />
           {ev.speakerType && (
             <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
-              {speakerTypeLabels[ev.speakerType]}
+              {ev.speakerType === "student"
+                ? c.events.speakerTypes.student
+                : c.events.speakerTypes.guest}
             </span>
           )}
           {ev.partnerCredit && <CreditBadge credit={ev.partnerCredit} />}
           {ev.featured && (
             <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
-              ✨ Unser erstes Event
+              {c.events.firstEvent}
             </span>
           )}
-          <span>{formatEventDate(ev.date)}</span>
+          <span>{formatEventDate(ev.date, locale)}</span>
         </div>
 
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold leading-snug">{ev.title}</h3>
+          <h3 className="text-lg font-semibold leading-snug">
+            {pick(ev.title, locale)}
+          </h3>
           {ev.subtitle ? (
             <p className="text-sm font-medium leading-relaxed text-foreground/80">
-              {ev.subtitle}
+              {pick(ev.subtitle, locale)}
             </p>
           ) : null}
           {/* Speaker und Ort nebeneinander statt entweder/oder: Sonst fällt bei
               jedem Vortrag der Ort weg, weil ein Speaker davorsteht – und im
               Rückblick ist gerade er die Angabe, die sonst nirgends mehr steht. */}
           {ev.speaker ? (
-            <p className="text-sm text-muted-foreground">mit {ev.speaker}</p>
+            <p className="text-sm text-muted-foreground">
+              {c.events.with} {ev.speaker}
+            </p>
           ) : null}
           {ev.location ? (
-            <p className="text-sm text-muted-foreground">{ev.location}</p>
+            <p className="text-sm text-muted-foreground">
+              {pick(ev.location, locale)}
+            </p>
           ) : null}
           <PartOfLine event={ev} />
-          {ev.language ? <LanguageNote language={ev.language} /> : null}
+          <LanguageNote language={ev.language} />
         </div>
         {ev.description ? (
-          <p className="text-sm text-muted-foreground">{ev.description}</p>
+          <p className="text-sm text-muted-foreground">
+            {pick(ev.description, locale)}
+          </p>
         ) : null}
         {/* Die Kurzvita gehört auch in den Rückblick: Wer den Vortrag Monate
             später findet, kennt den Namen darüber in der Regel nicht. */}
         {ev.speakerBio ? (
-          <p className="text-sm text-muted-foreground">{ev.speakerBio}</p>
+          <p className="text-sm text-muted-foreground">
+            {pick(ev.speakerBio, locale)}
+          </p>
         ) : null}
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-sm">
           {a.attendees ? (
-            <span className="text-muted-foreground">{a.attendees}+ Teilnehmende</span>
+            <span className="text-muted-foreground">
+              {a.attendees}+ {c.events.attendeesPlus}
+            </span>
           ) : null}
           {a.slidesUrl ? (
             <a
@@ -485,7 +523,7 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
               rel="noopener noreferrer"
               className="font-medium text-primary hover:underline"
             >
-              Folien ansehen →
+              {c.events.slides}
             </a>
           ) : null}
           {a.recapUrl ? (
@@ -495,7 +533,7 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
               rel="noopener noreferrer"
               className="font-medium text-primary hover:underline"
             >
-              Recap lesen →
+              {c.events.recap}
             </a>
           ) : null}
           {a.speakerLinkedinUrl ? (
@@ -505,7 +543,10 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
               rel="noopener noreferrer"
               className="font-medium text-primary hover:underline"
             >
-              {ev.speaker ? `LinkedIn von ${ev.speaker}` : "LinkedIn"} →
+              {ev.speaker
+                ? `${c.events.linkedinOf} ${ev.speaker}`
+                : c.events.linkedin}{" "}
+              →
             </a>
           ) : null}
           {a.externalUrl ? (
@@ -515,13 +556,15 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
               rel="noopener noreferrer"
               className="font-medium text-primary hover:underline"
             >
-              {a.externalLabel ?? "Mehr erfahren"} →
+              {pick(a.externalLabel, locale) ?? c.events.learnMore} →
             </a>
           ) : null}
         </div>
 
         {ev.disclaimer ? (
-          <p className="text-xs italic text-muted-foreground">{ev.disclaimer}</p>
+          <p className="text-xs italic text-muted-foreground">
+            {pick(ev.disclaimer, locale)}
+          </p>
         ) : null}
       </div>
 
@@ -538,9 +581,11 @@ function GatheringPhotoCarousel({
   title,
 }: {
   photos: string[];
-  alts?: string[];
+  alts?: Localized[];
   title: string;
 }) {
+  const c = useCopy();
+  const locale = useLocale();
   return (
     <Carousel opts={{ loop: true }} className="w-full">
       <CarouselContent>
@@ -552,7 +597,10 @@ function GatheringPhotoCarousel({
             <div className="flex h-72 w-full items-center justify-center overflow-hidden rounded-lg bg-muted sm:h-96 md:h-[28rem]">
               <img
                 src={src}
-                alt={alts?.[i] ?? `${title} – Foto ${i + 1}`}
+                alt={
+                  pick(alts?.[i], locale) ??
+                  `${title} – ${c.events.photoFallback} ${i + 1}`
+                }
                 loading="lazy"
                 decoding="async"
                 className="h-full w-full object-contain"
@@ -569,6 +617,8 @@ function GatheringPhotoCarousel({
 
 function GatheringAftermovie({ ev }: { ev: PsngEvent }) {
   const [playing, setPlaying] = useState(false);
+  const c = useCopy();
+  const locale = useLocale();
   const a = ev.assets ?? {};
   if (!a.youtubeUrl) return null;
   const embed = getYouTubeEmbedUrl(a.youtubeUrl);
@@ -578,7 +628,7 @@ function GatheringAftermovie({ ev }: { ev: PsngEvent }) {
       {playing && embed ? (
         <iframe
           src={embed}
-          title={`Aftermovie: ${ev.title}`}
+          title={`${c.events.shortTitle}: ${pick(ev.title, locale)}`}
           className="absolute inset-0 h-full w-full"
           allow="autoplay; encrypted-media; picture-in-picture"
           allowFullScreen
@@ -588,7 +638,7 @@ function GatheringAftermovie({ ev }: { ev: PsngEvent }) {
           type="button"
           onClick={() => setPlaying(true)}
           className="group absolute inset-0 flex items-center justify-center"
-          aria-label={`Aftermovie abspielen: ${ev.title}`}
+          aria-label={`${c.events.playAftermovie} ${pick(ev.title, locale)}`}
         >
           {a.youtubeThumbnail && (
             <img
@@ -666,7 +716,10 @@ function GatheringShort({
 
 /** Große Feature-Karte für ein einzelnes, besonders großes vergangenes Event (Aftermovie + Foto-Karussell). */
 function GatheringFeatureCard({ ev }: { ev: PsngEvent }) {
+  const c = useCopy();
+  const locale = useLocale();
   const a = ev.assets ?? {};
+  const title = pick(ev.title, locale);
 
   return (
     <div className="overflow-hidden rounded-xl border border-border/60 bg-card hover:shadow-lg transition-shadow">
@@ -676,22 +729,32 @@ function GatheringFeatureCard({ ev }: { ev: PsngEvent }) {
             <ColumnChip column={ev.column} />
             {ev.highlightBadge && (
               <span className="rounded-full gradient-psychedelic px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
-                {ev.highlightBadge}
+                {pick(ev.highlightBadge, locale)}
               </span>
             )}
             {ev.partnerCredit && <CreditBadge credit={ev.partnerCredit} />}
-            <span>{formatEventDate(ev.date)}</span>
+            <span>{formatEventDate(ev.date, locale)}</span>
           </div>
 
-          <h3 className="text-xl font-semibold leading-snug">{ev.title}</h3>
-          {ev.location ? <p className="text-sm text-muted-foreground">{ev.location}</p> : null}
-          {ev.description ? <p className="text-sm text-muted-foreground">{ev.description}</p> : null}
+          <h3 className="text-xl font-semibold leading-snug">{title}</h3>
+          {ev.location ? (
+            <p className="text-sm text-muted-foreground">
+              {pick(ev.location, locale)}
+            </p>
+          ) : null}
+          {ev.description ? (
+            <p className="text-sm text-muted-foreground">
+              {pick(ev.description, locale)}
+            </p>
+          ) : null}
           {(a.attendees || a.rating || a.recommendPercent) && (
             <p className="text-sm text-muted-foreground">
               {[
-                a.attendees ? `${a.attendees} Teilnehmende` : null,
-                a.rating ? `${a.rating} Bewertung` : null,
-                a.recommendPercent ? `${a.recommendPercent}% Weiterempfehlung` : null,
+                a.attendees ? `${a.attendees} ${c.events.attendees}` : null,
+                a.rating ? `${a.rating} ${c.events.rating}` : null,
+                a.recommendPercent
+                  ? `${a.recommendPercent}% ${c.events.recommend}`
+                  : null,
               ]
                 .filter(Boolean)
                 .join(" · ")}
@@ -700,14 +763,14 @@ function GatheringFeatureCard({ ev }: { ev: PsngEvent }) {
         </div>
 
         {a.shortsUrl ? (
-          <GatheringShort url={a.shortsUrl} title={ev.title} thumbnail={a.shortsThumbnail} />
+          <GatheringShort url={a.shortsUrl} title={title} thumbnail={a.shortsThumbnail} />
         ) : null}
       </div>
 
       <div className="flex flex-col gap-4 p-5">
         {a.youtubeUrl ? <GatheringAftermovie ev={ev} /> : null}
         {a.photos?.length ? (
-          <GatheringPhotoCarousel photos={a.photos} alts={a.photoAlts} title={ev.title} />
+          <GatheringPhotoCarousel photos={a.photos} alts={a.photoAlts} title={title} />
         ) : null}
         {isLumaLink(ev.registrationUrl) && (
           <a
@@ -716,7 +779,7 @@ function GatheringFeatureCard({ ev }: { ev: PsngEvent }) {
             rel="noopener noreferrer"
             className="text-sm font-medium text-primary hover:underline"
           >
-            Event auf Luma ansehen →
+            {c.events.lumaLink}
           </a>
         )}
       </div>
@@ -743,19 +806,24 @@ const RAIL_X = "left-[0.75rem] md:left-[7.25rem]";
  * schmal und gestrichelt: Die Aussage ist der Takt, nicht der Inhalt.
  */
 function SeriesRow({ series }: { series: SeriesDate }) {
+  const c = useCopy();
+  const locale = useLocale();
   return (
     <div className="rounded-xl border border-dashed border-border bg-card/50 px-5 py-4">
       <div className="mb-2 flex flex-wrap items-center gap-2">
         <ColumnChip column={series.column} />
         <span className="text-xs text-muted-foreground md:hidden">
-          {formatEventDate(series.date)} · {formatRelativeToToday(series.date)}
+          {formatEventDate(series.date, locale)} ·{" "}
+          {formatRelativeToToday(series.date, locale)}
         </span>
       </div>
       <p className="font-heading text-base font-semibold text-foreground">
-        {series.label}
+        {series.labelKey === "semesterStart"
+          ? c.events.seriesSemesterLabel
+          : c.events.seriesLabel}
       </p>
       <p className="mt-1 text-sm text-muted-foreground">
-        {series.time} · {series.location} – {LECTURE_SERIES.note}
+        {series.time} · {series.location} – {c.events.seriesNote}
       </p>
     </div>
   );
@@ -800,13 +868,14 @@ function PartnerLinkedText({
 
 /** Meilenstein: kein Termin, sondern etwas, das seitdem da ist. */
 function MilestoneCard({ milestone }: { milestone: PsngMilestone }) {
+  const locale = useLocale();
   return (
     <div className="rounded-2xl border border-border bg-card p-6 hover:shadow-lg transition-shadow">
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <ColumnChip column={milestone.column} />
         {milestone.badge && (
           <span className="rounded-full gradient-psychedelic px-2.5 py-0.5 text-xs font-heading font-medium text-primary-foreground">
-            {milestone.badge}
+            {pick(milestone.badge, locale)}
           </span>
         )}
         {milestone.partner && (
@@ -818,7 +887,7 @@ function MilestoneCard({ milestone }: { milestone: PsngMilestone }) {
           />
         )}
         <span className="text-xs text-muted-foreground md:hidden">
-          {formatEventDate(milestone.date)}
+          {formatEventDate(milestone.date, locale)}
         </span>
       </div>
       {milestone.image && (
@@ -835,13 +904,16 @@ function MilestoneCard({ milestone }: { milestone: PsngMilestone }) {
         </div>
       )}
       <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
-        {milestone.title}
+        {pick(milestone.title, locale)}
       </h3>
       <p className="text-sm text-muted-foreground leading-relaxed">
         {milestone.partner ? (
-          <PartnerLinkedText text={milestone.description} partner={milestone.partner} />
+          <PartnerLinkedText
+            text={pick(milestone.description, locale)}
+            partner={milestone.partner}
+          />
         ) : (
-          milestone.description
+          pick(milestone.description, locale)
         )}
       </p>
       {milestone.links?.length ? (
@@ -854,7 +926,7 @@ function MilestoneCard({ milestone }: { milestone: PsngMilestone }) {
               rel="noopener noreferrer"
               className="text-sm font-medium text-primary hover:underline"
             >
-              {link.label} →
+              {pick(link.label, locale)} →
             </a>
           ))}
         </div>
@@ -891,6 +963,7 @@ function TimelineRow({
   /** Der nächste anstehende Termin – der einzige Eintrag mit vollem Akzent. */
   isNext: boolean;
 }) {
+  const locale = useLocale();
   const dot = upcoming
     ? isNext
       ? "border-2 border-primary bg-background ring-4 ring-primary/10"
@@ -908,11 +981,11 @@ function TimelineRow({
     >
       <div className="hidden pr-4 pt-1 text-right md:block">
         <p className="font-heading text-sm font-medium text-foreground">
-          {formatEventDateShort(entry.date)}
+          {formatEventDateShort(entry.date, locale)}
         </p>
         {upcoming && (
           <p className="text-xs text-muted-foreground">
-            {formatRelativeToToday(entry.date)}
+            {formatRelativeToToday(entry.date, locale)}
           </p>
         )}
       </div>
@@ -961,16 +1034,17 @@ function TimelineList({
 }
 
 function TodayMarker() {
+  const c = useCopy();
   return (
     <div className={`${ROW_GRID} my-1 items-center`}>
       <p className="hidden pr-4 text-right font-heading text-xs uppercase tracking-[0.2em] text-primary/70 md:block">
-        heute
+        {c.events.today}
       </p>
       <div className="flex items-center justify-center">
         <span aria-hidden="true" className="h-px w-full bg-primary/30" />
       </div>
       <p className="pl-3 font-heading text-xs uppercase tracking-[0.2em] text-primary/70 md:hidden">
-        heute
+        {c.events.today}
       </p>
     </div>
   );
@@ -981,18 +1055,13 @@ function TodayMarker() {
 const filters = ["alle", "vortraege", "community"] as const;
 type Filter = (typeof filters)[number];
 
-const filterLabels: Record<Filter, string> = {
-  alle: "Alle",
-  vortraege: eventColumnLabels.vortraege,
-  community: eventColumnLabels.community,
-};
-
 /** Ab wie vielen vergangenen Einträgen der Rest hinter „Mehr anzeigen" liegt. */
 const PAST_PAGE_SIZE = 8;
 
 const EventsSection = () => {
   // Der Filter liegt in der URL, damit man auf eine gefilterte Ansicht
   // verlinken kann und der Zurück-Button den Wechsel rückgängig macht.
+  const c = useCopy();
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -1014,6 +1083,11 @@ const EventsSection = () => {
   // Die kommenden Einträge laufen von fern nach nah auf heute zu – der nächste
   // Termin steht also ganz unten.
   const nextId = upcomingShown.at(-1)?.id;
+  const filterLabels: Record<Filter, string> = {
+    alle: c.events.filters.all,
+    vortraege: c.events.filters.talks,
+    community: c.events.filters.community,
+  };
 
   const selectFilter = (next: Filter) => {
     const params = new URLSearchParams(searchParams);
@@ -1034,12 +1108,11 @@ const EventsSection = () => {
     <section id="events" className="py-24 md:py-32">
       <div className="container mx-auto max-w-6xl px-6">
         <SectionHeader
-          eyebrow="Events"
-          title="Veranstaltungen"
+          eyebrow={c.events.eyebrow}
+          title={c.events.title}
           intro={
             <>
-              Vorträge, Treffen und Konferenzbesuche – chronologisch, von jetzt
-              rückwärts. (Zoom-)Links zur Teilnahme gibt's über{" "}
+              {c.events.introBefore}
               <a
                 href={WHATSAPP_LINK}
                 target="_blank"
@@ -1047,8 +1120,8 @@ const EventsSection = () => {
                 className="text-primary underline hover:no-underline"
               >
                 WhatsApp
-              </a>{" "}
-              und{" "}
+              </a>
+              {c.events.introMiddle}
               <a
                 href={INSTAGRAM_LINK}
                 target="_blank"
@@ -1057,15 +1130,18 @@ const EventsSection = () => {
               >
                 Instagram
               </a>
-              .
+              {c.events.introAfter}
             </>
           }
         />
 
         <p className="mx-auto mb-8 max-w-3xl text-center text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">Lectures:</span> jeden 1.
-          Dienstag im Monat, {LECTURE_SERIES.time} Uhr, auf {LECTURE_SERIES.location}.
-          Fachlicher Input aus der Community und von eingeladenen Expert:innen.
+          <span className="font-medium text-foreground">
+            {c.events.seriesNoteBefore}
+          </span>{" "}
+          {c.events.seriesNoteEvery} {LECTURE_SERIES.time} {c.events.seriesNoteClock}{" "}
+          {c.events.seriesNoteOn} {LECTURE_SERIES.location}.{" "}
+          {c.events.seriesNoteAfter}
         </p>
 
         <div className="mb-10 flex justify-center">
@@ -1105,25 +1181,23 @@ const EventsSection = () => {
                 onClick={() => setShowAll(true)}
                 className="rounded-md border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
               >
-                Mehr anzeigen ({pastMatching.length - pastShown.length})
+                {c.events.showMore} ({pastMatching.length - pastShown.length})
               </button>
             </div>
           )}
         </div>
 
         <div className="mt-14 rounded-2xl border border-border/60 bg-muted/40 p-8 text-center">
-          <h3 className="text-xl font-semibold">Du willst selbst eine Lecture geben?</h3>
+          <h3 className="text-xl font-semibold">{c.events.ownLectureTitle}</h3>
           <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
-            Unsere Lectures kommen aus der Community – Bachelor-, Master- oder
-            Promotionsthemen, ein spannendes Paper, ein eigenes Projekt. Melde dich,
-            wir geben dir die Bühne.
+            {c.events.ownLectureText}
           </p>
           <div className="mt-5 flex flex-wrap justify-center gap-3">
             <Link
               to="/?subject=vortrag#kontakt"
               className="rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
             >
-              Vortrag vorschlagen
+              {c.events.proposeTalk}
             </Link>
             <a
               href={WHATSAPP_LINK}
@@ -1131,7 +1205,7 @@ const EventsSection = () => {
               rel="noopener noreferrer"
               className="rounded-md border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
             >
-              In der WhatsApp-Community melden
+              {c.events.askInWhatsapp}
             </a>
           </div>
         </div>

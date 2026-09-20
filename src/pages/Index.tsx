@@ -12,8 +12,27 @@ import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import PartnerStripe from "@/components/PartnerStripe";
 import { WHATSAPP_LINK } from "@/lib/links";
+import { useCopy } from "@/i18n/copy";
+import { useLocale } from "@/i18n/locale";
+import { useDocumentHead } from "@/i18n/head";
 
 const Index = () => {
+  const c = useCopy();
+  const locale = useLocale();
+  useDocumentHead({
+    locale,
+    routeKey: "home",
+    title: c.meta.home.title,
+    description: c.meta.home.description,
+  });
+
+  // Ziele und Nummern gehören zur Gestaltung, die Texte nach copy.ts.
+  const stepTargets = {
+    join: { href: WHATSAPP_LINK, external: true },
+    events: { href: "#events", external: false },
+    start: { href: "#leitfaden", external: false },
+  } as const;
+
   return (
     <div className="relative min-h-screen">
       <div
@@ -40,38 +59,20 @@ const Index = () => {
             transition={{ duration: 0.6 }}
             className="max-w-3xl mx-auto text-center mb-10"
           >
-            <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary mb-4">Neu hier?</p>
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">So machst du mit</h2>
+            <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary mb-4">
+              {c.onboarding.eyebrow}
+            </p>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
+              {c.onboarding.title}
+            </h2>
           </motion.div>
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {[
-              {
-                num: "01",
-                title: "Community beitreten",
-                desc: "Tritt unserer WhatsApp-Gruppe bei und vernetze dich mit 250+ Studierenden aus ganz Deutschland.",
-                href: WHATSAPP_LINK,
-                external: true,
-                cta: "WhatsApp beitreten",
-              },
-              {
-                num: "02",
-                title: "Events & Calls besuchen",
-                desc: "Nimm an monatlichen Lectures und Community Calls teil – online, kostenlos, offen für alle.",
-                href: "#events",
-                external: false,
-                cta: "Termine ansehen",
-              },
-              {
-                num: "03",
-                title: "Lokalgruppe starten",
-                desc: "Bring psychedelische Wissenschaft an deine Hochschule. Wir helfen dir beim Aufbau.",
-                href: "#leitfaden",
-                external: false,
-                cta: "Leitfaden lesen",
-              },
-            ].map((step, i) => (
+            {c.onboarding.steps.map((step, i) => {
+              const target = stepTargets[step.key as keyof typeof stepTargets];
+              return (
+
               <motion.div
-                key={step.num}
+                key={step.key}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -79,19 +80,20 @@ const Index = () => {
                 className="bg-card rounded-2xl p-6 border border-border flex flex-col"
               >
                 <span className="font-heading text-xs font-bold text-primary bg-primary/10 rounded-full w-8 h-8 flex items-center justify-center mb-4">
-                  {step.num}
+                  {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="font-heading text-base font-semibold text-foreground mb-2">{step.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed flex-1">{step.desc}</p>
                 <a
-                  href={step.href}
-                  {...(step.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  href={target.href}
+                  {...(target.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className="mt-4 inline-flex items-center text-xs font-medium text-primary hover:underline"
                 >
                   {step.cta} →
                 </a>
               </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -111,10 +113,10 @@ const Index = () => {
             className="max-w-xl mx-auto text-center bg-foreground rounded-2xl p-10"
           >
             <h3 className="font-heading text-2xl font-bold text-background mb-3">
-              Noch nicht dabei?
+              {c.midCta.title}
             </h3>
             <p className="text-background/70 font-body mb-6">
-              Tritt unserer WhatsApp-Community bei und vernetze dich mit 250+ Studierenden aus 13+ Städten.
+              {c.midCta.text}
             </p>
             <a
               href={WHATSAPP_LINK}
@@ -122,7 +124,7 @@ const Index = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-8 py-3 rounded-lg gradient-psychedelic text-primary-foreground font-heading font-medium text-sm hover:opacity-90 transition-opacity"
             >
-              WhatsApp beitreten
+              {c.midCta.cta}
             </a>
           </motion.div>
         </div>

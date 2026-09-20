@@ -8,6 +8,7 @@ import psychedelicGermanyLogo from "@/assets/Psychedelic-Germany-Logo.webp";
 import nachtschattenLogo from "@/assets/Nachtschatten-Logo.webp";
 import psychedeliaStiftungLogo from "@/assets/Psychedelia-Stiftung-Logo.webp";
 import { BPSA_LINK, PARAB_LINK } from "@/lib/links";
+import { useCopy } from "@/i18n/copy";
 
 const partners = [
   // Die BPSA zuerst: Mit ihr zusammen laufen die Lectures und das erste eigene
@@ -24,11 +25,13 @@ const partners = [
   { name: "Psychedelia Stiftung", logo: psychedeliaStiftungLogo, url: "https://psychedelia-stiftung.de/" },
 ];
 
-const PartnerStripe = () => (
+const PartnerStripe = () => {
+  const c = useCopy();
+  return (
   <div className="bg-white border-y border-border/40 py-6">
     <div className="container mx-auto px-6">
       <p className="font-heading text-xs uppercase tracking-[0.2em] text-foreground/35 text-center mb-5">
-        In Kooperation mit
+        {c.partners.stripeLabel}
       </p>
       <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
         {partners.map((partner) => (
@@ -53,7 +56,8 @@ const PartnerStripe = () => (
         ))}
       </div>
     </div>
-  </div>
-);
+    </div>
+  );
+};
 
 export default PartnerStripe;

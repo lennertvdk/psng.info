@@ -4,6 +4,8 @@ import {
   PARAB_LINK,
   WHATSAPP_LINK,
 } from "@/lib/links";
+import type { Locale } from "@/i18n/locale";
+import { intlLocale, pick, type Localized } from "@/i18n/localized";
 import trypPhoto1 from "@/assets/tryp-1.webp";
 import icprPhoto from "@/assets/icpr-1.webp";
 import bpsaLogo from "@/assets/BPSA-Logo.webp";
@@ -53,20 +55,6 @@ export type EventCategory =
 /** Die Spalten der Events-Sektion – Einordnung nach Veranstaltungstyp, nicht nach Speaker-Status. */
 export type EventColumn = "vortraege" | "community";
 
-export const eventColumnLabels: Record<EventColumn, string> = {
-  vortraege: "Vorträge",
-  community: "Community",
-};
-
-/**
- * Dieselbe Achse, aber im Singular. Der Filter darüber fasst mehrere Einträge
- * zusammen ("Vorträge"), eine einzelne Karte ist genau einer ("Vortrag").
- */
-export const eventColumnCardLabels: Record<EventColumn, string> = {
-  vortraege: "Vortrag",
-  community: "Community",
-};
-
 /**
  * Vortragssprache, ausgewiesen nur dort, wo sie von der Seitensprache abweicht.
  * Der Hinweis erklärt zugleich, warum Beschreibung und Kurzvita einer solchen
@@ -74,19 +62,9 @@ export const eventColumnCardLabels: Record<EventColumn, string> = {
  * ihn zu übersetzen. Bewusst als Satz und nicht als Chip – die Chips daneben
  * sortieren die Karte ein, das hier sagt etwas über ihren Inhalt.
  */
-export type EventLanguage = "en";
-
-export const eventLanguageLabels: Record<EventLanguage, string> = {
-  en: "Englisch",
-};
+export type EventLanguage = "de" | "en";
 
 export type SpeakerType = "student" | "gast";
-
-/** Badge innerhalb der Vorträge-Spalte, rein beschreibend, ohne Rangfolge. */
-export const speakerTypeLabels: Record<SpeakerType, string> = {
-  student: "Studentisch",
-  gast: "Expertenvortrag",
-};
 
 /** Farbwelt eines Partner-Chips; die Klassen dazu heißen `badge-*` in index.css. */
 export type PartnerTone = "bpsa" | "parab";
@@ -99,12 +77,12 @@ export type PartnerTone = "bpsa" | "parab";
 export interface PsngMilestone {
   id: string;
   date: string;
-  title: string;
-  description: string;
+  title: Localized;
+  description: Localized;
   /** Gleiche Achse wie bei Events, damit der Filter auch Meilensteine erfasst. */
   column: EventColumn;
   /** Kurzes Label auf dem Verlaufs-Chip, z. B. "Launch". */
-  badge?: string;
+  badge?: Localized;
   /**
    * Organisation, die den Meilenstein mitgetragen hat, als Chip in der
    * Kopfzeile. Anders als ein Event bekommt ein Meilenstein keine Fußleiste:
@@ -113,7 +91,7 @@ export interface PsngMilestone {
   partner?: { short: string; name: string; url: string; tone: PartnerTone };
   /** Vorschaubild, 16:9, lokal im Repo – z. B. ein Screengrab des Launches. */
   image?: string;
-  links?: { label: string; url: string }[];
+  links?: { label: Localized; url: string }[];
 }
 
 /**
@@ -132,16 +110,20 @@ export const LECTURE_SERIES = {
   time: "19:00 – 20:00",
   location: "Zoom",
   column: "vortraege" as EventColumn,
-  label: "PSNG Lecture",
-  note: "Termin steht. Thema und Speaker geben wir rechtzeitig bekannt.",
 };
+
+/**
+ * Anlass eines Reihentermins, der einen eigenen Namen trägt. Als Schlüssel und
+ * nicht als Text: Der Name steht in copy.ts und damit in beiden Sprachen.
+ */
+export type SeriesLabelKey = "semesterStart";
 
 /** Ein Monat, in dem die Reihe bewusst vom Takt abweicht. */
 export interface SeriesOverride {
   /** Gilt in seinem Monat anstelle des berechneten Termins. */
   date: string;
   /** Ersetzt das Standardlabel, wenn der Anlass einen eigenen Namen hat. */
-  label?: string;
+  labelKey?: SeriesLabelKey;
 }
 
 /**
@@ -153,7 +135,7 @@ export interface SeriesOverride {
  * eine Karte gefüllt, in der die Hälfte der Felder leer bleibt.
  */
 export const SERIES_OVERRIDES: SeriesOverride[] = [
-  { date: "2026-10-20", label: "PSNG Lecture zum Semesterauftakt" },
+  { date: "2026-10-20", labelKey: "semesterStart" },
 ];
 
 /** Ein berechneter Termin der Reihe – kein Event, solange kein Thema feststeht. */
@@ -163,7 +145,8 @@ export interface SeriesDate {
   time: string;
   location: string;
   column: EventColumn;
-  label: string;
+  /** Fehlt er, gilt der Standardname der Reihe. */
+  labelKey?: SeriesLabelKey;
 }
 
 export interface EventAssets {
@@ -172,7 +155,7 @@ export interface EventAssets {
   slidesUrl?: string;
   photos?: string[];
   /** Alt-Texte parallel zu `photos`, gleicher Index. Fehlt einer, greift ein generischer Fallback. */
-  photoAlts?: string[];
+  photoAlts?: Localized[];
   attendees?: number;
   /** Durchschnittsbewertung der Teilnehmenden, z. B. "9/10". */
   rating?: string;
@@ -182,7 +165,7 @@ export interface EventAssets {
   speakerLinkedinUrl?: string;
   /** Link zu einer externen Website (z. B. Partner-Konferenz), mit eigenem Linktext. */
   externalUrl?: string;
-  externalLabel?: string;
+  externalLabel?: Localized;
   /** Portraitfoto des Speakers, quadratisch dargestellt. */
   speakerPhoto?: string;
   /**
@@ -223,34 +206,44 @@ export interface PartnerCredit {
    * Entfällt, wo die Karte das ohnehin schon sagt – etwa bei einem Vortrag,
    * der auf den gemeinsam veranstalteten Abend verweist, aus dem er stammt.
    */
-  role?: string;
+  role?: Localized;
   url?: string;
   instagramUrl?: string;
 }
 
 export interface PsngEvent {
   id: string;
-  title: string;
+  title: Localized;
   /** Leitfrage oder Untertitel, steht direkt unter dem Titel. */
-  subtitle?: string;
+  subtitle?: Localized;
   category: EventCategory;
   column: EventColumn;
   date: string;
-  /** optionaler Wochentag, wird der formatierten Datumsangabe vorangestellt (z. B. "Samstag") */
-  weekdayLabel?: string;
-  time: string;
+  /**
+   * Stellt der Datumsangabe den Wochentag voran. Bewusst ein Schalter und kein
+   * Text: Der Wochentag steht bereits im Datum und wird von `Intl` in der
+   * jeweiligen Sprache benannt – als Feld müsste man ihn zweimal pflegen und
+   * könnte ihn falsch pflegen.
+   */
+  showWeekday?: boolean;
+  time: Localized;
   endDate?: string;
-  location?: string;
+  location?: Localized;
   speaker?: string;
   speakerType?: SpeakerType;
-  /** Vortragssprache, wenn sie nicht Deutsch ist. */
+  /**
+   * Sprache des Vortrags. Fehlt sie, gilt Deutsch. Der Hinweis erscheint nur,
+   * wo sie von der Sprache der Seite abweicht – wer die Seite auf Englisch
+   * liest, soll erfahren, dass eine Aufzeichnung auf Deutsch ist, und
+   * umgekehrt. Steht beides im Einklang, wäre der Satz nur Rauschen.
+   */
   language?: EventLanguage;
   /** verlinkt den Namen des Speakers in der Karte (z. B. persönliche Website) */
   speakerWebsiteUrl?: string;
   /** Kurzvita des Speakers, getrennt von der inhaltlichen Beschreibung. */
-  speakerBio?: string;
+  speakerBio?: Localized;
   /** kurzes Label für besonders hervorgehobene Events (z. B. "Erstes eigenes In-Person-Event") */
-  highlightBadge?: string;
+  highlightBadge?: Localized;
   /** hebt das Event in den Aufnahmen hervor (z. B. der Kick-off) */
   featured?: boolean;
   /** rendert das Event in den vergangenen Events als große Feature-Karte (Foto-Karussell + Video), statt im normalen 2-Spalten-Grid */
@@ -268,16 +261,16 @@ export interface PsngEvent {
    * sich steht – der Abend drumherum soll darüber nicht verloren gehen.
    */
   partOfEventId?: string;
-  description?: string;
+  description?: Localized;
   /** kurzer Hinweis, für wen das Event gedacht ist, direkt unter der Beschreibung */
-  audienceNote?: string;
+  audienceNote?: Localized;
   /** Teilnahmebeitrag, in der Datum/Ort-Faktenzeile angezeigt */
-  contribution?: string;
+  contribution?: Localized;
   /** kursiver Hinweis am Kartenende (z. B. "Vorläufiges Programm, Änderungen möglich.") */
-  disclaimer?: string;
+  disclaimer?: Localized;
   registrationUrl?: string;
   /** überschreibt den Standard-Button-Text "Jetzt anmelden" (z. B. "Zoom-Link" bei Online-Talks) */
-  registrationLabel?: string;
+  registrationLabel?: Localized;
   assets?: EventAssets;
 }
 
@@ -285,15 +278,17 @@ export const events: PsngEvent[] = [
   // ── Kick-off ──────────────────────────────────────────────────────────────
   {
     id: "kickoff-2026-03-03",
-    title: "Kick-off: Was macht das PSNG?",
+    title: { de: "Kick-off: Was macht das PSNG?", en: "Kick-off: what does the PSNG do?" },
     category: "kickoff",
     column: "community",
     date: "2026-03-03",
     time: "19:00 – 20:00",
     speaker: "PSNG-Team",
     featured: true,
-    description:
-      "Unser allererstes Event – und ein besonderer Moment. Beim Kick-off hat sich das PSNG erstmals vorgestellt: wer wir sind, was unsere Mission ist und wie du aktiv werden, einer Lokalgruppe beitreten oder deine eigene gründen kannst. Danke an alle, die dabei waren!",
+    description: {
+      de: "Unser allererstes Event – und ein besonderer Moment. Beim Kick-off hat sich das PSNG erstmals vorgestellt: wer wir sind, was unsere Mission ist und wie du aktiv werden, einer Lokalgruppe beitreten oder deine eigene gründen kannst. Danke an alle, die dabei waren!",
+      en: "Our very first event, and a special moment. At the kick-off the PSNG introduced itself: who we are, what our mission is, and how you can get involved, join a local group or start one of your own. Thank you to everyone who came!",
+    },
     assets: {
       youtubeUrl: "https://www.youtube.com/watch?v=fH9gMcj65l4",
       youtubeThumbnail: ytKickoff,
@@ -308,10 +303,12 @@ export const events: PsngEvent[] = [
     category: "other",
     column: "community",
     date: "2026-05-16",
-    time: "ganztägig",
+    time: { de: "ganztägig", en: "all day" },
     location: "Funkhaus Berlin",
-    description:
-      "Europas größtes Event an der Schnittstelle von Psychedelika-Forschung, Mental Health und Bewusstseinskultur: 80+ Speaker, 150+ Aussteller, drei Tage Funkhaus Berlin. Das PSNG hat sich dort als Community getroffen: gemeinsamer Besuch, Banner, und Mittagessen.",
+    description: {
+      de: "Europas größtes Event an der Schnittstelle von Psychedelika-Forschung, Mental Health und Bewusstseinskultur: 80+ Speaker, 150+ Aussteller, drei Tage Funkhaus Berlin. Das PSNG hat sich dort als Community getroffen: gemeinsamer Besuch, Banner, und Mittagessen.",
+      en: "Europe's largest event at the intersection of psychedelic research, mental health and consciousness culture: 80+ speakers, 150+ exhibitors, three days at Funkhaus Berlin. The PSNG met up there as a community — we went together, brought a banner and had lunch.",
+    },
     assets: {
       photos: [trypPhoto1],
       externalUrl: "https://tryp.de",
@@ -324,10 +321,12 @@ export const events: PsngEvent[] = [
     category: "other",
     column: "community",
     date: "2026-06-05",
-    time: "ganztägig",
+    time: { de: "ganztägig", en: "all day" },
     location: "Haarlem",
-    description:
-      "International Conference on Psychedelic Research: Europas wichtigste wissenschaftliche Konferenz für Psychedelika-Forschung. Das PSNG hat sich auch hier als Gruppe getroffen, ein wichtiger Schritt in der Vernetzung mit der europäischen Forschungscommunity.",
+    description: {
+      de: "International Conference on Psychedelic Research: Europas wichtigste wissenschaftliche Konferenz für Psychedelika-Forschung. Das PSNG hat sich auch hier als Gruppe getroffen, ein wichtiger Schritt in der Vernetzung mit der europäischen Forschungscommunity.",
+      en: "International Conference on Psychedelic Research: Europe's most important scientific conference on psychedelic research. The PSNG met up here as a group too — an important step in connecting with the European research community.",
+    },
     assets: {
       photos: [icprPhoto],
       externalUrl: "https://icpr-conference.com",
@@ -363,8 +362,11 @@ export const events: PsngEvent[] = [
     time: "19:00 – 20:00",
     speaker: "Eric Lonergan, PhD cand.",
     speakerType: "student",
-    description:
-      "Ein breiter Überblick: Was Psychedelika sind und wie sie im Gehirn wirken – wie sie Wahrnehmung verändern und psychische Erkrankungen behandeln können. Eric forscht am Decision Circuits Lab (Einstein Center for Neurosciences Berlin) zu den neuronalen und serotonergen Mechanismen von Halluzinationen.",
+    language: "en",
+    description: {
+      de: "Ein breiter Überblick: Was Psychedelika sind und wie sie im Gehirn wirken – wie sie Wahrnehmung verändern und psychische Erkrankungen behandeln können. Eric forscht am Decision Circuits Lab (Einstein Center for Neurosciences Berlin) zu den neuronalen und serotonergen Mechanismen von Halluzinationen.",
+      en: "A broad overview: what psychedelics are and how they act in the brain — how they alter perception and how they can treat mental illness. Eric researches the neural and serotonergic mechanisms of hallucinations at the Decision Circuits Lab (Einstein Center for Neurosciences Berlin).",
+    },
     // Ohne `role`: Die Beschreibung darüber sagt schon, worum es ging, und wer
     // den Abend getragen hat, steht in der Überschrift der Leiste.
     partnerCredit: {
@@ -383,22 +385,31 @@ export const events: PsngEvent[] = [
   },
   {
     id: "lecture-5",
-    title: "Ein realitätsnaher Blick auf die aktuelle Therapieforschung mit Psychedelika",
-    subtitle:
-      "Wie steht es um den tatsächlichen Nutzen für Psychiatrie und Psychotherapie und die Implementierung in das Medizinsystem?",
+    title: {
+      de: "Ein realitätsnaher Blick auf die aktuelle Therapieforschung mit Psychedelika",
+      en: "A realistic look at current psychedelic therapy research",
+    },
+    subtitle: {
+      de: "Wie steht es um den tatsächlichen Nutzen für Psychiatrie und Psychotherapie und die Implementierung in das Medizinsystem?",
+      en: "What is the actual benefit for psychiatry and psychotherapy, and how would it be implemented in the health system?",
+    },
     category: "lecture",
     column: "vortraege",
     date: "2026-08-11",
-    weekdayLabel: "Dienstag",
+    showWeekday: true,
     time: "19:30 – 20:30",
     location: "Zoom",
     speaker: "Prof. Dr. Torsten Passie",
     speakerType: "gast",
     speakerWebsiteUrl: "http://psychedelic-science.org/",
-    description:
-      "Ein nüchterner Blick auf Wirksamkeit, Methodikkritik und die Grenzen der aktuellen Psychedelika-Forschung.",
-    speakerBio:
-      "Torsten Passie ist apl. Professor für Psychiatrie und Psychotherapie an der Medizinischen Hochschule Hannover und Visiting Scientist an der Goethe-Universität Frankfurt am Main. Er forscht seit mehr als 35 Jahren zu Psychedelika und gilt international als anerkannter Experte für die Pharmakologie und therapeutische Anwendung halluzinogener und entaktogener Substanzen.",
+    description: {
+      de: "Ein nüchterner Blick auf Wirksamkeit, Methodikkritik und die Grenzen der aktuellen Psychedelika-Forschung.",
+      en: "A sober look at efficacy, methodological criticism and the limits of current psychedelic research.",
+    },
+    speakerBio: {
+      de: "Torsten Passie ist apl. Professor für Psychiatrie und Psychotherapie an der Medizinischen Hochschule Hannover und Visiting Scientist an der Goethe-Universität Frankfurt am Main. Er forscht seit mehr als 35 Jahren zu Psychedelika und gilt international als anerkannter Experte für die Pharmakologie und therapeutische Anwendung halluzinogener und entaktogener Substanzen.",
+      en: "Torsten Passie is adjunct professor of psychiatry and psychotherapy at Hannover Medical School and a visiting scientist at Goethe University Frankfurt. He has researched psychedelics for more than 35 years and is internationally recognised as an expert on the pharmacology and therapeutic use of hallucinogenic and entactogenic substances.",
+    },
     registrationUrl: "https://luma.com/jtglh7ct",
     assets: {
       speakerPhoto: torstenPassiePhoto,
@@ -407,28 +418,43 @@ export const events: PsngEvent[] = [
   {
     id: "lecture-6",
     title: "Logos und Ekstase. Zur Genealogie eines akademischen Tabus",
-    subtitle:
-      "Was hat die Geschichte des Denkens mit psychedelischer Erfahrung zu tun?",
+    subtitle: {
+      de: "Was hat die Geschichte des Denkens mit psychedelischer Erfahrung zu tun?",
+      en: "What does the history of thought have to do with psychedelic experience?",
+    },
     category: "lecture",
     column: "vortraege",
     date: "2026-09-08",
-    weekdayLabel: "Dienstag",
+    showWeekday: true,
     time: "19:00 – 20:30",
-    location:
-      "Zoom und vor Ort: HU Campus Nord, Leonor-Michaelis-Haus, 4. OG, Raum 503a",
+    location: {
+      de: "Zoom und vor Ort: HU Campus Nord, Leonor-Michaelis-Haus, 4. OG, Raum 503a",
+      en: "Zoom and in person: HU Campus Nord, Leonor-Michaelis-Haus, 4th floor, room 503a",
+    },
     speaker: "Miguel Estéfano Mora Vera, PhD cand.",
     speakerType: "student",
-    description:
-      "Ein interdisziplinärer Vortrag über Philosophie, Religion, Geschichte und die Frage, was überhaupt als legitime Form von Erkenntnis gilt.",
-    speakerBio:
-      "Philosoph, Musiker und Komponist. Er promoviert an der Universität Freiburg und lebt in Berlin.",
-    audienceNote: "Auf Deutsch. Kostenlos und offen für alle.",
+    language: "de",
+    description: {
+      de: "Ein interdisziplinärer Vortrag über Philosophie, Religion, Geschichte und die Frage, was überhaupt als legitime Form von Erkenntnis gilt.",
+      en: "An interdisciplinary talk on philosophy, religion, history, and the question of what counts as a legitimate form of knowledge in the first place.",
+    },
+    speakerBio: {
+      de: "Philosoph, Musiker und Komponist. Er promoviert an der Universität Freiburg und lebt in Berlin.",
+      en: "Philosopher, musician and composer. He is doing his doctorate at the University of Freiburg and lives in Berlin.",
+    },
+    audienceNote: {
+      de: "Kostenlos und offen für alle.",
+      en: "Free and open to everyone.",
+    },
     partnerCredit: {
       short: "BPSA",
       tone: "bpsa",
       name: "Berlin Psychedelic Science Association",
       logo: bpsaLogo,
-      role: "Eine Lecture der BPSA, gestreamt über das PSNG-Netzwerk.",
+      role: {
+        de: "Eine Lecture der BPSA, gestreamt über das PSNG-Netzwerk.",
+        en: "A BPSA lecture, streamed through the PSNG network.",
+      },
       url: BPSA_LINK,
       instagramUrl: BPSA_INSTAGRAM_LINK,
     },
@@ -436,7 +462,10 @@ export const events: PsngEvent[] = [
     // und auf Instagram geteilt. Der Button führt deshalb in die Community,
     // nicht auf ein Anmeldeformular.
     registrationUrl: WHATSAPP_LINK,
-    registrationLabel: "Zoom-Link via WhatsApp",
+    registrationLabel: {
+      de: "Zoom-Link via WhatsApp",
+      en: "Zoom link via WhatsApp",
+    },
     assets: {
       youtubeUrl: "https://www.youtube.com/watch?v=R4pILAsjxWM",
       youtubeThumbnail: ytMiguel,
@@ -456,7 +485,7 @@ export const events: PsngEvent[] = [
     category: "lecture",
     column: "vortraege",
     date: "2026-08-08",
-    weekdayLabel: "Samstag",
+    showWeekday: true,
     time: "16:00 – 20:00",
     location: "Molecule Office @ König Galerie, Alexandrinenstraße 118–121, 10969 Berlin",
     speaker: "Dr. Prateep Beed",
@@ -486,26 +515,46 @@ export const events: PsngEvent[] = [
   // ── Gatherings ────────────────────────────────────────────────────────────
   {
     id: "gathering-2026-08-08",
-    title: "Ein Abend rund um Psychedelika, Forschung, Verbindung & Austausch",
+    title: {
+      de: "Ein Abend rund um Psychedelika, Forschung, Verbindung & Austausch",
+      en: "An evening around psychedelics, research, connection & exchange",
+    },
     category: "gathering",
     column: "community",
-    highlightBadge: "Erstes eigenes In-Person-Event",
+    highlightBadge: {
+      de: "Erstes eigenes In-Person-Event",
+      en: "Our first in-person event",
+    },
     date: "2026-08-08",
-    weekdayLabel: "Samstag",
-    time: "16:00 bis 20:00 Uhr (Einlass ab 15:30)",
+    showWeekday: true,
+    time: {
+      de: "16:00 bis 20:00 Uhr (Einlass ab 15:30)",
+      en: "16:00 to 20:00 (doors from 15:30)",
+    },
     location: "Molecule Office @ König Galerie, Alexandrinenstraße 118–121, 10969 Berlin",
-    contribution: "5 bis 10 € empfohlen, freiwillig, niemand wird abgewiesen",
+    contribution: {
+      de: "5 bis 10 € empfohlen, freiwillig, niemand wird abgewiesen",
+      en: "€5–10 suggested, voluntary, nobody is turned away",
+    },
     registrationUrl: "https://luma.com/n6io5052",
-    description:
-      "Unser erstes eigenes In-Person-Treffen, gemeinsam mit der Berlin Psychedelic Science Association (BPSA), zu Gast im Molecule Office. Ein Abend zum Ankommen, Kennenlernen und Austauschen: mit einem Vortrag von Dr. Prateep Beed zu den prosozialen Effekten von Psychedelika, einem interaktiven Workshop von Eric Lonergan (PhD cand.) und Jennifer Them (PhD cand.), einem Impuls-Talk von Stela Malvasija, M.Sc. zur Integration und einer Klangmeditation mit Journalling, geleitet von Lucie André (Beyond Yoga) und Daniel Burckhardt (HRL). Durch den Abend führte Lennert van de Kreeke. Dazu ein mit viel Liebe selbstgemachtes veganes Fingerfood-Buffet und ein Büchertisch vom Nachtschatten Verlag mit psychedelischer Literatur zum Stöbern. Danach gemeinsames Abendessen auswärts für alle, die mochten. Danke an alle, die dabei waren!",
-    audienceNote: "Für Studierende und alle Interessierten, Vorwissen braucht ihr keins.",
+    description: {
+      de: "Unser erstes eigenes In-Person-Treffen, gemeinsam mit der Berlin Psychedelic Science Association (BPSA), zu Gast im Molecule Office. Ein Abend zum Ankommen, Kennenlernen und Austauschen: mit einem Vortrag von Dr. Prateep Beed zu den prosozialen Effekten von Psychedelika, einem interaktiven Workshop von Eric Lonergan (PhD cand.) und Jennifer Them (PhD cand.), einem Impuls-Talk von Stela Malvasija, M.Sc. zur Integration und einer Klangmeditation mit Journalling, geleitet von Lucie André (Beyond Yoga) und Daniel Burckhardt (HRL). Durch den Abend führte Lennert van de Kreeke. Dazu ein mit viel Liebe selbstgemachtes veganes Fingerfood-Buffet und ein Büchertisch vom Nachtschatten Verlag mit psychedelischer Literatur zum Stöbern. Danach gemeinsames Abendessen auswärts für alle, die mochten. Danke an alle, die dabei waren!",
+      en: "Our first in-person meet-up, together with the Berlin Psychedelic Science Association (BPSA) and hosted at the Molecule Office. An evening to arrive, meet people and talk: a lecture by Dr Prateep Beed on the prosocial effects of psychedelics, an interactive workshop by Eric Lonergan (PhD cand.) and Jennifer Them (PhD cand.), a short talk on integration by Stela Malvasija, M.Sc., and a sound meditation with journalling led by Lucie André (Beyond Yoga) and Daniel Burckhardt (HRL). Lennert van de Kreeke hosted the evening. Plus a lovingly home-made vegan finger-food buffet and a book table from Nachtschatten Verlag with psychedelic literature to browse. Afterwards, dinner out together for anyone who felt like it. Thank you to everyone who came!",
+    },
+    audienceNote: {
+      de: "Für Studierende und alle Interessierten, Vorwissen braucht ihr keins.",
+      en: "For students and anyone else interested — no prior knowledge needed.",
+    },
     featuredLarge: true,
     partnerCredit: {
       short: "BPSA",
       tone: "bpsa",
       name: "Berlin Psychedelic Science Association",
       logo: bpsaLogo,
-      role: "Gemeinsam von der BPSA und dem PSNG veranstaltet.",
+      role: {
+        de: "Gemeinsam von der BPSA und dem PSNG veranstaltet.",
+        en: "Organised jointly by the BPSA and the PSNG.",
+      },
       url: BPSA_LINK,
       instagramUrl: BPSA_INSTAGRAM_LINK,
     },
@@ -549,33 +598,33 @@ export const events: PsngEvent[] = [
         abendPhoto15,
       ],
       photoAlts: [
-        "Weitwinkelblick von der Empore auf den vollen Raum im Abschlusskreis",
-        "Gruppenfoto auf der Bühne",
-        "Sprecherin am Mikrofon zur Klangmeditation",
-        "Folie 'Prosocial Effects' während des Vortrags von Prateep Beed",
-        "Sprecher mit Klangschale während des Vortrags",
-        "Abschlusskreis im Innenraum",
-        "Loungebereich mit Gong für die Klangmeditation",
-        "Gruppe im Garten nach der Veranstaltung",
-        "Banner der Community am Eingang",
-        "Leuchtschild von Molecule am Eingang des Veranstaltungsorts",
-        "Vorbereiteter Raum mit Sitzkissen für den Workshop",
-        "Folie mit Vergleich potenzieller Risiken verschiedener Substanzen",
-        "Publikum aufmerksam beim Vortrag",
-        "Publikum vor der Folie zu Psilocybin",
-        "Teilnehmende im Gespräch beim Empfang",
-        "Teilnehmende im lebhaften Gespräch",
-        "Teilnehmende beim Get-together",
-        "Teilnehmerin im Gespräch",
-        "Teilnehmerinnen im herzlichen Gespräch",
-        "Reich gedeckter Fingerfood-Tisch im Garten",
-        "Veganes Fingerfood für den Abend",
-        "Büchertisch mit psychedelischer Literatur",
-        "Teilnehmerin im Garten des Veranstaltungsorts",
-        "Teilnehmende beim Austausch im Garten",
-        "Teilnehmende im Stehkreis zur Klangmeditation",
-        "Teilnehmende im Workshop auf dem Boden",
-        "Teilnehmer im Gespräch",
+        { de: "Weitwinkelblick von der Empore auf den vollen Raum im Abschlusskreis", en: "Wide view from the gallery of the full room in the closing circle" },
+        { de: "Gruppenfoto auf der Bühne", en: "Group photo on stage" },
+        { de: "Sprecherin am Mikrofon zur Klangmeditation", en: "Speaker at the microphone introducing the sound meditation" },
+        { de: "Folie 'Prosocial Effects' während des Vortrags von Prateep Beed", en: "Slide reading 'Prosocial Effects' during Prateep Beed's talk" },
+        { de: "Sprecher mit Klangschale während des Vortrags", en: "Speaker holding a singing bowl during the talk" },
+        { de: "Abschlusskreis im Innenraum", en: "Closing circle indoors" },
+        { de: "Loungebereich mit Gong für die Klangmeditation", en: "Lounge area with a gong for the sound meditation" },
+        { de: "Gruppe im Garten nach der Veranstaltung", en: "Group in the garden after the event" },
+        { de: "Banner der Community am Eingang", en: "Community banner at the entrance" },
+        { de: "Leuchtschild von Molecule am Eingang des Veranstaltungsorts", en: "Molecule's illuminated sign at the entrance to the venue" },
+        { de: "Vorbereiteter Raum mit Sitzkissen für den Workshop", en: "The room set up with floor cushions for the workshop" },
+        { de: "Folie mit Vergleich potenzieller Risiken verschiedener Substanzen", en: "Slide comparing the potential harms of different substances" },
+        { de: "Publikum aufmerksam beim Vortrag", en: "The audience listening to the talk" },
+        { de: "Publikum vor der Folie zu Psilocybin", en: "The audience in front of the slide on psilocybin" },
+        { de: "Teilnehmende im Gespräch beim Empfang", en: "Attendees talking during the reception" },
+        { de: "Teilnehmende im lebhaften Gespräch", en: "Attendees in lively conversation" },
+        { de: "Teilnehmende beim Get-together", en: "Attendees at the get-together" },
+        { de: "Teilnehmerin im Gespräch", en: "An attendee in conversation" },
+        { de: "Teilnehmerinnen im herzlichen Gespräch", en: "Two attendees in warm conversation" },
+        { de: "Reich gedeckter Fingerfood-Tisch im Garten", en: "A well-stocked finger-food table in the garden" },
+        { de: "Veganes Fingerfood für den Abend", en: "Vegan finger food for the evening" },
+        { de: "Büchertisch mit psychedelischer Literatur", en: "Book table with psychedelic literature" },
+        { de: "Teilnehmerin im Garten des Veranstaltungsorts", en: "An attendee in the venue's garden" },
+        { de: "Teilnehmende beim Austausch im Garten", en: "Attendees talking in the garden" },
+        { de: "Teilnehmende im Stehkreis zur Klangmeditation", en: "Attendees standing in a circle for the sound meditation" },
+        { de: "Teilnehmende im Workshop auf dem Boden", en: "Attendees sitting on the floor during the workshop" },
+        { de: "Teilnehmer im Gespräch", en: "An attendee in conversation" },
       ],
       // TODO: Aftermovie einbinden, sobald der Schnitt fertig ist – als
       // unlisted YouTube-Video (16:9) hochladen und hier ergänzen:
@@ -590,7 +639,7 @@ export const milestones: PsngMilestone[] = [
   {
     id: "milestone-medien-blog-2026-09-01",
     date: "2026-09-01",
-    title: "Medien-Blog ist online",
+    title: { de: "Medien-Blog ist online", en: "The media blog is live" },
     column: "community",
     badge: "Launch",
     image: medienBlogThumb,
@@ -600,8 +649,10 @@ export const milestones: PsngMilestone[] = [
       url: PARAB_LINK,
       tone: "parab",
     },
-    description:
-      "Unser gemeinsames Projekt mit PARAB: Beiträge rund um psychedelische Wissenschaft zum Lesen, Hören und Sehen. Dort liegen auch alle Aufnahmen unserer Lectures gesammelt.",
+    description: {
+      de: "Unser gemeinsames Projekt mit PARAB: Beiträge rund um psychedelische Wissenschaft zum Lesen, Hören und Sehen. Dort liegen auch alle Aufnahmen unserer Lectures gesammelt.",
+      en: "Our joint project with PARAB: pieces on psychedelic science to read, listen to and watch. It is also where all the recordings of our lectures are collected.",
+    },
     // Nur noch der Blog selbst: Zu PARAB führt jetzt der Chip in der Kopfzeile.
     links: [{ label: "medien.psng.info", url: "https://medien.psng.info" }],
   },
@@ -674,16 +725,21 @@ export function getEventAnchor(event: PsngEvent): string {
   return `event-${event.id}`;
 }
 
-export function formatEventDate(iso: string): string {
-  return parseEventDate(iso).toLocaleDateString("de-DE", {
+export function formatEventDate(
+  iso: string,
+  locale: Locale,
+  withWeekday = false,
+): string {
+  return parseEventDate(iso).toLocaleDateString(intlLocale(locale), {
+    ...(withWeekday ? { weekday: "long" as const } : {}),
     day: "2-digit",
     month: "long",
     year: "numeric",
   });
 }
 
-export function formatEventDateShort(iso: string): string {
-  return parseEventDate(iso).toLocaleDateString("de-DE", {
+export function formatEventDateShort(iso: string, locale: Locale): string {
+  return parseEventDate(iso).toLocaleDateString(intlLocale(locale), {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -697,18 +753,23 @@ export function formatEventDateShort(iso: string): string {
  */
 export function formatRelativeToToday(
   iso: string,
+  locale: Locale,
   referenceDate: Date = new Date(),
 ): string {
   const dayMs = 24 * 60 * 60 * 1000;
   const days = Math.round(
     (startOfDay(parseEventDate(iso)) - startOfDay(referenceDate)) / dayMs,
   );
-  if (days <= 0) return "heute";
-  if (days === 1) return "morgen";
-  if (days < 14) return `in ${days} Tagen`;
+  // `Intl.RelativeTimeFormat` beugt und pluralisiert selbst – die Stufen
+  // (Tage, Wochen, Monate) bleiben unsere, die Formulierung nicht. Sonst
+  // stünde hier für jede weitere Sprache eine neue Tabelle mit Wortformen.
+  const rtf = new Intl.RelativeTimeFormat(intlLocale(locale), { numeric: "auto" });
+  if (days <= 0) return rtf.format(0, "day");
+  if (days === 1) return rtf.format(1, "day");
+  if (days < 14) return rtf.format(days, "day");
   const weeks = Math.round(days / 7);
-  if (weeks < 9) return `in ${weeks} Wochen`;
-  return `in ${Math.round(days / 30.44)} Monaten`;
+  if (weeks < 9) return rtf.format(weeks, "week");
+  return rtf.format(Math.round(days / 30.44), "month");
 }
 
 /** Datum des n-ten `weekday` eines Monats. `month` ist 0-basiert wie bei `Date`. */
@@ -765,7 +826,7 @@ export function getUpcomingSeriesDates(
       time: LECTURE_SERIES.time,
       location: LECTURE_SERIES.location,
       column: LECTURE_SERIES.column,
-      label: override?.label ?? LECTURE_SERIES.label,
+      labelKey: override?.labelKey,
     });
   }
   return out;

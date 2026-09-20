@@ -17,9 +17,9 @@ describe("formatEventDate", () => {
   it("renders the calendar date, not a timezone-shifted one", () => {
     // `new Date("2026-07-28")` ist UTC-Mitternacht; westlich von UTC in
     // Lokalzeit formatiert ergäbe das den 27. Juli.
-    expect(formatEventDate("2026-07-28")).toBe("28. Juli 2026");
-    expect(formatEventDate("2026-01-01")).toBe("01. Januar 2026");
-    expect(formatEventDate("2026-12-31")).toBe("31. Dezember 2026");
+    expect(formatEventDate("2026-07-28", "de")).toBe("28. Juli 2026");
+    expect(formatEventDate("2026-01-01", "de")).toBe("01. Januar 2026");
+    expect(formatEventDate("2026-12-31", "de")).toBe("31. Dezember 2026");
   });
 });
 
@@ -139,7 +139,7 @@ describe("getUpcomingSeriesDates", () => {
     const semesterStart = getUpcomingSeriesDates(3, ref).find(
       (s) => s.date === "2026-10-20",
     );
-    expect(semesterStart?.label).toBe("PSNG Lecture zum Semesterauftakt");
+    expect(semesterStart?.labelKey).toBe("semesterStart");
   });
 
   it("skips dates that already carry a real event", () => {
@@ -212,10 +212,10 @@ describe("formatRelativeToToday", () => {
   const ref = new Date(2026, 8, 1);
 
   it("names near dates in days and distant ones in weeks", () => {
-    expect(formatRelativeToToday("2026-09-01", ref)).toBe("heute");
-    expect(formatRelativeToToday("2026-09-02", ref)).toBe("morgen");
-    expect(formatRelativeToToday("2026-09-08", ref)).toBe("in 7 Tagen");
-    expect(formatRelativeToToday("2026-10-13", ref)).toBe("in 6 Wochen");
-    expect(formatRelativeToToday("2026-12-08", ref)).toBe("in 3 Monaten");
+    expect(formatRelativeToToday("2026-09-01", "de", ref)).toBe("heute");
+    expect(formatRelativeToToday("2026-09-02", "de", ref)).toBe("morgen");
+    expect(formatRelativeToToday("2026-09-08", "de", ref)).toBe("in 7 Tagen");
+    expect(formatRelativeToToday("2026-10-13", "de", ref)).toBe("in 6 Wochen");
+    expect(formatRelativeToToday("2026-12-08", "de", ref)).toBe("in 3 Monaten");
   });
 });

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,6 +17,7 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="PSNG - Deutschlands erstes bundesweites studentisches Netzwerk für psychedelische Wissenschaft" />
     <meta property="og:locale" content="de_DE" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:site_name" content="PSNG" />
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -24,6 +25,16 @@
     <meta name="twitter:title" content="PSNG" />
     <meta name="twitter:description" content="PSNG – Deutschlands erstes bundesweites studentisches Netzwerk für psychedelische Wissenschaft." />
     <meta name="twitter:image" content="https://psng.info/og-image.jpg" />
+
+    <!--
+      Sprachfassungen. Diese Angaben gelten für die Startseite; auf allen
+      anderen Routen setzt sie useDocumentHead zur Laufzeit neu. Sie stehen
+      trotzdem hier, damit ein Crawler ohne JavaScript nicht vor leeren
+      Angaben steht.
+    -->
+    <link rel="alternate" hreflang="de" href="https://psng.info/" />
+    <link rel="alternate" hreflang="en" href="https://psng.info/en" />
+    <link rel="alternate" hreflang="x-default" href="https://psng.info/" />
 
     <!-- Selbst gehostete Schriften: keine Verbindung zu Google beim Seitenaufruf. -->
     <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />

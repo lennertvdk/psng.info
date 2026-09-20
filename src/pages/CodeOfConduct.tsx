@@ -1,6 +1,18 @@
 import LegalPageLayout from "@/components/LegalPageLayout";
+import { useCopy } from "@/i18n/copy";
+import { useLocale } from "@/i18n/locale";
+import { useDocumentHead } from "@/i18n/head";
 
 const CodeOfConduct = () => {
+  const c = useCopy();
+  const locale = useLocale();
+  useDocumentHead({
+    locale,
+    routeKey: "codeOfConduct",
+    title: c.meta.codeOfConduct.title,
+    description: c.meta.codeOfConduct.description,
+  });
+
   return (
     <LegalPageLayout title="Code of Conduct">
       <p className="text-sm text-muted-foreground">Version: 07 Januar 2026</p>

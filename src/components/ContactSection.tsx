@@ -13,16 +13,23 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { CONTACT_EMAIL } from "@/lib/links";
+import { useCopy } from "@/i18n/copy";
 
-const subjectOptions = [
-  { value: "Gruppe gründen", label: "Ich möchte eine Lokalgruppe gründen" },
-  { value: "Team", label: "Ich möchte Teil des Teams werden" },
-  { value: "Vortrag vorschlagen", label: "Ich möchte einen Vortrag vorschlagen" },
-  { value: "Kooperation", label: "Kooperationsanfrage" },
-  { value: "Feedback", label: "Feedback zur Website oder zum Netzwerk" },
-  { value: "Beschwerde", label: "Beschwerde / Code-of-Conduct-Anliegen" },
-  { value: "Sonstiges", label: "Sonstiges" },
-];
+/**
+ * Die Werte gehen an Netlify und landen in der Mail – sie bleiben deutsch und
+ * damit über beide Sprachen hinweg vergleichbar. Übersetzt wird nur, was im
+ * Auswahlfeld steht; die Zuordnung läuft über den Schlüssel aus copy.ts.
+ */
+const subjectValues: Record<string, string> = {
+  group: "Gruppe gründen",
+  team: "Team",
+  talk: "Vortrag vorschlagen",
+  cooperation: "Kooperation",
+  feedback: "Feedback",
+  complaint: "Beschwerde",
+  other: "Sonstiges",
+};
+
 
 const subjectParamMap: Record<string, string> = {
   gruppe: "Gruppe gründen",
@@ -41,6 +48,7 @@ const encode = (data: Record<string, string>) =>
 type Status = "idle" | "submitting" | "success" | "error";
 
 const ContactSection = () => {
+  const c = useCopy();
   const [status, setStatus] = useState<Status>("idle");
   const [subject, setSubject] = useState("");
   const { search } = useLocation();
@@ -111,14 +119,13 @@ const ContactSection = () => {
           className="max-w-3xl mx-auto text-center mb-12"
         >
           <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary mb-4">
-            Kontakt
+            {c.contact.eyebrow}
           </p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
-            Schreib uns
+            {c.contact.title}
           </h2>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Ob Gruppengründung, Kooperation, Feedback oder eine Beschwerde –
-            wähle dein Anliegen und wir melden uns bei dir.
+            {c.contact.intro}
           </p>
         </motion.div>
 
@@ -136,17 +143,17 @@ const ContactSection = () => {
               className="bg-card rounded-2xl border border-border p-8 text-center hover:shadow-lg transition-shadow"
             >
               <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
-                Danke für deine Nachricht!
+                {c.contact.successTitle}
               </h3>
               <p className="text-muted-foreground text-sm mb-5">
-                Wir melden uns so bald wie möglich bei dir.
+                {c.contact.successText}
               </p>
               <button
                 type="button"
                 onClick={resetForm}
                 className="text-sm font-heading font-medium text-primary hover:underline"
               >
-                Weitere Nachricht senden
+                {c.contact.successAgain}
               </button>
             </div>
           ) : (
@@ -162,17 +169,17 @@ const ContactSection = () => {
               <input type="hidden" name="form-name" value="kontakt" />
               <p className="hidden">
                 <label>
-                  Nicht ausfüllen: <input name="bot-field" />
+                  {c.contact.honeypot} <input name="bot-field" />
                 </label>
               </p>
 
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
-                  <Label htmlFor="name">Name</Label>
+                  <Label htmlFor="name">{c.contact.name}</Label>
                   <Input id="name" name="name" required className="mt-1.5" />
                 </div>
                 <div>
-                  <Label htmlFor="email">E-Mail</Label>
+                  <Label htmlFor="email">{c.contact.email}</Label>
                   <Input
                     id="email"
                     name="email"
@@ -184,15 +191,18 @@ const ContactSection = () => {
               </div>
 
               <div>
-                <Label htmlFor="subject">Anliegen</Label>
+                <Label htmlFor="subject">{c.contact.subject}</Label>
                 <input type="hidden" name="subject" value={subject} />
                 <Select value={subject} onValueChange={setSubject}>
                   <SelectTrigger id="subject" className="mt-1.5">
-                    <SelectValue placeholder="Bitte auswählen" />
+                    <SelectValue placeholder={c.contact.subjectPlaceholder} />
                   </SelectTrigger>
                   <SelectContent>
-                    {subjectOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
+                    {c.contact.subjects.map((option) => (
+                      <SelectItem
+                        key={option.key}
+                        value={subjectValues[option.key]}
+                      >
                         {option.label}
                       </SelectItem>
                     ))}
@@ -201,7 +211,7 @@ const ContactSection = () => {
               </div>
 
               <div>
-                <Label htmlFor="message">Nachricht</Label>
+                <Label htmlFor="message">{c.contact.message}</Label>
                 <Textarea
                   id="message"
                   name="message"
@@ -214,12 +224,11 @@ const ContactSection = () => {
               <div role="status" aria-live="polite">
                 {status === "error" && (
                   <p className="text-destructive text-sm">
-                    Etwas ist schiefgelaufen. Bitte versuch es erneut oder
-                    schreib uns direkt an{" "}
+                    {c.contact.errorBefore}
                     <a href={`mailto:${CONTACT_EMAIL}`} className="underline">
                       {CONTACT_EMAIL}
                     </a>
-                    .
+                    {c.contact.errorAfter}
                   </p>
                 )}
               </div>
@@ -230,11 +239,11 @@ const ContactSection = () => {
                   disabled={status === "submitting" || !subject}
                   className="w-full gradient-psychedelic text-primary-foreground font-heading"
                 >
-                  {status === "submitting" ? "Wird gesendet…" : "Nachricht senden"}
+                  {status === "submitting" ? c.contact.submitting : c.contact.submit}
                 </Button>
                 {!subject && (
                   <p className="text-muted-foreground text-xs mt-2 text-center">
-                    Bitte wähle zuerst dein Anliegen aus.
+                    {c.contact.subjectRequired}
                   </p>
                 )}
               </div>

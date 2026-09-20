@@ -1,6 +1,18 @@
 import LegalPageLayout from "@/components/LegalPageLayout";
+import { useCopy } from "@/i18n/copy";
+import { useLocale } from "@/i18n/locale";
+import { useDocumentHead } from "@/i18n/head";
 
 const Impressum = () => {
+  const c = useCopy();
+  const locale = useLocale();
+  useDocumentHead({
+    locale,
+    routeKey: "imprint",
+    title: c.meta.imprint.title,
+    description: c.meta.imprint.description,
+  });
+
   return (
     <LegalPageLayout title="Impressum">
       <h2>Angaben gemäß § 5 DDG (vormals § 5 TMG)</h2>

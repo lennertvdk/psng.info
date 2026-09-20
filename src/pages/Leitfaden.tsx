@@ -1,8 +1,21 @@
 import LegalPageLayout from "@/components/LegalPageLayout";
 import { Link } from "react-router-dom";
 import { curriculumTopics, nicheTopics } from "@/data/curriculum";
+import { useCopy } from "@/i18n/copy";
+import { useLocale } from "@/i18n/locale";
+import { useDocumentHead } from "@/i18n/head";
+import { pick } from "@/i18n/localized";
 
 const Leitfaden = () => {
+  const c = useCopy();
+  const locale = useLocale();
+  useDocumentHead({
+    locale,
+    routeKey: "guide",
+    title: c.meta.guide.title,
+    description: c.meta.guide.description,
+  });
+
   return (
     <LegalPageLayout title="Wie gründe ich meine eigene Hochschulgruppe?">
       <p className="text-sm text-muted-foreground">Version: 20. Juni 2026</p>
@@ -345,7 +358,7 @@ const Leitfaden = () => {
               className="inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border border-border bg-card text-muted-foreground"
             >
               <span className="font-heading font-bold text-primary">{topic.num}</span>
-              {topic.title}
+              {pick(topic.title, locale)}
             </span>
           ))}
         </div>
@@ -355,8 +368,11 @@ const Leitfaden = () => {
           <p className="text-xs text-muted-foreground mb-4">Nischiger, aber durchaus lecture-würdig.</p>
           <div className="flex flex-wrap gap-2">
             {nicheTopics.map((topic) => (
-              <span key={topic} className="text-xs px-3 py-1.5 rounded-full border border-border bg-card text-muted-foreground">
-                {topic}
+              <span
+                key={pick(topic, "de")}
+                className="text-xs px-3 py-1.5 rounded-full border border-border bg-card text-muted-foreground"
+              >
+                {pick(topic, locale)}
               </span>
             ))}
           </div>

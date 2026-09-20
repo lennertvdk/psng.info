@@ -3,16 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import { ExternalLink, Menu, X } from "lucide-react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import psngLogo from "@/assets/PSNG-Logo-centered.webp";
-
-const navLinks = [
-  { label: "Über uns", hash: "#uber-uns" },
-  { label: "Events", hash: "#events" },
-  { label: "Leitfaden", hash: "#leitfaden" },
-  { label: "FAQ", hash: "#faq" },
-  { label: "Team", hash: "#team" },
-  { label: "Kooperation", hash: "#kooperation" },
-  { label: "Kontakt", hash: "#kontakt" },
-];
+import { useCopy } from "@/i18n/copy";
+import {
+  localeNames,
+  localeShortNames,
+  otherLocale,
+  useLocale,
+} from "@/i18n/locale";
+import { pathFor, switchLocalePath } from "@/i18n/routes";
 
 const MOBILE_MENU_ID = "mobile-nav";
 
@@ -20,10 +18,14 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
   const scrollY = useMotionValue(0);
+  const c = useCopy();
+  const locale = useLocale();
+  const home = pathFor("home", locale);
+  const target = otherLocale(locale);
 
   // Die Sektionen liegen alle auf der Startseite. Auf Unterseiten muss der Link
   // deshalb erst dorthin navigieren, sonst passiert beim Klick schlicht nichts.
-  const onHome = pathname === "/";
+  const onHome = pathname === home;
 
   useEffect(() => {
     const update = () => scrollY.set(window.scrollY);
@@ -52,7 +54,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         <Link
-          to="/"
+          to={home}
           className="flex items-center gap-3 font-heading text-xl font-bold tracking-tight text-primary"
         >
           <motion.img
@@ -67,13 +69,13 @@ const Navbar = () => {
           <span>PSNG</span>
         </Link>
         <div className="hidden md:flex items-center gap-6">
-          {navLinks.map((link) =>
+          {c.nav.links.map((link) =>
             onHome ? (
               <a key={link.hash} href={link.hash} className={linkClass}>
                 {link.label}
               </a>
             ) : (
-              <Link key={link.hash} to={`/${link.hash}`} className={linkClass}>
+              <Link key={link.hash} to={`${home}${link.hash}`} className={linkClass}>
                 {link.label}
               </Link>
             ),
@@ -84,15 +86,26 @@ const Navbar = () => {
             rel="noopener noreferrer"
             className={`${linkClass} inline-flex items-center gap-1 md:mr-4`}
           >
-            Medien
+            {c.nav.media}
             <ExternalLink size={13} aria-hidden="true" />
           </a>
+          {/* Der Umschalter führt auf dieselbe Seite in der anderen Sprache,
+              nicht pauschal auf die Startseite – wer einen Leitfaden liest,
+              will ihn übersetzt und nicht von vorn anfangen. */}
+          <Link
+            to={switchLocalePath(pathname, target)}
+            hrefLang={target}
+            aria-label={c.nav.languageLabel}
+            className="rounded-full border border-border px-2.5 py-1 font-heading text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+          >
+            {localeShortNames[target]}
+          </Link>
         </div>
         <button
           type="button"
           className="md:hidden text-primary"
           onClick={() => setOpen(!open)}
-          aria-label="Menü umschalten"
+          aria-label={c.nav.menuToggle}
           aria-expanded={open}
           aria-controls={MOBILE_MENU_ID}
         >
@@ -106,7 +119,7 @@ const Navbar = () => {
         className="flex items-center justify-center gap-2 bg-gradient-to-r from-[hsl(var(--pink))] via-[hsl(var(--coral))] to-[hsl(var(--salmon))] px-6 py-[0.4rem] text-center font-heading text-xs font-medium text-primary-foreground hover:opacity-90 transition-opacity md:text-sm"
       >
         <span className="underline underline-offset-2">
-          Unser neuer Medien-Blog ist jetzt online: medien.psng.info
+          {c.nav.banner}
         </span>
         <ExternalLink size={14} aria-hidden="true" />
       </a>
@@ -118,7 +131,7 @@ const Navbar = () => {
       {open && (
         <div id={MOBILE_MENU_ID} className="md:hidden glass">
           <div className="flex flex-col gap-4 px-6 py-4">
-            {navLinks.map((link) =>
+            {c.nav.links.map((link) =>
               onHome ? (
                 <a
                   key={link.hash}
@@ -131,7 +144,7 @@ const Navbar = () => {
               ) : (
                 <Link
                   key={link.hash}
-                  to={`/${link.hash}`}
+                  to={`${home}${link.hash}`}
                   onClick={() => setOpen(false)}
                   className={linkClass}
                 >
@@ -146,9 +159,17 @@ const Navbar = () => {
               onClick={() => setOpen(false)}
               className={`${linkClass} inline-flex items-center gap-1 md:mr-4`}
             >
-              Medien
+              {c.nav.media}
               <ExternalLink size={13} aria-hidden="true" />
             </a>
+            <Link
+              to={switchLocalePath(pathname, target)}
+              hrefLang={target}
+              onClick={() => setOpen(false)}
+              className={linkClass}
+            >
+              {localeNames[target]}
+            </Link>
           </div>
         </div>
       )}

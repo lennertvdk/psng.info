@@ -1,6 +1,18 @@
 import LegalPageLayout from "@/components/LegalPageLayout";
+import { useCopy } from "@/i18n/copy";
+import { useLocale } from "@/i18n/locale";
+import { useDocumentHead } from "@/i18n/head";
 
 const Datenschutz = () => {
+  const c = useCopy();
+  const locale = useLocale();
+  useDocumentHead({
+    locale,
+    routeKey: "privacy",
+    title: c.meta.privacy.title,
+    description: c.meta.privacy.description,
+  });
+
   return (
     <LegalPageLayout title="Datenschutzerklärung">
       <h2>1. Verantwortlicher</h2>

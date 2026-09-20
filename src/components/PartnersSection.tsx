@@ -18,14 +18,30 @@ import psychedelicGermanyLogo from "@/assets/Psychedelic-Germany-Logo.webp";
 import nachtschattenLogo from "@/assets/Nachtschatten-Logo.webp";
 import psychedeliaStiftungLogo from "@/assets/Psychedelia-Stiftung-Logo.webp";
 import { BPSA_LINK, PARAB_INSTAGRAM_LINK, PARAB_LINK } from "@/lib/links";
+import { useCopy } from "@/i18n/copy";
+import { useLocale } from "@/i18n/locale";
+import { pathFor } from "@/i18n/routes";
+import { pick, type Localized } from "@/i18n/localized";
 
-const partners = [
+interface Partner {
+  name: string;
+  description: Localized;
+  logo: string;
+  url: string;
+  instagram?: string;
+  telegram?: string;
+  opportunityUrl?: string;
+}
+
+const partners: Partner[] = [
   // Die BPSA steht vorn: Sie ist die einzige Partnerin, mit der wir gemeinsam
   // Veranstaltungen halten – die Lectures und das erste eigene In-Person-Event.
   {
     name: "Berlin Psychedelic Science Association (BPSA)",
-    description:
-      "Eine Gruppe Berliner Studierender, die psychedelische Wissenschaft an die Hochschulen der Stadt bringt. Ihre Lectures finden gelegentlich in Zusammenarbeit mit dem PSNG statt, und unser erstes eigenes In-Person-Event haben wir zusammen auf die Beine gestellt.",
+    description: {
+      de: "Eine Gruppe Berliner Studierender, die psychedelische Wissenschaft an die Hochschulen der Stadt bringt. Ihre Lectures finden gelegentlich in Zusammenarbeit mit dem PSNG statt, und unser erstes eigenes In-Person-Event haben wir zusammen auf die Beine gestellt.",
+      en: "A group of Berlin students bringing psychedelic science to the city's universities. Their lectures are occasionally held together with the PSNG, and we put on our first in-person event jointly.",
+    },
     logo: bpsaLogo,
     url: BPSA_LINK,
     instagram: "https://www.instagram.com/bpsa.berlin/",
@@ -33,73 +49,89 @@ const partners = [
   // Ebenfalls vorn: Der Medien-Blog ist ein gemeinsames Projekt mit PARAB.
   {
     name: "PARAB – Psychedelic Awareness & Research Association Basel",
-    description:
-      "Multidisziplinäre Studierendenorganisation aus Basel und Teil des Swiss Psychedelic Student Network. PARAB bringt Wissen über die therapeutische Anwendung von Psychedelika zu Fachleuten wie Öffentlichkeit – und betreibt gemeinsam mit uns den Medien-Blog.",
+    description: {
+      de: "Multidisziplinäre Studierendenorganisation aus Basel und Teil des Swiss Psychedelic Student Network. PARAB bringt Wissen über die therapeutische Anwendung von Psychedelika zu Fachleuten wie Öffentlichkeit – und betreibt gemeinsam mit uns den Medien-Blog.",
+      en: "A multidisciplinary student organisation from Basel and part of the Swiss Psychedelic Student Network. PARAB brings knowledge about the therapeutic use of psychedelics to professionals and the public alike — and runs the media blog together with us.",
+    },
     logo: parabLogo,
     url: PARAB_LINK,
     instagram: PARAB_INSTAGRAM_LINK,
   },
   {
     name: "ALPS Foundation",
-    description:
-      "Die Schweizer ALPS Foundation fördert evidenzbasierte psychedelische Forschung durch ihre jährliche Konferenz und Summer School, eigene Forschungsprojekte und Unterstützung studentischer Initiativen. Eine Inspiration für die Gründung des PSNG.",
+    description: {
+      de: "Die Schweizer ALPS Foundation fördert evidenzbasierte psychedelische Forschung durch ihre jährliche Konferenz und Summer School, eigene Forschungsprojekte und Unterstützung studentischer Initiativen. Eine Inspiration für die Gründung des PSNG.",
+      en: "The Swiss ALPS Foundation supports evidence-based psychedelic research through its annual conference and summer school, its own research projects and support for student initiatives. An inspiration for founding the PSNG.",
+    },
     logo: alpsLogo,
     url: "https://alps.foundation",
     instagram: "https://www.instagram.com/alps.foundation/",
   },
   {
     name: "Swiss Psychedelic Student Network (SPSN)",
-    description:
-      "Das SPSN vernetzt die unabhängig organisierten Hochschulgruppen in der Schweiz (ARP, NAPA PALA, PARAB, PROBe, PROOF, PROZ) und veranstaltet jährlich das Schweizer Student Forum.",
+    description: {
+      de: "Das SPSN vernetzt die unabhängig organisierten Hochschulgruppen in der Schweiz (ARP, NAPA PALA, PARAB, PROBe, PROOF, PROZ) und veranstaltet jährlich das Schweizer Student Forum.",
+      en: "The SPSN connects the independently organised university groups in Switzerland (ARP, NAPA PALA, PARAB, PROBe, PROOF, PROZ) and runs the Swiss Student Forum each year.",
+    },
     logo: spsnLogo,
     url: "https://alps.foundation/swiss-psychedelic-student-network",
     instagram: "https://www.instagram.com/swisspsychedelicstudentnetwork/",
   },
   {
     name: "UNePSI – Italy",
-    description:
-      "Das University Network for Psychedelic Students Italy vernetzt Hochschulgruppen in Italien und unterstützt neue Gruppen bei ihrer Gründung. Im Dezember 2025 fand das erste Italian Psychedelic Students' Gathering statt.",
+    description: {
+      de: "Das University Network for Psychedelic Students Italy vernetzt Hochschulgruppen in Italien und unterstützt neue Gruppen bei ihrer Gründung. Im Dezember 2025 fand das erste Italian Psychedelic Students' Gathering statt.",
+      en: "The University Network for Psychedelic Students Italy connects university groups across Italy and helps new ones get started. The first Italian Psychedelic Students' Gathering took place in December 2025.",
+    },
     logo: unepsiLogo,
-    url: "",
+    url: "https://www.instagram.com/_unepsi_/",
     instagram: "https://www.instagram.com/_unepsi_/",
   },
   {
     name: "PsychedeliCare",
-    description:
-      "Europäische Initiative für die politische Anerkennung psychedelischer Therapien. Vernetzt Organisationen aus über 20 Ländern und setzt sich für einen sicheren, ethisch verantwortungsvollen Regulierungsrahmen ein.",
+    description: {
+      de: "Europäische Initiative für die politische Anerkennung psychedelischer Therapien. Vernetzt Organisationen aus über 20 Ländern und setzt sich für einen sicheren, ethisch verantwortungsvollen Regulierungsrahmen ein.",
+      en: "A European initiative for the political recognition of psychedelic therapies. It connects organisations from more than 20 countries and campaigns for a safe, ethically responsible regulatory framework.",
+    },
     logo: psychedelicareLogo,
     url: "https://psychedelicare.eu",
     instagram: "https://www.instagram.com/psychedelicare.eu/",
   },
   {
     name: "Psychedelic Germany",
-    description:
-      "Lebendige Community seit 2021 für akzeptierende Aufklärungsarbeit, Safer Use und Vernetzung rund um Psychedelika – gegen Kriminalisierung, für Bewusstsein.",
+    description: {
+      de: "Lebendige Community seit 2021 für akzeptierende Aufklärungsarbeit, Safer Use und Vernetzung rund um Psychedelika – gegen Kriminalisierung, für Bewusstsein.",
+      en: "A lively community since 2021 for non-judgemental education, safer use and connection around psychedelics — against criminalisation, for awareness.",
+    },
     logo: psychedelicGermanyLogo,
     url: "https://psychedelic-germany.de",
-    instagram: "",
     telegram: "https://t.me/psychedelic_germany",
   },
   {
     name: "Nachtschatten Verlag",
-    description:
-      "Renommierter deutschsprachiger Fachverlag für psychedelische Wissenschaft, Rauschkultur und Drogenpolitik. Verlegt seit Jahrzehnten fundierte, entstigmatisierte Literatur, darunter das Magazin Lucy's Rausch.",
+    description: {
+      de: "Renommierter deutschsprachiger Fachverlag für psychedelische Wissenschaft, Rauschkultur und Drogenpolitik. Verlegt seit Jahrzehnten fundierte, entstigmatisierte Literatur, darunter das Magazin Lucy's Rausch.",
+      en: "A respected German-language publisher on psychedelic science, intoxication culture and drug policy. For decades it has published well-founded, destigmatised literature, including the magazine Lucy's Rausch.",
+    },
     logo: nachtschattenLogo,
     url: "https://nachtschatten.ch/",
-    instagram: "",
   },
   {
     name: "Psychedelia Stiftung",
-    description:
-      "Die Psychedelia-Stiftung fördert den kulturellen, künstlerischen und wissenschaftlichen Austausch zu psychedelischen Erfahrungen. Ihr Ziel: gesellschaftliche Akzeptanz für den wohltuenden Umgang mit veränderten Bewusstseinszuständen – mit Blick auf Sicherheit, Respekt und persönliche Entwicklung.",
+    description: {
+      de: "Die Psychedelia-Stiftung fördert den kulturellen, künstlerischen und wissenschaftlichen Austausch zu psychedelischen Erfahrungen. Ihr Ziel: gesellschaftliche Akzeptanz für den wohltuenden Umgang mit veränderten Bewusstseinszuständen – mit Blick auf Sicherheit, Respekt und persönliche Entwicklung.",
+      en: "The Psychedelia Foundation supports cultural, artistic and scientific exchange around psychedelic experiences. Its aim: social acceptance for a beneficial approach to altered states of consciousness, with an eye on safety, respect and personal development.",
+    },
     logo: psychedeliaStiftungLogo,
     url: "https://psychedelia-stiftung.de/",
-    instagram: "",
     opportunityUrl: "https://psychedelia-stiftung.de/kontakt/",
   },
 ];
 
 const PartnersSection = () => {
+  const c = useCopy();
+  const locale = useLocale();
+
   return (
     <section id="kooperation" className="py-24 md:py-32">
       <div className="container mx-auto px-6">
@@ -111,13 +143,13 @@ const PartnersSection = () => {
           className="max-w-3xl mx-auto text-center mb-4"
         >
           <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary mb-4">
-            Kooperation
+            {c.partners.eyebrow}
           </p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
-            Unsere Partner
+            {c.partners.title}
           </h2>
           <p className="text-muted-foreground text-lg mb-12">
-            Wir sind stolze Kooperationspartner der folgenden Organisationen.
+            {c.partners.intro}
           </p>
         </motion.div>
         <Carousel
@@ -155,7 +187,7 @@ const PartnersSection = () => {
                       {partner.name}
                     </h3>
                     <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                      {partner.description}
+                      {pick(partner.description, locale)}
                     </p>
                   </div>
                   <div className="flex gap-3 flex-wrap justify-center mt-auto pt-4 border-t border-border/50">
@@ -167,7 +199,7 @@ const PartnersSection = () => {
                         className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
                       >
                         <ExternalLink size={12} />
-                        Website
+                        {c.partners.website}
                       </a>
                     )}
                     {partner.instagram && (
@@ -177,7 +209,7 @@ const PartnersSection = () => {
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
                       >
-                        Instagram
+                        {c.partners.instagram}
                       </a>
                     )}
                     {partner.telegram && (
@@ -187,7 +219,7 @@ const PartnersSection = () => {
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
                       >
-                        Telegram
+                        {c.partners.telegram}
                       </a>
                     )}
                     {partner.opportunityUrl && (
@@ -197,7 +229,7 @@ const PartnersSection = () => {
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
                       >
-                        Forschungsmöglichkeiten
+                        {c.partners.opportunity}
                       </a>
                     )}
                   </div>
@@ -216,14 +248,14 @@ const PartnersSection = () => {
           className="max-w-2xl mx-auto text-center mt-12 p-6 rounded-2xl border border-border bg-card hover:shadow-lg transition-shadow"
         >
           <p className="text-muted-foreground text-sm">
-            Du möchtest mit uns kooperieren für Events, Reichweite, Forschung
-            oder Ideen-Sparring?{" "}
+            {c.partners.ctaBefore}
             <Link
-              to="/?subject=kooperation#kontakt"
+              to={`${pathFor("home", locale)}?subject=kooperation#kontakt`}
               className="text-primary font-medium hover:underline"
             >
-              Schreib uns!
+              {c.partners.ctaLink}
             </Link>
+            {c.partners.ctaAfter}
           </p>
         </motion.div>
       </div>
