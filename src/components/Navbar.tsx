@@ -1,18 +1,85 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ExternalLink, Menu, X } from "lucide-react";
+import { ExternalLink, Languages, Menu, X } from "lucide-react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import psngLogo from "@/assets/PSNG-Logo-centered.webp";
 import { useCopy } from "@/i18n/copy";
 import {
+  locales,
   localeNames,
   localeShortNames,
-  otherLocale,
   useLocale,
 } from "@/i18n/locale";
 import { pathFor, switchLocalePath } from "@/i18n/routes";
 
 const MOBILE_MENU_ID = "mobile-nav";
+
+/**
+ * Beide Sprachen nebeneinander, die aktive hervorgehoben – dieselbe Form wie
+ * der Filter über dem Zeitstrahl, damit sich das Bedienelement nicht neu
+ * erklären muss.
+ *
+ * Vorher stand hier nur das Kürzel der jeweils anderen Sprache. Ein einzelnes
+ * „EN" beantwortet zwei Fragen nicht: In welcher Sprache bin ich gerade, und
+ * gibt es überhaupt eine Wahl? Nebeneinander beantwortet es beide auf einen
+ * Blick.
+ *
+ * Bewusst keine Flaggen: Eine Flagge steht für ein Land, nicht für eine
+ * Sprache. Deutsch wird in sechs Ländern gesprochen, und für Englisch gibt es
+ * keine richtige Flagge – Union Jack und Stars and Stripes sind beide falsch
+ * für ein Publikum, das hier vor allem aus internationalen Studierenden in
+ * Deutschland besteht.
+ *
+ * Die Links führen auf dieselbe Seite in der Zielsprache, nicht pauschal auf
+ * die Startseite: Wer den Leitfaden liest, will ihn übersetzt und nicht von
+ * vorn anfangen.
+ */
+function LanguageSwitch({
+  pathname,
+  onNavigate,
+  className = "",
+}: {
+  pathname: string;
+  onNavigate?: () => void;
+  className?: string;
+}) {
+  const current = useLocale();
+  const c = useCopy();
+
+  return (
+    <div
+      className={`inline-flex items-center gap-1 rounded-full bg-muted p-0.5 ${className}`}
+    >
+      <Languages
+        size={13}
+        aria-hidden="true"
+        className="ml-1.5 shrink-0 text-muted-foreground"
+      />
+      <div role="group" aria-label={c.nav.languageLabel} className="inline-flex">
+        {locales.map((l) => {
+          const active = l === current;
+          return (
+            <Link
+              key={l}
+              to={switchLocalePath(pathname, l)}
+              hrefLang={l}
+              aria-label={localeNames[l]}
+              aria-current={active ? "true" : undefined}
+              onClick={onNavigate}
+              className={`rounded-full px-2.5 py-1 font-heading text-xs font-medium transition-colors ${
+                active
+                  ? "bg-card text-primary shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {localeShortNames[l]}
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -21,7 +88,6 @@ const Navbar = () => {
   const c = useCopy();
   const locale = useLocale();
   const home = pathFor("home", locale);
-  const target = otherLocale(locale);
 
   // Die Sektionen liegen alle auf der Startseite. Auf Unterseiten muss der Link
   // deshalb erst dorthin navigieren, sonst passiert beim Klick schlicht nichts.
@@ -89,17 +155,7 @@ const Navbar = () => {
             {c.nav.media}
             <ExternalLink size={13} aria-hidden="true" />
           </a>
-          {/* Der Umschalter führt auf dieselbe Seite in der anderen Sprache,
-              nicht pauschal auf die Startseite – wer einen Leitfaden liest,
-              will ihn übersetzt und nicht von vorn anfangen. */}
-          <Link
-            to={switchLocalePath(pathname, target)}
-            hrefLang={target}
-            aria-label={c.nav.languageLabel}
-            className="rounded-full border border-border px-2.5 py-1 font-heading text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
-          >
-            {localeShortNames[target]}
-          </Link>
+          <LanguageSwitch pathname={pathname} />
         </div>
         <button
           type="button"
@@ -162,14 +218,11 @@ const Navbar = () => {
               {c.nav.media}
               <ExternalLink size={13} aria-hidden="true" />
             </a>
-            <Link
-              to={switchLocalePath(pathname, target)}
-              hrefLang={target}
-              onClick={() => setOpen(false)}
-              className={linkClass}
-            >
-              {localeNames[target]}
-            </Link>
+            <LanguageSwitch
+              pathname={pathname}
+              onNavigate={() => setOpen(false)}
+              className="self-start"
+            />
           </div>
         </div>
       )}
