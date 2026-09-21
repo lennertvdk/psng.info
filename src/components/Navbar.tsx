@@ -11,6 +11,7 @@ import {
   useLocale,
 } from "@/i18n/locale";
 import { pathFor, switchLocalePath } from "@/i18n/routes";
+import { rememberScrollForLocaleSwitch } from "@/i18n/localeScroll";
 
 const MOBILE_MENU_ID = "mobile-nav";
 
@@ -34,22 +35,12 @@ const MOBILE_MENU_ID = "mobile-nav";
  * die Startseite: Wer den Leitfaden liest, will ihn übersetzt und nicht von
  * vorn anfangen.
  */
-function LanguageSwitch({
-  pathname,
-  onNavigate,
-  className = "",
-}: {
-  pathname: string;
-  onNavigate?: () => void;
-  className?: string;
-}) {
+function LanguageSwitch({ pathname }: { pathname: string }) {
   const current = useLocale();
   const c = useCopy();
 
   return (
-    <div
-      className={`inline-flex items-center gap-1 rounded-full bg-muted p-0.5 ${className}`}
-    >
+    <div className="inline-flex items-center gap-1 rounded-full bg-muted p-0.5">
       <Languages
         size={13}
         aria-hidden="true"
@@ -65,7 +56,7 @@ function LanguageSwitch({
               hrefLang={l}
               aria-label={localeNames[l]}
               aria-current={active ? "true" : undefined}
-              onClick={onNavigate}
+              onClick={rememberScrollForLocaleSwitch}
               className={`rounded-full px-2.5 py-1 font-heading text-xs font-medium transition-colors ${
                 active
                   ? "bg-card text-primary shadow-sm"
@@ -157,16 +148,22 @@ const Navbar = () => {
           </a>
           <LanguageSwitch pathname={pathname} />
         </div>
-        <button
-          type="button"
-          className="md:hidden text-primary"
-          onClick={() => setOpen(!open)}
-          aria-label={c.nav.menuToggle}
-          aria-expanded={open}
-          aria-controls={MOBILE_MENU_ID}
-        >
-          {open ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Die Sprachwahl bleibt auf dem Handy sichtbar, statt mit den Links
+            einzuklappen: Wer die Seite in der falschen Sprache öffnet, soll
+            das nicht erst über das Menü suchen müssen. */}
+        <div className="flex items-center gap-2 md:hidden">
+          <LanguageSwitch pathname={pathname} />
+          <button
+            type="button"
+            className="text-primary"
+            onClick={() => setOpen(!open)}
+            aria-label={c.nav.menuToggle}
+            aria-expanded={open}
+            aria-controls={MOBILE_MENU_ID}
+          >
+            {open ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
       <a
         href="https://medien.psng.info"
@@ -218,11 +215,6 @@ const Navbar = () => {
               {c.nav.media}
               <ExternalLink size={13} aria-hidden="true" />
             </a>
-            <LanguageSwitch
-              pathname={pathname}
-              onNavigate={() => setOpen(false)}
-              className="self-start"
-            />
           </div>
         </div>
       )}

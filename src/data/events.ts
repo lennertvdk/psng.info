@@ -232,10 +232,14 @@ export interface PsngEvent {
   speaker?: string;
   speakerType?: SpeakerType;
   /**
-   * Sprache des Vortrags. Fehlt sie, gilt Deutsch. Der Hinweis erscheint nur,
-   * wo sie von der Sprache der Seite abweicht – wer die Seite auf Englisch
-   * liest, soll erfahren, dass eine Aufzeichnung auf Deutsch ist, und
-   * umgekehrt. Steht beides im Einklang, wäre der Satz nur Rauschen.
+   * Sprache der Veranstaltung. Der Hinweis erscheint nur, wo sie von der
+   * Sprache der Seite abweicht – wer die Seite auf Englisch liest, soll
+   * erfahren, dass eine Aufzeichnung auf Deutsch ist, und umgekehrt. Stimmen
+   * beide überein, wäre der Satz nur Rauschen.
+   *
+   * Ohne Angabe erscheint gar nichts. Bewusst kein Rückfall auf Deutsch: Bei
+   * einem Konferenzbesuch wie der ICPR ist „auf Deutsch" schlicht falsch, und
+   * bei einem dreitägigen Kongress ist die Frage gar nicht sinnvoll.
    */
   language?: EventLanguage;
   /** verlinkt den Namen des Speakers in der Karte (z. B. persönliche Website) */
@@ -284,6 +288,7 @@ export const events: PsngEvent[] = [
     date: "2026-03-03",
     time: "19:00 – 20:00",
     speaker: "PSNG-Team",
+    language: "de",
     featured: true,
     description: {
       de: "Unser allererstes Event – und ein besonderer Moment. Beim Kick-off hat sich das PSNG erstmals vorgestellt: wer wir sind, was unsere Mission ist und wie du aktiv werden, einer Lokalgruppe beitreten oder deine eigene gründen kannst. Danke an alle, die dabei waren!",
@@ -385,10 +390,10 @@ export const events: PsngEvent[] = [
   },
   {
     id: "lecture-5",
-    title: {
-      de: "Ein realitätsnaher Blick auf die aktuelle Therapieforschung mit Psychedelika",
-      en: "A realistic look at current psychedelic therapy research",
-    },
+    // Titel bleibt deutsch: Der Vortrag hieß so. Der Sprachhinweis auf der
+    // Karte sagt, warum hier kein englischer Titel steht.
+    title:
+      "Ein realitätsnaher Blick auf die aktuelle Therapieforschung mit Psychedelika",
     subtitle: {
       de: "Wie steht es um den tatsächlichen Nutzen für Psychiatrie und Psychotherapie und die Implementierung in das Medizinsystem?",
       en: "What is the actual benefit for psychiatry and psychotherapy, and how would it be implemented in the health system?",
@@ -402,6 +407,7 @@ export const events: PsngEvent[] = [
     speaker: "Prof. Dr. Torsten Passie",
     speakerType: "gast",
     speakerWebsiteUrl: "http://psychedelic-science.org/",
+    language: "de",
     description: {
       de: "Ein nüchterner Blick auf Wirksamkeit, Methodikkritik und die Grenzen der aktuellen Psychedelika-Forschung.",
       en: "A sober look at efficacy, methodological criticism and the limits of current psychedelic research.",

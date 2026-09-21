@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MotionConfig } from "framer-motion";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ScrollToHash from "@/components/ScrollToHash";
+import KeepScrollOnLocaleChange from "@/i18n/KeepScrollOnLocaleChange";
 import Index from "./pages/Index";
 import { pathFor } from "@/i18n/routes";
 
@@ -34,6 +35,7 @@ const App = () => (
     <TooltipProvider>
       <BrowserRouter>
         <ScrollToHash />
+        <KeepScrollOnLocaleChange />
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
           <Routes>
             <Route path={pathFor("home", "de")} element={<Index />} />

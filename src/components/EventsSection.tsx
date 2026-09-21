@@ -19,7 +19,6 @@ import {
   getEventById,
   getTimelineEntries,
   type EventColumn,
-  type EventLanguage,
   type PartnerCredit,
   type PartnerTone,
   type PsngEvent,
@@ -54,25 +53,32 @@ function ColumnChip({ column }: { column: EventColumn }) {
  * ohne dass der Fließtext einen weiteren Link tragen muss.
  */
 /**
- * Weist die Vortragssprache aus, wenn sie nicht die der Seite ist. Steht vor
- * der Beschreibung, damit die Erklärung kommt, bevor jemand auf einen Text in
- * einer anderen Sprache stößt und ihn für ein Versehen hält. Stimmen beide
- * überein, erscheint gar nichts – dann sagt der Satz nichts aus.
+ * Weist die Sprache einer Veranstaltung aus, wenn sie nicht die der Seite ist.
+ * Steht vor der Beschreibung, damit die Erklärung kommt, bevor jemand auf
+ * einen Text in einer anderen Sprache stößt und ihn für ein Versehen hält.
+ *
+ * Zwei Bedingungen, und beide sind nötig: Ohne Angabe im Event erscheint gar
+ * nichts – bei einem Konferenzbesuch wie der ICPR wäre jede Sprachangabe
+ * erfunden. Und stimmt die Sprache mit der der Seite überein, sagt der Satz
+ * ohnehin nichts aus.
+ *
+ * Die Formulierung richtet sich nach der Art: Ein Kick-off ist kein Vortrag,
+ * und „der Vortrag ist auf Deutsch" wäre dort schlicht falsch.
  */
-function LanguageNote({ language }: { language: EventLanguage | undefined }) {
+function LanguageNote({ event }: { event: PsngEvent }) {
   const c = useCopy();
   const locale = useLocale();
-  // Ohne Angabe gilt Deutsch: Die Reihe wird auf Deutsch gehalten, die
-  // Ausnahme wird markiert.
-  const spoken: EventLanguage = language ?? "de";
-  if (spoken === locale) return null;
+  if (!event.language || event.language === locale) return null;
+
+  const phrasing =
+    event.category === "lecture" ? c.events.languageNote.talk : c.events.languageNote.event;
 
   return (
     <p className="text-sm text-muted-foreground">
-      {c.events.languageNoteBefore}
+      {phrasing.before}
       <span className="font-medium text-foreground">
-        {c.events.languageNoteIn}
-        {c.events.languages[spoken]}
+        {phrasing.in}
+        {c.events.languages[event.language]}
       </span>
       .
     </p>
@@ -297,9 +303,11 @@ function EventCard({
             )}
           </p>
         )}
-        <div className="mb-2">
-          <LanguageNote language={event.language} />
-        </div>
+        {event.language && (
+          <div className="mb-2">
+            <LanguageNote event={event} />
+          </div>
+        )}
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
           {pick(event.description, locale) ?? c.events.detailsSoon}
         </p>
@@ -495,7 +503,7 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
             </p>
           ) : null}
           <PartOfLine event={ev} />
-          <LanguageNote language={ev.language} />
+          <LanguageNote event={ev} />
         </div>
         {ev.description ? (
           <p className="text-sm text-muted-foreground">
