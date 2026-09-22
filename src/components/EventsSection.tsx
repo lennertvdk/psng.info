@@ -154,7 +154,7 @@ function PartnerCreditStrip({ credit }: { credit: PartnerCredit }) {
   const c = useCopy();
   const locale = useLocale();
   return (
-    <div className="surface-bpsa flex flex-wrap items-center gap-x-5 gap-y-3 px-5 py-4">
+    <div className="surface-bpsa flex flex-wrap items-center gap-x-4 gap-y-2 px-5 py-3">
       <img
         src={credit.logo}
         alt={`Logo ${credit.name}`}
@@ -162,7 +162,7 @@ function PartnerCreditStrip({ credit }: { credit: PartnerCredit }) {
         height={80}
         loading="lazy"
         decoding="async"
-        className="h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20"
+        className="h-12 w-12 shrink-0 object-contain sm:h-14 sm:w-14"
       />
       <div className="min-w-0 flex-1 basis-56">
         <p className="font-heading text-sm font-medium text-foreground">
@@ -173,7 +173,7 @@ function PartnerCreditStrip({ credit }: { credit: PartnerCredit }) {
             {pick(credit.role, locale)}
           </p>
         ) : null}
-        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+        <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1">
           {credit.url ? (
             <a
               href={credit.url}
@@ -249,9 +249,9 @@ function EventCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: i * 0.08 }}
-      className="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow"
+      className="bg-card rounded-2xl p-5 border border-border hover:shadow-lg transition-shadow"
     >
-      <div className="mb-3 flex flex-wrap items-center gap-2">
+      <div className="mb-2.5 flex flex-wrap items-center gap-2">
         <ColumnChip column={event.column} />
         {event.highlightBadge && (
           <span className="inline-block px-2 py-1 rounded-full gradient-psychedelic text-primary-foreground text-xs font-heading font-medium">
@@ -276,19 +276,19 @@ function EventCard({
             height={105}
             loading="lazy"
             decoding="async"
-            className="float-right ml-3 mb-1 h-[105px] w-[105px] rounded-2xl object-cover shadow-sm"
+            className="float-right ml-3 mb-1 h-20 w-20 rounded-2xl object-cover shadow-sm sm:h-24 sm:w-24"
           />
         )}
-        <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
+        <h3 className="font-heading text-lg font-semibold text-foreground mb-1.5 leading-snug">
           {pick(event.title, locale)}
         </h3>
         {event.subtitle && (
-          <p className="text-sm text-foreground/80 font-medium mb-2 leading-relaxed">
+          <p className="text-sm text-foreground/80 font-medium mb-1.5 leading-relaxed">
             {pick(event.subtitle, locale)}
           </p>
         )}
         {event.speaker && (
-          <p className="text-sm text-primary font-medium mb-2">
+          <p className="text-sm text-primary font-medium mb-1.5">
             {speakerLink ? (
               <a
                 href={speakerLink}
@@ -304,28 +304,28 @@ function EventCard({
           </p>
         )}
         {event.language && (
-          <div className="mb-2">
+          <div className="mb-1.5">
             <LanguageNote event={event} />
           </div>
         )}
-        <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
           {pick(event.description, locale) ?? c.events.detailsSoon}
         </p>
         {event.speakerBio && (
-          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+          <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
             {pick(event.speakerBio, locale)}
           </p>
         )}
         {event.audienceNote && (
-          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+          <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
             {pick(event.audienceNote, locale)}
           </p>
         )}
-        <div className="mb-4">
+        <div className="mb-3">
           <PartOfLine event={event} />
         </div>
       </div>
-      <div className="space-y-1 text-sm text-muted-foreground">
+      <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
         <p>
           <span className="font-medium text-foreground">{c.events.dateLabel}</span>{" "}
           {formatEventDate(event.date, locale, event.showWeekday)},{" "}
@@ -347,24 +347,24 @@ function EventCard({
         ) : null}
       </div>
       {event.disclaimer && (
-        <p className="text-xs text-muted-foreground italic mt-3">
+        <p className="text-xs text-muted-foreground italic mt-2">
           {pick(event.disclaimer, locale)}
         </p>
       )}
       {/* Die Karte trägt hier rundum Innenabstand, die Leiste zieht sich mit
           negativen Rändern wieder an die Kanten. */}
       {event.partnerCredit && (
-        <div className="-mx-6 -mb-6 mt-5 overflow-hidden rounded-b-2xl">
+        <div className="-mx-5 -mb-5 mt-4 overflow-hidden rounded-b-2xl">
           <PartnerCreditStrip credit={event.partnerCredit} />
         </div>
       )}
       {!past && isLumaLink(event.registrationUrl) && (
-        <p className="text-xs text-muted-foreground mt-3">
+        <p className="text-xs text-muted-foreground mt-2">
           {c.events.lumaHint}
         </p>
       )}
       {!past && event.registrationUrl && (
-        <div className="flex flex-wrap gap-3 mt-4">
+        <div className="flex flex-wrap gap-3 mt-3">
           <a
             href={event.registrationUrl}
             target="_blank"
@@ -376,7 +376,7 @@ function EventCard({
         </div>
       )}
       {past && isLumaLink(event.registrationUrl) && (
-        <div className="mt-4">
+        <div className="mt-3">
           <a
             href={event.registrationUrl}
             target="_blank"
@@ -412,168 +412,178 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
 
   return (
     <div className="overflow-hidden rounded-xl border border-border/60 bg-card hover:shadow-lg transition-shadow">
-      {a.youtubeUrl ? (
-        <div className="relative aspect-video w-full bg-muted">
-          {playing && embed ? (
-            <iframe
-              src={embed}
-              title={pick(ev.title, locale)}
-              className="absolute inset-0 h-full w-full"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              allowFullScreen
+      {/*
+        Video und Text nebeneinander, sobald die Breite dafür reicht. Vorher
+        lag das 16:9-Bild über dem Text und nahm auf einem Laptop allein schon
+        eine halbe Bildschirmhöhe ein – die Karte war damit länger als das
+        Fenster, und im Zeitstrahl sah man immer nur eine Aufzeichnung auf
+        einmal. Auf schmalen Geräten bleibt es gestapelt: Dort wäre eine
+        Videospalte von 40 % Breite unbrauchbar klein.
+      */}
+      <div className="md:grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:items-start">
+        {a.youtubeUrl ? (
+          <div className="relative aspect-video w-full bg-muted">
+            {playing && embed ? (
+              <iframe
+                src={embed}
+                title={pick(ev.title, locale)}
+                className="absolute inset-0 h-full w-full"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={() => setPlaying(true)}
+                className="group absolute inset-0 flex items-center justify-center"
+                aria-label={`${c.events.playRecording} ${pick(ev.title, locale)}`}
+              >
+                {thumb && (
+                  <img
+                    src={thumb}
+                    alt=""
+                    width={960}
+                    height={540}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                )}
+                <span className="absolute inset-0 bg-black/25 transition-colors group-hover:bg-black/40" />
+                <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-foreground shadow-lg transition-transform group-hover:scale-110">
+                  <PlayIcon />
+                </span>
+              </button>
+            )}
+          </div>
+        ) : heroPhoto ? (
+          <div className="relative aspect-video w-full bg-muted">
+            <img
+              src={heroPhoto}
+              alt={pick(ev.title, locale)}
+              width={1200}
+              height={800}
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover"
             />
-          ) : (
-            <button
-              type="button"
-              onClick={() => setPlaying(true)}
-              className="group absolute inset-0 flex items-center justify-center"
-              aria-label={`${c.events.playRecording} ${pick(ev.title, locale)}`}
-            >
-              {thumb && (
-                <img
-                  src={thumb}
-                  alt=""
-                  width={960}
-                  height={540}
-                  loading="lazy"
-                  decoding="async"
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              )}
-              <span className="absolute inset-0 bg-black/25 transition-colors group-hover:bg-black/40" />
-              <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-foreground shadow-lg transition-transform group-hover:scale-110">
-                <PlayIcon />
+          </div>
+        ) : null}
+
+        <div className="space-y-2.5 p-5">
+          <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+            <ColumnChip column={ev.column} />
+            {ev.speakerType && (
+              <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                {ev.speakerType === "student"
+                  ? c.events.speakerTypes.student
+                  : c.events.speakerTypes.guest}
               </span>
-            </button>
-          )}
-        </div>
-      ) : heroPhoto ? (
-        <div className="relative aspect-video w-full bg-muted">
-          <img
-            src={heroPhoto}
-            alt={pick(ev.title, locale)}
-            width={1200}
-            height={800}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        </div>
-      ) : null}
+            )}
+            {ev.partnerCredit && <CreditBadge credit={ev.partnerCredit} />}
+            {ev.featured && (
+              <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
+                {c.events.firstEvent}
+              </span>
+            )}
+            <span>{formatEventDate(ev.date, locale)}</span>
+          </div>
 
-      <div className="space-y-3 p-5">
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-          <ColumnChip column={ev.column} />
-          {ev.speakerType && (
-            <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
-              {ev.speakerType === "student"
-                ? c.events.speakerTypes.student
-                : c.events.speakerTypes.guest}
-            </span>
-          )}
-          {ev.partnerCredit && <CreditBadge credit={ev.partnerCredit} />}
-          {ev.featured && (
-            <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
-              {c.events.firstEvent}
-            </span>
-          )}
-          <span>{formatEventDate(ev.date, locale)}</span>
-        </div>
-
-        <div className="space-y-2">
-          <h3 className="text-lg font-semibold leading-snug">
-            {pick(ev.title, locale)}
-          </h3>
-          {ev.subtitle ? (
-            <p className="text-sm font-medium leading-relaxed text-foreground/80">
-              {pick(ev.subtitle, locale)}
-            </p>
-          ) : null}
-          {/* Speaker und Ort nebeneinander statt entweder/oder: Sonst fällt bei
-              jedem Vortrag der Ort weg, weil ein Speaker davorsteht – und im
-              Rückblick ist gerade er die Angabe, die sonst nirgends mehr steht. */}
-          {ev.speaker ? (
+          <div className="space-y-1.5">
+            <h3 className="text-lg font-semibold leading-snug">
+              {pick(ev.title, locale)}
+            </h3>
+            {ev.subtitle ? (
+              <p className="text-sm font-medium leading-relaxed text-foreground/80">
+                {pick(ev.subtitle, locale)}
+              </p>
+            ) : null}
+            {/* Speaker und Ort nebeneinander statt entweder/oder: Sonst fällt bei
+                jedem Vortrag der Ort weg, weil ein Speaker davorsteht – und im
+                Rückblick ist gerade er die Angabe, die sonst nirgends mehr steht. */}
+            {ev.speaker ? (
+              <p className="text-sm text-muted-foreground">
+                {c.events.with} {ev.speaker}
+              </p>
+            ) : null}
+            {ev.location ? (
+              <p className="text-sm text-muted-foreground">
+                {pick(ev.location, locale)}
+              </p>
+            ) : null}
+            <PartOfLine event={ev} />
+            <LanguageNote event={ev} />
+          </div>
+          {ev.description ? (
             <p className="text-sm text-muted-foreground">
-              {c.events.with} {ev.speaker}
+              {pick(ev.description, locale)}
             </p>
           ) : null}
-          {ev.location ? (
+          {/* Die Kurzvita gehört auch in den Rückblick: Wer den Vortrag Monate
+              später findet, kennt den Namen darüber in der Regel nicht. */}
+          {ev.speakerBio ? (
             <p className="text-sm text-muted-foreground">
-              {pick(ev.location, locale)}
+              {pick(ev.speakerBio, locale)}
             </p>
           ) : null}
-          <PartOfLine event={ev} />
-          <LanguageNote event={ev} />
-        </div>
-        {ev.description ? (
-          <p className="text-sm text-muted-foreground">
-            {pick(ev.description, locale)}
-          </p>
-        ) : null}
-        {/* Die Kurzvita gehört auch in den Rückblick: Wer den Vortrag Monate
-            später findet, kennt den Namen darüber in der Regel nicht. */}
-        {ev.speakerBio ? (
-          <p className="text-sm text-muted-foreground">
-            {pick(ev.speakerBio, locale)}
-          </p>
-        ) : null}
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-sm">
-          {a.attendees ? (
-            <span className="text-muted-foreground">
-              {a.attendees}+ {c.events.attendeesPlus}
-            </span>
-          ) : null}
-          {a.slidesUrl ? (
-            <a
-              href={a.slidesUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary hover:underline"
-            >
-              {c.events.slides}
-            </a>
-          ) : null}
-          {a.recapUrl ? (
-            <a
-              href={a.recapUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary hover:underline"
-            >
-              {c.events.recap}
-            </a>
-          ) : null}
-          {a.speakerLinkedinUrl ? (
-            <a
-              href={a.speakerLinkedinUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary hover:underline"
-            >
-              {ev.speaker
-                ? `${c.events.linkedinOf} ${ev.speaker}`
-                : c.events.linkedin}{" "}
-              →
-            </a>
-          ) : null}
-          {a.externalUrl ? (
-            <a
-              href={a.externalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary hover:underline"
-            >
-              {pick(a.externalLabel, locale) ?? c.events.learnMore} →
-            </a>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+            {a.attendees ? (
+              <span className="text-muted-foreground">
+                {a.attendees}+ {c.events.attendeesPlus}
+              </span>
+            ) : null}
+            {a.slidesUrl ? (
+              <a
+                href={a.slidesUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary hover:underline"
+              >
+                {c.events.slides}
+              </a>
+            ) : null}
+            {a.recapUrl ? (
+              <a
+                href={a.recapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary hover:underline"
+              >
+                {c.events.recap}
+              </a>
+            ) : null}
+            {a.speakerLinkedinUrl ? (
+              <a
+                href={a.speakerLinkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary hover:underline"
+              >
+                {ev.speaker
+                  ? `${c.events.linkedinOf} ${ev.speaker}`
+                  : c.events.linkedin}{" "}
+                →
+              </a>
+            ) : null}
+            {a.externalUrl ? (
+              <a
+                href={a.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary hover:underline"
+              >
+                {pick(a.externalLabel, locale) ?? c.events.learnMore} →
+              </a>
+            ) : null}
+          </div>
+
+          {ev.disclaimer ? (
+            <p className="text-xs italic text-muted-foreground">
+              {pick(ev.disclaimer, locale)}
+            </p>
           ) : null}
         </div>
-
-        {ev.disclaimer ? (
-          <p className="text-xs italic text-muted-foreground">
-            {pick(ev.disclaimer, locale)}
-          </p>
-        ) : null}
       </div>
 
       {/* Außerhalb des Textblocks, damit die Leiste die Karte in ganzer Breite
@@ -602,7 +612,7 @@ function GatheringPhotoCarousel({
             {/* object-contain statt object-cover: Quellfotos haben unterschiedliche
                 Seitenverhältnisse, ein hartes Cover-Crop hätte sonst regelmäßig Köpfe
                 abgeschnitten. Überschüssiger Raum wird gelettert, nicht zugeschnitten. */}
-            <div className="flex h-72 w-full items-center justify-center overflow-hidden rounded-lg bg-muted sm:h-96 md:h-[28rem]">
+            <div className="flex h-56 w-full items-center justify-center overflow-hidden rounded-lg bg-muted sm:h-64 lg:h-72">
               <img
                 src={src}
                 alt={
@@ -678,19 +688,25 @@ function GatheringShort({
   thumbnail?: string;
 }) {
   const [playing, setPlaying] = useState(false);
+  const c = useCopy();
   const embed = getYouTubeEmbedUrl(url);
 
   return (
-    <div className="border-t border-border/60 pt-5">
-      {/* Zentriert wie das Video darunter, das mit max-w-[18rem] mittig in der Spalte sitzt. */}
-      <div className="mb-4 text-center">
-        <h3 className="text-lg font-semibold">Mini-Aftermovie</h3>
+    <div>
+      {/* Zentriert wie das Video darunter, das mittig in der Spalte sitzt. */}
+      <div className="mb-3 text-center">
+        <h3 className="text-base font-semibold">{c.events.shortTitle}</h3>
       </div>
-      <div className="relative mx-auto aspect-[9/16] w-full max-w-[18rem] overflow-hidden rounded-lg bg-muted">
+      {/*
+        Hochkant-Video, also das höchste Einzelteil der Karte: 12rem Breite
+        ergeben rund 340px Höhe. Bei den vorherigen 18rem waren es über 500px –
+        allein dieses eine Element füllte damit den halben Bildschirm.
+      */}
+      <div className="relative mx-auto aspect-[9/16] w-full max-w-[12rem] overflow-hidden rounded-lg bg-muted">
         {playing && embed ? (
           <iframe
             src={embed}
-            title={`Mini-Aftermovie: ${title}`}
+            title={`${c.events.shortTitle}: ${title}`}
             className="absolute inset-0 h-full w-full"
             allow="autoplay; encrypted-media; picture-in-picture"
             allowFullScreen
@@ -700,7 +716,7 @@ function GatheringShort({
             type="button"
             onClick={() => setPlaying(true)}
             className="group absolute inset-0 flex items-center justify-center"
-            aria-label={`Mini-Aftermovie abspielen: ${title}`}
+            aria-label={`${c.events.playShort} ${title}`}
           >
             {thumbnail && (
               <img
@@ -712,7 +728,7 @@ function GatheringShort({
               />
             )}
             <span className="absolute inset-0 bg-foreground/10 transition-colors group-hover:bg-black/40" />
-            <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-foreground shadow-lg transition-transform group-hover:scale-110">
+            <span className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-foreground shadow-lg transition-transform group-hover:scale-110">
               <PlayIcon />
             </span>
           </button>
@@ -731,55 +747,77 @@ function GatheringFeatureCard({ ev }: { ev: PsngEvent }) {
 
   return (
     <div className="overflow-hidden rounded-xl border border-border/60 bg-card hover:shadow-lg transition-shadow">
-      <div className="grid items-start gap-6 p-5 lg:grid-cols-2">
-        <div className="space-y-3">
-          <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-            <ColumnChip column={ev.column} />
-            {ev.highlightBadge && (
-              <span className="rounded-full gradient-psychedelic px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
-                {pick(ev.highlightBadge, locale)}
-              </span>
+      {/*
+        Vorher lief diese Karte in vier vollbreiten Blöcken untereinander:
+        Kopf, Hochkant-Video, Aftermovie, Foto-Karussell. Zusammen waren das
+        gut 1800px – mehrere Bildschirme für ein einziges Event. Jetzt steht
+        je zwei davon nebeneinander, sobald die Breite reicht.
+      */}
+      <div className="space-y-5 p-5">
+        <div
+          className={`grid items-start gap-5 ${a.youtubeUrl ? "lg:grid-cols-2" : ""}`}
+        >
+          <div className="space-y-2.5">
+            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+              <ColumnChip column={ev.column} />
+              {ev.highlightBadge && (
+                <span className="rounded-full gradient-psychedelic px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
+                  {pick(ev.highlightBadge, locale)}
+                </span>
+              )}
+              {ev.partnerCredit && <CreditBadge credit={ev.partnerCredit} />}
+              <span>{formatEventDate(ev.date, locale)}</span>
+            </div>
+
+            <h3 className="text-xl font-semibold leading-snug">{title}</h3>
+            {ev.location ? (
+              <p className="text-sm text-muted-foreground">
+                {pick(ev.location, locale)}
+              </p>
+            ) : null}
+            {ev.description ? (
+              <p className="text-sm text-muted-foreground">
+                {pick(ev.description, locale)}
+              </p>
+            ) : null}
+            {(a.attendees || a.rating || a.recommendPercent) && (
+              <p className="text-sm text-muted-foreground">
+                {[
+                  a.attendees ? `${a.attendees} ${c.events.attendees}` : null,
+                  a.rating ? `${a.rating} ${c.events.rating}` : null,
+                  a.recommendPercent
+                    ? `${a.recommendPercent}% ${c.events.recommend}`
+                    : null,
+                ]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </p>
             )}
-            {ev.partnerCredit && <CreditBadge credit={ev.partnerCredit} />}
-            <span>{formatEventDate(ev.date, locale)}</span>
           </div>
 
-          <h3 className="text-xl font-semibold leading-snug">{title}</h3>
-          {ev.location ? (
-            <p className="text-sm text-muted-foreground">
-              {pick(ev.location, locale)}
-            </p>
-          ) : null}
-          {ev.description ? (
-            <p className="text-sm text-muted-foreground">
-              {pick(ev.description, locale)}
-            </p>
-          ) : null}
-          {(a.attendees || a.rating || a.recommendPercent) && (
-            <p className="text-sm text-muted-foreground">
-              {[
-                a.attendees ? `${a.attendees} ${c.events.attendees}` : null,
-                a.rating ? `${a.rating} ${c.events.rating}` : null,
-                a.recommendPercent
-                  ? `${a.recommendPercent}% ${c.events.recommend}`
-                  : null,
-              ]
-                .filter(Boolean)
-                .join(" · ")}
-            </p>
-          )}
+          {a.youtubeUrl ? <GatheringAftermovie ev={ev} /> : null}
         </div>
 
-        {a.shortsUrl ? (
-          <GatheringShort url={a.shortsUrl} title={title} thumbnail={a.shortsThumbnail} />
+        {/* Karussell und Hochkant-Video teilen sich die zweite Reihe – allein
+            stünde jedes von beiden wieder über die ganze Breite. Die Spalten
+            nur dann, wenn es auch zwei Dinge zu verteilen gibt. */}
+        {a.photos?.length || a.shortsUrl ? (
+          <div
+            className={`grid items-start gap-5 ${
+              a.photos?.length && a.shortsUrl
+                ? "lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]"
+                : ""
+            }`}
+          >
+            {a.photos?.length ? (
+              <GatheringPhotoCarousel photos={a.photos} alts={a.photoAlts} title={title} />
+            ) : null}
+            {a.shortsUrl ? (
+              <GatheringShort url={a.shortsUrl} title={title} thumbnail={a.shortsThumbnail} />
+            ) : null}
+          </div>
         ) : null}
-      </div>
 
-      <div className="flex flex-col gap-4 p-5">
-        {a.youtubeUrl ? <GatheringAftermovie ev={ev} /> : null}
-        {a.photos?.length ? (
-          <GatheringPhotoCarousel photos={a.photos} alts={a.photoAlts} title={title} />
-        ) : null}
         {isLumaLink(ev.registrationUrl) && (
           <a
             href={ev.registrationUrl}
@@ -817,8 +855,8 @@ function SeriesRow({ series }: { series: SeriesDate }) {
   const c = useCopy();
   const locale = useLocale();
   return (
-    <div className="rounded-xl border border-dashed border-border bg-card/50 px-5 py-4">
-      <div className="mb-2 flex flex-wrap items-center gap-2">
+    <div className="rounded-xl border border-dashed border-border bg-card/50 px-5 py-3.5">
+      <div className="mb-1.5 flex flex-wrap items-center gap-2">
         <ColumnChip column={series.column} />
         <span className="text-xs text-muted-foreground md:hidden">
           {formatEventDate(series.date, locale)} ·{" "}
@@ -878,8 +916,8 @@ function PartnerLinkedText({
 function MilestoneCard({ milestone }: { milestone: PsngMilestone }) {
   const locale = useLocale();
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 hover:shadow-lg transition-shadow">
-      <div className="mb-3 flex flex-wrap items-center gap-2">
+    <div className="rounded-2xl border border-border bg-card p-5 hover:shadow-lg transition-shadow">
+      <div className="mb-2.5 flex flex-wrap items-center gap-2">
         <ColumnChip column={milestone.column} />
         {milestone.badge && (
           <span className="rounded-full gradient-psychedelic px-2.5 py-0.5 text-xs font-heading font-medium text-primary-foreground">
@@ -898,47 +936,59 @@ function MilestoneCard({ milestone }: { milestone: PsngMilestone }) {
           {formatEventDate(milestone.date, locale)}
         </span>
       </div>
-      {milestone.image && (
-        <div className="mb-4 overflow-hidden rounded-lg border border-border/60 bg-muted">
-          <img
-            src={milestone.image}
-            alt=""
-            width={960}
-            height={540}
-            loading="lazy"
-            decoding="async"
-            className="aspect-video w-full object-cover"
-          />
-        </div>
-      )}
-      <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
-        {pick(milestone.title, locale)}
-      </h3>
-      <p className="text-sm text-muted-foreground leading-relaxed">
-        {milestone.partner ? (
-          <PartnerLinkedText
-            text={pick(milestone.description, locale)}
-            partner={milestone.partner}
-          />
-        ) : (
-          pick(milestone.description, locale)
+      {/* Das 16:9-Bild lag vorher über dem Text und damit über die ganze
+          Kartenbreite – rund 550px Höhe für einen Screengrab neben drei Zeilen
+          Text. Daneben gestellt trägt es dieselbe Aussage auf einem Drittel
+          der Höhe. */}
+      <div
+        className={`grid gap-4 ${
+          milestone.image ? "sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]" : ""
+        }`}
+      >
+        {milestone.image && (
+          <div className="overflow-hidden rounded-lg border border-border/60 bg-muted">
+            <img
+              src={milestone.image}
+              alt=""
+              width={960}
+              height={540}
+              loading="lazy"
+              decoding="async"
+              className="aspect-video w-full object-cover"
+            />
+          </div>
         )}
-      </p>
-      {milestone.links?.length ? (
-        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1">
-          {milestone.links.map((link) => (
-            <a
-              key={link.url}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-medium text-primary hover:underline"
-            >
-              {pick(link.label, locale)} →
-            </a>
-          ))}
+        <div>
+          <h3 className="font-heading text-lg font-semibold text-foreground mb-1.5 leading-snug">
+            {pick(milestone.title, locale)}
+          </h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {milestone.partner ? (
+              <PartnerLinkedText
+                text={pick(milestone.description, locale)}
+                partner={milestone.partner}
+              />
+            ) : (
+              pick(milestone.description, locale)
+            )}
+          </p>
+          {milestone.links?.length ? (
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
+              {milestone.links.map((link) => (
+                <a
+                  key={link.url}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium text-primary hover:underline"
+                >
+                  {pick(link.label, locale)} →
+                </a>
+              ))}
+            </div>
+          ) : null}
         </div>
-      ) : null}
+      </div>
     </div>
   );
 }
@@ -1000,7 +1050,7 @@ function TimelineRow({
       <div className="flex justify-center pt-2">
         <span className={`h-3 w-3 shrink-0 rounded-full ${dot}`} aria-hidden="true" />
       </div>
-      <div className={`min-w-0 pb-8 pl-3 md:pl-4 ${isNext ? "next-event-glow" : ""}`}>
+      <div className={`min-w-0 pb-6 pl-3 md:pl-4 ${isNext ? "next-event-glow" : ""}`}>
         <EntryCard entry={entry} i={i} />
       </div>
     </motion.li>
