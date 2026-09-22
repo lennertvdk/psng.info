@@ -1,7 +1,7 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import {
   Carousel,
@@ -838,16 +838,6 @@ function GatheringFeatureCard({ ev }: { ev: PsngEvent }) {
 // ── Zeitstrahl ──────────────────────────────────────────────────────────────
 
 /**
- * Die Spalten des Zeitstrahls: Datum (erst ab md), Schiene mit Punkt, Karte.
- * Als Konstante, weil jede Zeile und der Heute-Marker exakt dieselbe Aufteilung
- * brauchen – laufen sie auseinander, sitzen die Punkte nicht mehr auf der Linie.
- */
-const ROW_GRID =
-  "grid grid-cols-[1.5rem_minmax(0,1fr)] md:grid-cols-[6.5rem_1.5rem_minmax(0,1fr)]";
-/** Mitte der Punkte-Spalte – dort verläuft die Linie. */
-const RAIL_X = "left-[0.75rem] md:left-[7.25rem]";
-
-/**
  * Ein Termin der Lecture-Reihe, für den noch kein Thema feststeht. Bewusst
  * schmal und gestrichelt: Die Aussage ist der Takt, nicht der Inhalt.
  */
@@ -1009,17 +999,137 @@ function todayIso(): string {
   ).padStart(2, "0")}`;
 }
 
-function TimelineRow({
+/**
+ * Ein Eintrag als Kachel auf der Schiene: so viel, dass man erkennt, worum es
+ * geht, und so wenig, dass zwanzig davon nebeneinander passen. Die ganze Karte
+ * steht darunter im Detailbereich – hier oben geht es nur ums Finden.
+ */
+function RailCard({
   entry,
-  i,
-  upcoming,
+  selected,
   isNext,
+  onSelect,
 }: {
   entry: TimelineEntry;
-  i: number;
-  upcoming: boolean;
+  selected: boolean;
   /** Der nächste anstehende Termin – der einzige Eintrag mit vollem Akzent. */
   isNext: boolean;
+  onSelect: () => void;
+}) {
+  const c = useCopy();
+  const locale = useLocale();
+  const meta = railMeta(entry, locale, c);
+
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-current={selected ? "true" : undefined}
+      className={`flex h-full w-full flex-col overflow-hidden rounded-xl border bg-card p-4 text-left transition-shadow hover:shadow-lg ${
+        selected
+          ? "border-primary shadow-lg ring-1 ring-primary"
+          : "border-border/60"
+      } ${entry.kind === "series" ? "border-dashed bg-card/50" : ""}`}
+    >
+      <div className="mb-2 flex flex-wrap items-center gap-1.5">
+        <ColumnChip column={entry.column} />
+        {isNext && (
+          <span className="rounded-full gradient-psychedelic px-2 py-0.5 text-xs font-heading font-medium text-primary-foreground">
+            {c.events.nextUp}
+          </span>
+        )}
+      </div>
+
+      {/* Das Vorschaubild ist das, was eine Kachel auf einen Blick unterscheidbar
+          macht. Wo keins da ist, bleibt die Fläche leer statt mit einem
+          Platzhalter gefüllt – eine graue Box sagt weniger als nichts. */}
+      {meta.thumb ? (
+        <div className="mb-2.5 aspect-video w-full shrink-0 overflow-hidden rounded-lg bg-muted">
+          <img
+            src={meta.thumb}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className={`h-full w-full ${meta.thumbFit}`}
+          />
+        </div>
+      ) : null}
+
+      <h3 className="line-clamp-2 font-heading text-sm font-semibold leading-snug text-foreground">
+        {meta.title}
+      </h3>
+      {meta.line ? (
+        <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+          {meta.line}
+        </p>
+      ) : null}
+    </button>
+  );
+}
+
+/**
+ * Was auf einer Kachel steht – je nach Art des Eintrags aus einer anderen
+ * Ecke der Daten. Als eine Funktion und nicht als drei Kachel-Komponenten:
+ * Der Unterschied zwischen einem Event, einem Reihentermin und einem
+ * Meilenstein sind hier genau drei Felder, keine eigene Gestaltung.
+ */
+function railMeta(entry: TimelineEntry, locale: Locale, c: ReturnType<typeof useCopy>) {
+  if (entry.kind === "series") {
+    return {
+      title:
+        entry.series.labelKey === "semesterStart"
+          ? c.events.seriesSemesterLabel
+          : c.events.seriesLabel,
+      line: `${entry.series.time} · ${entry.series.location}`,
+      thumb: undefined,
+      thumbFit: "object-cover",
+    };
+  }
+
+  if (entry.kind === "milestone") {
+    return {
+      title: pick(entry.milestone.title, locale),
+      line: undefined,
+      thumb: entry.milestone.image,
+      thumbFit: "object-cover",
+    };
+  }
+
+  const ev = entry.event;
+  const a = ev.assets ?? {};
+  // Das Portraitfoto zuerst: Bei einem Vortrag ist der Mensch das Merkmal,
+  // nicht das Standbild aus dem Video.
+  const thumb = a.speakerPhoto ?? a.youtubeThumbnail ?? a.photos?.[0];
+  return {
+    title: pick(ev.title, locale),
+    line: ev.speaker ?? pick(ev.location, locale) ?? pick(ev.subtitle, locale),
+    thumb,
+    thumbFit: a.speakerPhoto ? "object-cover object-top" : "object-cover",
+  };
+}
+
+/**
+ * Die Schiene selbst: Achse mit Punkten, darunter Datum und Kachel.
+ *
+ * Jede Spalte zeichnet ihr eigenes Stück der Achse. Eine durchgehende Linie
+ * als ein absolut gesetztes Element müsste die Breite des gescrollten Inhalts
+ * kennen – so ergibt sie sich von selbst und bleibt auch dann richtig, wenn
+ * der Filter die Hälfte der Einträge entfernt.
+ */
+function RailItem({
+  entry,
+  selected,
+  isNext,
+  upcoming,
+  onSelect,
+  innerRef,
+}: {
+  entry: TimelineEntry;
+  selected: boolean;
+  isNext: boolean;
+  upcoming: boolean;
+  onSelect: () => void;
+  innerRef?: (el: HTMLLIElement | null) => void;
 }) {
   const locale = useLocale();
   const dot = upcoming
@@ -1029,81 +1139,214 @@ function TimelineRow({
     : "bg-primary/30";
 
   return (
-    <motion.li
+    <li
+      ref={innerRef}
       id={entry.id}
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
-      className={`${ROW_GRID} scroll-mt-36`}
+      className="flex w-[15.5rem] shrink-0 snap-start flex-col scroll-mt-36 sm:w-[17rem]"
     >
-      <div className="hidden pr-4 pt-1 text-right md:block">
-        <p className="font-heading text-sm font-medium text-foreground">
+      <div className="relative h-6">
+        <span aria-hidden="true" className="absolute inset-x-0 top-1/2 h-px bg-border" />
+        <span
+          aria-hidden="true"
+          className={`absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full ${dot}`}
+        />
+      </div>
+
+      <div className="px-4 pb-2 pt-2 text-center">
+        <p className="font-heading text-xs font-medium text-foreground">
           {formatEventDateShort(entry.date, locale)}
         </p>
-        {upcoming && (
-          <p className="text-xs text-muted-foreground">
+        {upcoming ? (
+          <p className="text-[0.7rem] text-muted-foreground">
             {formatRelativeToToday(entry.date, locale)}
           </p>
-        )}
+        ) : null}
       </div>
-      <div className="flex justify-center pt-2">
-        <span className={`h-3 w-3 shrink-0 rounded-full ${dot}`} aria-hidden="true" />
+
+      <div className={`min-h-0 flex-1 px-1.5 pb-1 ${isNext ? "next-event-glow" : ""}`}>
+        <RailCard entry={entry} selected={selected} isNext={isNext} onSelect={onSelect} />
       </div>
-      <div className={`min-w-0 pb-6 pl-3 md:pl-4 ${isNext ? "next-event-glow" : ""}`}>
-        <EntryCard entry={entry} i={i} />
-      </div>
-    </motion.li>
+    </li>
   );
 }
 
-function TimelineList({
-  entries,
-  upcoming,
-  nextId,
-}: {
-  entries: TimelineEntry[];
-  upcoming: boolean;
-  nextId?: string;
-}) {
-  if (entries.length === 0) return null;
-  return (
-    <ol className="relative">
-      {/* Die Schiene. Nach oben ausgeblendet, wo die Termine noch weit weg sind –
-          die Karten selbst bleiben unangetastet, verblasste Inhalte sähen nach
-          Rendering-Fehler aus statt nach zeitlichem Abstand. */}
-      <span
-        aria-hidden="true"
-        className={`absolute bottom-2 top-2 w-px ${RAIL_X} ${
-          upcoming ? "bg-gradient-to-b from-transparent to-border" : "bg-border"
-        }`}
-      />
-      {entries.map((entry, i) => (
-        <TimelineRow
-          key={entry.id}
-          entry={entry}
-          i={i}
-          upcoming={upcoming}
-          isNext={entry.id === nextId}
-        />
-      ))}
-    </ol>
-  );
-}
-
-function TodayMarker() {
+/**
+ * Der Trennpunkt zwischen vorbei und kommt noch. Er ist der Grund für die
+ * ganze waagerechte Anordnung: Beim Öffnen steht er im Bild, links davon
+ * liegt, was war, rechts, was kommt – man landet an der Stelle, an der man
+ * gerade steht, statt am Anfang oder am Ende einer Liste.
+ */
+function RailToday({ innerRef }: { innerRef: (el: HTMLLIElement | null) => void }) {
   const c = useCopy();
   return (
-    <div className={`${ROW_GRID} my-1 items-center`}>
-      <p className="hidden pr-4 text-right font-heading text-xs uppercase tracking-[0.2em] text-primary/70 md:block">
-        {c.events.today}
-      </p>
-      <div className="flex items-center justify-center">
-        <span aria-hidden="true" className="h-px w-full bg-primary/30" />
+    <li
+      ref={innerRef}
+      className="flex w-16 shrink-0 snap-center flex-col items-center"
+    >
+      <div className="relative h-6 w-full">
+        <span className="absolute inset-x-0 top-1/2 h-px bg-border" />
       </div>
-      <p className="pl-3 font-heading text-xs uppercase tracking-[0.2em] text-primary/70 md:hidden">
+      <p className="pb-2 pt-2 font-heading text-xs font-medium uppercase tracking-[0.15em] text-primary">
         {c.events.today}
       </p>
+      <span className="w-px flex-1 bg-gradient-to-b from-primary/40 to-transparent" />
+    </li>
+  );
+}
+
+/**
+ * Die waagerechte Schiene mit ihren beiden Blätterknöpfen.
+ *
+ * Reihenfolge: älteste Vergangenheit ganz links, Zukunft nach rechts – so
+ * herum, wie eine Zeitachse gelesen wird. Die Daten kommen in der umgekehrten
+ * Reihenfolge (beide Listen absteigend, weil der Zeitstrahl vorher senkrecht
+ * von fern nach nah lief) und werden hier gedreht.
+ */
+function TimelineRail({
+  past,
+  upcoming,
+  selectedId,
+  nextId,
+  onSelect,
+}: {
+  past: TimelineEntry[];
+  upcoming: TimelineEntry[];
+  selectedId?: string;
+  nextId?: string;
+  onSelect: (id: string) => void;
+}) {
+  const c = useCopy();
+  const scroller = useRef<HTMLOListElement>(null);
+  const todayMark = useRef<HTMLLIElement | null>(null);
+  const items = useRef(new Map<string, HTMLLIElement>());
+  /** Ob schon einmal gescrollt wurde – siehe die Auswahl-Wirkung weiter unten. */
+  const settled = useRef(false);
+
+  const olderFirst = [...past].reverse();
+  const soonerFirst = [...upcoming].reverse();
+
+  /*
+   * Beim Aufbau auf „heute" stellen, und zwar in der Schiene selbst statt über
+   * scrollIntoView: Das würde auch die Seite senkrecht verschieben und die
+   * Sektion beim bloßen Laden unter der Navigationsleiste hervorziehen.
+   *
+   * Nicht ganz an den linken Rand, sondern auf ein Drittel: Ein Stück
+   * Vergangenheit soll sichtbar bleiben, sonst sieht die Schiene aus, als
+   * begänne sie hier – und die Richtung, aus der sie kommt, ist die halbe
+   * Aussage.
+   */
+  useEffect(() => {
+    const el = scroller.current;
+    if (!el) return;
+    const mark = todayMark.current;
+    if (mark) {
+      el.scrollLeft = Math.max(0, mark.offsetLeft - el.clientWidth / 3);
+      return;
+    }
+    // Ohne Marker fehlt eine der beiden Hälften – etwa weil der Filter sie
+    // leergeräumt hat. Sind alle Einträge vorbei, steht das Interessante ganz
+    // rechts; ist alles noch offen, ganz links.
+    el.scrollLeft = upcoming.length === 0 ? el.scrollWidth : 0;
+  }, [past.length, upcoming.length]);
+
+  // Ein Deep-Link oder ein Klick im Detailbereich soll die Kachel dazu auch
+  // sichtbar machen – sie kann weit außerhalb des Ausschnitts liegen.
+  useEffect(() => {
+    /*
+     * Beim Aufbau nicht: Da hat die Wirkung darüber gerade „heute" ins Bild
+     * gerückt, und die Vorauswahl ist ohnehin der Termin direkt daneben. Auf
+     * einem Telefon, wo nur eine Kachel ins Bild passt, schöbe ein Zentrieren
+     * genau den Punkt wieder hinaus, wegen dem die Schiene waagerecht läuft.
+     */
+    if (!settled.current) {
+      settled.current = true;
+      return;
+    }
+    if (!selectedId) return;
+    const el = scroller.current;
+    const item = items.current.get(selectedId);
+    if (!el || !item) return;
+    const left = item.offsetLeft - el.clientWidth / 2 + item.clientWidth / 2;
+    const visible =
+      item.offsetLeft >= el.scrollLeft &&
+      item.offsetLeft + item.clientWidth <= el.scrollLeft + el.clientWidth;
+    if (!visible) el.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
+  }, [selectedId]);
+
+  const page = (direction: 1 | -1) => {
+    const el = scroller.current;
+    if (!el) return;
+    el.scrollBy({ left: direction * el.clientWidth * 0.8, behavior: "smooth" });
+  };
+
+  const register = (id: string) => (el: HTMLLIElement | null) => {
+    if (el) items.current.set(id, el);
+    else items.current.delete(id);
+  };
+
+  const arrowClass =
+    "absolute top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/95 text-foreground shadow-sm transition-colors hover:bg-muted md:flex";
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => page(-1)}
+        aria-label={c.events.railPrev}
+        className={`${arrowClass} -left-4`}
+      >
+        <ChevronLeft size={18} aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        onClick={() => page(1)}
+        aria-label={c.events.railNext}
+        className={`${arrowClass} -right-4`}
+      >
+        <ChevronRight size={18} aria-hidden="true" />
+      </button>
+
+      {/*
+        Die Schiene ist selbst fokussierbar: Wer mit der Tastatur arbeitet, kann
+        sie mit den Pfeiltasten verschieben, ohne sich durch jede Kachel
+        tabben zu müssen.
+      */}
+      <ol
+        ref={scroller}
+        tabIndex={0}
+        aria-label={c.events.railLabel}
+        className="flex snap-x snap-mandatory items-stretch overflow-x-auto pb-3 [scrollbar-width:thin]"
+      >
+        {olderFirst.map((entry) => (
+          <RailItem
+            key={entry.id}
+            entry={entry}
+            upcoming={false}
+            selected={entry.id === selectedId}
+            isNext={false}
+            onSelect={() => onSelect(entry.id)}
+            innerRef={register(entry.id)}
+          />
+        ))}
+
+        {/* Ist eine Hälfte leergefiltert, wäre der Marker nur noch ein Strich
+            mit der Aussage „hier hört es auf". */}
+        {olderFirst.length > 0 && soonerFirst.length > 0 && (
+          <RailToday innerRef={(el) => (todayMark.current = el)} />
+        )}
+
+        {soonerFirst.map((entry) => (
+          <RailItem
+            key={entry.id}
+            entry={entry}
+            upcoming
+            selected={entry.id === selectedId}
+            isNext={entry.id === nextId}
+            onSelect={() => onSelect(entry.id)}
+            innerRef={register(entry.id)}
+          />
+        ))}
+      </ol>
     </div>
   );
 }
@@ -1112,9 +1355,6 @@ function TodayMarker() {
 
 const filters = ["alle", "vortraege", "community"] as const;
 type Filter = (typeof filters)[number];
-
-/** Ab wie vielen vergangenen Einträgen der Rest hinter „Mehr anzeigen" liegt. */
-const PAST_PAGE_SIZE = 8;
 
 const EventsSection = () => {
   // Der Filter liegt in der URL, damit man auf eine gefilterte Ansicht
@@ -1128,19 +1368,74 @@ const EventsSection = () => {
     ? (param as Filter)
     : "alle";
 
-  // Ein Deep-Link auf ein einzelnes Event muss auch dann greifen, wenn der
-  // Eintrag erst hinter „Mehr anzeigen" liegt.
-  const [showAll, setShowAll] = useState(() => location.hash.startsWith("#event-"));
-
   const { upcoming, past } = getTimelineEntries();
   const matches = (entry: TimelineEntry) => filter === "alle" || entry.column === filter;
   const upcomingShown = upcoming.filter(matches);
-  const pastMatching = past.filter(matches);
-  const pastShown = showAll ? pastMatching : pastMatching.slice(0, PAST_PAGE_SIZE);
+  const pastShown = past.filter(matches);
 
-  // Die kommenden Einträge laufen von fern nach nah auf heute zu – der nächste
-  // Termin steht also ganz unten.
+  // Beide Listen laufen absteigend, von fern nach nah – der nächste Termin
+  // steht also am Ende der kommenden, der jüngste vergangene am Anfang der
+  // anderen. Die Schiene dreht das für die Anzeige um.
   const nextId = upcomingShown.at(-1)?.id;
+
+  /*
+   * Welcher Eintrag ausführlich darunter steht.
+   *
+   * Der Zustand ist nur die Wahl des Besuchers; was tatsächlich gilt, wird
+   * daraus abgeleitet. Sonst bliebe nach einem Filterwechsel ein Eintrag
+   * ausgewählt, den es in der Ansicht gar nicht mehr gibt, und der
+   * Detailbereich zeigte etwas, wozu keine Kachel mehr existiert.
+   *
+   * Ohne eigene Wahl ist es der nächste anstehende Termin – das ist die
+   * Antwort auf die Frage, mit der die meisten hier ankommen. Steht nichts
+   * mehr an, der jüngste vergangene.
+   */
+  const [picked, setPicked] = useState<string | undefined>(() =>
+    location.hash.length > 1 ? location.hash.slice(1) : undefined,
+  );
+
+  /*
+   * Der Anker gilt nicht nur beim Öffnen der Seite. „Teil von <Abend>" in
+   * einer Karte verweist auf einen anderen Eintrag, und das ist eine ganz
+   * normale Navigation innerhalb der Seite – ohne das hier änderte sich beim
+   * Klick nur die Adresszeile.
+   *
+   * Der Anfangswert oben bleibt trotzdem stehen: Er greift schon beim ersten
+   * Rendern, sodass beim Aufruf eines Deep-Links nicht erst der nächste Termin
+   * aufblitzt und dann der gemeinte.
+   */
+  useEffect(() => {
+    if (location.hash.length > 1) setPicked(location.hash.slice(1));
+  }, [location.hash]);
+  const shown = [...upcomingShown, ...pastShown];
+  const fallbackId = nextId ?? pastShown[0]?.id;
+  const selectedId = shown.some((e) => e.id === picked) ? picked : fallbackId;
+  const selected = shown.find((e) => e.id === selectedId);
+
+  const detail = useRef<HTMLDivElement>(null);
+
+  /*
+   * Der Detailbereich liegt unter der Schiene. Wer eine Kachel anklickt, ohne
+   * dass er im Bild ist, sähe sonst nur, wie sich der Rahmen der Kachel
+   * ändert – die eigentliche Antwort stünde außerhalb des Fensters.
+   *
+   * Nur dann, und nur so weit, dass die Schiene sichtbar bleibt: Ein Sprung
+   * bei jedem Klick wäre lästiger als gar keiner, und wer sie oben behält,
+   * kann weiterblättern, ohne jedes Mal zurückzuscrollen.
+   */
+  const select = (id: string) => {
+    setPicked(id);
+    requestAnimationFrame(() => {
+      const el = detail.current;
+      if (!el) return;
+      const top = el.getBoundingClientRect().top;
+      if (top < window.innerHeight - 160) return;
+      window.scrollTo({
+        top: window.scrollY + top - window.innerHeight * 0.55,
+        behavior: "smooth",
+      });
+    });
+  };
   const filterLabels: Record<Filter, string> = {
     alle: c.events.filters.all,
     vortraege: c.events.filters.talks,
@@ -1222,28 +1517,25 @@ const EventsSection = () => {
           </div>
         </div>
 
-        {/* Schmaler als die Sektion: Die Schiene braucht links Platz, und die
-            Karten bleiben lesbar. Breiter wird vor allem die große Gathering-
-            Karte mit Karussell besser – das ist der Kompromiss. */}
-        <div className="mx-auto max-w-5xl">
-          <TimelineList entries={upcomingShown} upcoming nextId={nextId} />
-          {/* Der Marker trennt zwei Hälften. Ist die obere leergefiltert, wäre
-              er nur noch eine Linie mit der Aussage „darüber kommt nichts". */}
-          {upcomingShown.length > 0 && <TodayMarker />}
-          <TimelineList entries={pastShown} upcoming={false} />
+        {/*
+          Die Schiene läuft über die volle Breite der Sektion – jede Kachel
+          mehr, die ins Bild passt, ist der Sinn der Sache. Der Detailbereich
+          darunter bleibt schmaler: Fließtext über 1150px liest sich schlecht,
+          und die große Gathering-Karte braucht trotzdem Platz.
+        */}
+        <TimelineRail
+          past={pastShown}
+          upcoming={upcomingShown}
+          selectedId={selectedId}
+          nextId={nextId}
+          onSelect={select}
+        />
 
-          {pastShown.length < pastMatching.length && (
-            <div className="flex justify-center">
-              <button
-                type="button"
-                onClick={() => setShowAll(true)}
-                className="rounded-md border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-              >
-                {c.events.showMore} ({pastMatching.length - pastShown.length})
-              </button>
-            </div>
-          )}
-        </div>
+        {selected ? (
+          <div ref={detail} className="mx-auto mt-8 max-w-5xl">
+            <EntryCard entry={selected} i={0} />
+          </div>
+        ) : null}
 
         <div className="mt-14 rounded-2xl border border-border/60 bg-muted/40 p-8 text-center">
           <h3 className="text-xl font-semibold">{c.events.ownLectureTitle}</h3>
