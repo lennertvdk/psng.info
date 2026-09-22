@@ -7,7 +7,11 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
-    port: 8080,
+    // 8080 bleibt die Vorgabe für `npm run dev` von Hand. Läuft dort schon
+    // etwas – etwa eine zweite Vorschau derselben Seite aus einem anderen
+    // Zweig –, kann die Umgebung über PORT einen freien Port vorgeben,
+    // statt am belegten zu scheitern.
+    port: Number(process.env.PORT) || 8080,
     hmr: {
       overlay: false,
     },
