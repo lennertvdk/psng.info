@@ -16,6 +16,7 @@ import unepsiLogo from "@/assets/UNEPSI-Logo.webp";
 import psychedelicareLogo from "@/assets/PsychedeliCare-Logo.webp";
 import psychedelicGermanyLogo from "@/assets/Psychedelic-Germany-Logo.webp";
 import nachtschattenLogo from "@/assets/Nachtschatten-Logo.webp";
+import lucysLogo from "@/assets/Lucys-logo-full.webp";
 import psychedeliaStiftungLogo from "@/assets/Psychedelia-Stiftung-Logo.webp";
 import { BPSA_LINK, PARAB_INSTAGRAM_LINK, PARAB_LINK } from "@/lib/links";
 import { useCopy } from "@/i18n/copy";
@@ -31,6 +32,8 @@ interface Partner {
   instagram?: string;
   telegram?: string;
   opportunityUrl?: string;
+  /** Eigener Linktext für opportunityUrl; ohne ihn steht dort „Forschungsmöglichkeiten". */
+  opportunityLabel?: Localized;
 }
 
 const partners: Partner[] = [
@@ -115,6 +118,19 @@ const partners: Partner[] = [
     },
     logo: nachtschattenLogo,
     url: "https://nachtschatten.ch/",
+  },
+  // Direkt hinter dem Nachtschatten Verlag, der Lucys herausgibt.
+  {
+    name: "Lucys Magazin",
+    description: {
+      de: "Das Magazin des Nachtschatten Verlags über Psychedelika, Bewusstsein, Kultur und Gesundheit – mit ausführlichen, gut recherchierten Hintergrundtexten in der Rubrik Xtra. Lucys lädt die PSNG-Community ausdrücklich ein, eigene Artikel einzureichen, ganz niederschwellig. Die Hefte verteilen wir gelegentlich auch auf unseren Events.",
+      en: "The Nachtschatten Verlag's magazine on psychedelics, consciousness, culture and health — with long, well-researched in-depth pieces in its Xtra section. Lucys explicitly invites the PSNG community to submit their own articles, with a low barrier to entry. We sometimes hand out copies at our events, too.",
+    },
+    logo: lucysLogo,
+    url: "https://www.lucys-magazin.com/",
+    instagram: "https://www.instagram.com/lucys.magazin/",
+    opportunityUrl: "mailto:info@lucys-magazin.com?subject=Artikel%20aus%20der%20PSNG-Community",
+    opportunityLabel: { de: "Artikel einreichen", en: "Submit an article" },
   },
   {
     name: "Psychedelia Stiftung",
@@ -229,7 +245,9 @@ const PartnersSection = () => {
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
                       >
-                        {c.partners.opportunity}
+                        {partner.opportunityLabel
+                          ? pick(partner.opportunityLabel, locale)
+                          : c.partners.opportunity}
                       </a>
                     )}
                   </div>

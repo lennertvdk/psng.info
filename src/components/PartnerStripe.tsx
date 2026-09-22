@@ -6,6 +6,7 @@ import unepsiLogo from "@/assets/UNEPSI-Logo.webp";
 import psychedelicareLogo from "@/assets/PsychedeliCare-Logo.webp";
 import psychedelicGermanyLogo from "@/assets/Psychedelic-Germany-Logo.webp";
 import nachtschattenLogo from "@/assets/Nachtschatten-Logo.webp";
+import lucysLogo from "@/assets/Lucys-logo-full.webp";
 import psychedeliaStiftungLogo from "@/assets/Psychedelia-Stiftung-Logo.webp";
 import { BPSA_LINK, PARAB_LINK } from "@/lib/links";
 import { useCopy } from "@/i18n/copy";
@@ -22,6 +23,7 @@ const partners = [
   { name: "PsychedeliCare", logo: psychedelicareLogo, url: "https://psychedelicare.eu" },
   { name: "Psychedelic Germany", logo: psychedelicGermanyLogo, url: "https://psychedelic-germany.de" },
   { name: "Nachtschatten Verlag", logo: nachtschattenLogo, url: "https://nachtschatten.ch/" },
+  { name: "Lucys Magazin", logo: lucysLogo, url: "https://www.lucys-magazin.com/" },
   { name: "Psychedelia Stiftung", logo: psychedeliaStiftungLogo, url: "https://psychedelia-stiftung.de/" },
 ];
 
