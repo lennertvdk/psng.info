@@ -114,6 +114,21 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
   }
+
+  /*
+   * Ein einheitlicher Fokusring für alles, was mit der Tastatur erreichbar
+   * ist. Der Standardring des Browsers ist dünn und richtet sich nach der
+   * Textfarbe – auf den Verlaufs-Buttons und auf der dunklen CTA-Fläche war er
+   * praktisch nicht zu sehen.
+   *
+   * `:focus-visible` statt `:focus`: Ein Mausklick soll keinen Ring
+   * hinterlassen, eine Tab-Taste schon. Der Versatz legt den Ring neben das
+   * Element statt darauf – damit bleibt er auch auf farbigen Flächen sichtbar.
+   */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
 }
 
 @layer utilities {

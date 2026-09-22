@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SkipLink, { MAIN_ID } from "@/components/SkipLink";
 import { useCopy } from "@/i18n/copy";
 import { useLocale } from "@/i18n/locale";
 import { pathFor } from "@/i18n/routes";
@@ -24,8 +25,13 @@ const LegalPageLayout = ({ title, children }: LegalPageLayoutProps) => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SkipLink />
       <Navbar />
-      <main className="container mx-auto px-6 pt-32 pb-24 md:pt-40">
+      <main
+        id={MAIN_ID}
+        tabIndex={-1}
+        className="container mx-auto px-6 pt-32 pb-24 md:pt-40"
+      >
         <div className="max-w-3xl mx-auto">
           <Link
             to={pathFor("home", locale)}

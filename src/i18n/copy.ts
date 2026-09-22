@@ -29,6 +29,7 @@ const de = {
     menuToggle: "Menü umschalten",
     banner: "Unser neuer Medien-Blog ist jetzt online: medien.psng.info",
     languageLabel: "Sprache wechseln",
+    skipToContent: "Zum Inhalt springen",
   },
 
   hero: {
@@ -411,6 +412,7 @@ const en: Copy = {
     menuToggle: "Toggle menu",
     banner: "Our new media blog is live: medien.psng.info",
     languageLabel: "Change language",
+    skipToContent: "Skip to content",
   },
 
   hero: {
