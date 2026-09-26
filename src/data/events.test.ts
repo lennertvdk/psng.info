@@ -119,33 +119,50 @@ describe("getEventAnchor", () => {
 describe("getUpcomingSeriesDates", () => {
   const ref = new Date(2026, 8, 1); // 1. September 2026
 
-  it("computes the first Tuesday of each month", () => {
-    // Der 20.10. statt des 6.10. ist der Semesterauftakt aus SERIES_OVERRIDES.
+  it("computes the second Tuesday of each month", () => {
+    // September und Oktober fehlen: Auf dem 08.09. steht lecture-6, auf dem
+    // 20.10. aus SERIES_OVERRIDES die Lecture von Timo Schmidt. November
+    // weicht ebenfalls ab – der 03.11. ist der erste Dienstag.
     expect(getUpcomingSeriesDates(3, ref).map((s) => s.date)).toEqual([
-      "2026-09-01",
-      "2026-10-20",
       "2026-11-03",
+      "2026-12-08",
+      "2027-01-12",
     ]);
   });
 
   it("lets an override replace its month's date instead of adding to it", () => {
     const dates = getUpcomingSeriesDates(6, ref).map((s) => s.date);
     for (const { date } of SERIES_OVERRIDES) {
-      expect(dates).toContain(date);
-      // Der berechnete Termin desselben Monats darf nicht daneben stehen.
-      expect(dates.filter((d) => d.startsWith(date.slice(0, 7)))).toEqual([date]);
+      const month = dates.filter((d) => d.startsWith(date.slice(0, 7)));
+      // Entweder der Termin aus dem Override – oder gar keiner, wenn dort
+      // schon ein echtes Event steht. Der berechnete Termin desselben Monats
+      // darf nie danebenstehen.
+      expect(month.every((d) => d === date)).toBe(true);
+      if (!events.some((e) => e.date === date)) expect(dates).toContain(date);
     }
   });
 
-  it("carries the override's own label", () => {
-    const semesterStart = getUpcomingSeriesDates(3, ref).find(
-      (s) => s.date === "2026-10-20",
-    );
-    expect(semesterStart?.labelKey).toBe("semesterStart");
+  it("keeps the computed date out even when the override date is taken", () => {
+    // Der 13.10. wäre der zweite Dienstag. Er darf auch dann nicht erscheinen,
+    // wenn der Oktobertermin selbst schon als Event ausgeschrieben ist –
+    // sonst stünde im Zeitstrahl eine Lecture, die es nicht gibt.
+    const dates = getUpcomingSeriesDates(6, ref).map((s) => s.date);
+    expect(dates).not.toContain("2026-10-13");
+    expect(events.some((e) => e.date === "2026-10-20")).toBe(true);
+  });
+
+  it("carries an override's own label", () => {
+    const dates = getUpcomingSeriesDates(12, ref);
+    for (const { date, labelKey } of SERIES_OVERRIDES) {
+      // Steht auf dem Termin bereits ein Event, taucht er hier nicht auf –
+      // dann gibt es auch kein Label zu prüfen.
+      const entry = dates.find((s) => s.date === date);
+      if (entry) expect(entry.labelKey).toBe(labelKey);
+    }
   });
 
   it("skips dates that already carry a real event", () => {
-    // Der 8.9. wäre ein Reihentermin – dort steht aber schon lecture-6 mit
+    // Der 08.09. ist ein Reihentermin – dort steht aber schon lecture-6 mit
     // Thema und Speaker. Der Termin darf nicht doppelt im Zeitstrahl landen.
     expect(getUpcomingSeriesDates(3, ref).map((s) => s.date)).not.toContain(
       "2026-09-08",
@@ -162,8 +179,8 @@ describe("getUpcomingSeriesDates", () => {
 
   it("still lists a date that falls on the reference day", () => {
     // Eine Lecture heute Abend ist kein vergangener Termin.
-    expect(getUpcomingSeriesDates(1, new Date(2026, 9, 20))[0]?.date).toBe(
-      "2026-10-20",
+    expect(getUpcomingSeriesDates(1, new Date(2026, 10, 3))[0]?.date).toBe(
+      "2026-11-03",
     );
   });
 });
@@ -177,9 +194,9 @@ describe("getTimelineEntries", () => {
     expect(dates).toEqual([...dates].sort().reverse());
   });
 
-  it("fills the upcoming half even when only one event is scheduled", () => {
+  it("pads the upcoming half with series dates, not just events", () => {
     const { upcoming } = getTimelineEntries(ref);
-    expect(upcoming.filter((e) => e.kind === "event")).toHaveLength(1);
+    expect(upcoming.filter((e) => e.kind === "event").length).toBeGreaterThan(0);
     expect(upcoming.filter((e) => e.kind === "series").length).toBeGreaterThan(0);
   });
 

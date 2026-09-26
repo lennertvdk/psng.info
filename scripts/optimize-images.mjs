@@ -75,6 +75,17 @@ const targets = [
     "Miguel-Mora-Vera",
     { crop: { left: 149, top: 129, width: 560, height: 560 } },
   ],
+  // Timos Rohbild ist quadratisch und zeigt ihn in halber Figur mit dem
+  // Gehirnmodell in der Hand – in der 105px-Kachel wäre der Kopf daumennagel-
+  // groß. Der Zuschnitt holt Kopf und Schultern heraus, im selben Bildausschnitt
+  // wie bei den anderen Speaker-Portraits.
+  [
+    "Timo-Schmidt-Website-Asset-head-bg.png",
+    240,
+    88,
+    "Timo-Schmidt",
+    { crop: { left: 298, top: 67, width: 795, height: 795 } },
+  ],
   // BPSA-Logo mit Wortmarke, für Partnerleiste, Partnerkarte und die
   // Kooperationsleiste der Eventkarten. Die Datei bringt einen weißen
   // Hintergrund mit; der wird herausgerechnet, weil die Leiste getönt ist.

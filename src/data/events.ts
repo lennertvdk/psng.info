@@ -11,6 +11,7 @@ import icprPhoto from "@/assets/icpr-1.webp";
 import bpsaLogo from "@/assets/BPSA-Logo.webp";
 import torstenPassiePhoto from "@/assets/Torsten-Passie.webp";
 import miguelMoraVeraPhoto from "@/assets/Miguel-Mora-Vera.webp";
+import timoSchmidtPhoto from "@/assets/Timo-Schmidt.webp";
 import medienBlogThumb from "@/assets/Medien-Blog.webp";
 import ytKickoff from "@/assets/yt-fH9gMcj65l4.webp";
 import ytLonergan from "@/assets/yt-LftC0jVmxuI.webp";
@@ -95,7 +96,7 @@ export interface PsngMilestone {
 }
 
 /**
- * Die Lecture-Reihe hat einen festen Takt: jeder 1. Dienstag im Monat. Die
+ * Die Lecture-Reihe hat einen festen Takt: jeder 2. Dienstag im Monat. Die
  * Termine stehen damit fest, lange bevor Thema und Speaker feststehen –
  * deshalb werden sie berechnet statt gepflegt. Als leere Platzhalter-Events in
  * `events` waren sie zweimal unbrauchbar: Sie verschwanden beim Verstreichen
@@ -106,7 +107,7 @@ export const LECTURE_SERIES = {
   /** Wochentag nach `Date#getDay`: 2 = Dienstag. */
   weekday: 2,
   /** Der wievielte dieses Wochentags im Monat. */
-  ordinal: 1,
+  ordinal: 2,
   time: "19:00 – 20:00",
   location: "Zoom",
   column: "vortraege" as EventColumn,
@@ -127,8 +128,9 @@ export interface SeriesOverride {
 }
 
 /**
- * Ausnahmen vom Takt. Der Oktobertermin liegt zwei Wochen nach dem ersten
- * Dienstag: Zum Semesterstart ist die Uni erst danach wieder voll da.
+ * Ausnahmen vom Takt. Der Oktobertermin liegt eine Woche nach dem zweiten
+ * Dienstag: Zum Semesterstart ist die Uni erst danach wieder voll da. Der
+ * Novembertermin liegt eine Woche davor.
  *
  * Bewusst ein Override statt eines Events ohne Thema und Speaker – ein
  * abweichender Termin ist immer noch nur ein Termin, und als Event hätte er
@@ -136,6 +138,7 @@ export interface SeriesOverride {
  */
 export const SERIES_OVERRIDES: SeriesOverride[] = [
   { date: "2026-10-20", labelKey: "semesterStart" },
+  { date: "2026-11-03" },
 ];
 
 /** Ein berechneter Termin der Reihe – kein Event, solange kein Thema feststeht. */
@@ -246,6 +249,14 @@ export interface PsngEvent {
   speakerWebsiteUrl?: string;
   /** Kurzvita des Speakers, getrennt von der inhaltlichen Beschreibung. */
   speakerBio?: Localized;
+  /**
+   * Was der Speaker selbst zum Weiterlesen nennt: Paper, Datenbanken,
+   * Projekte. Kurzzitat und Link stehen auf der Karte, damit man sich vorher
+   * einlesen kann, ohne einen Titel abzutippen – und hinterher noch findet,
+   * worüber der Vortrag lief. Die Zitate bleiben in der Sprache der Quelle;
+   * übersetzt wird höchstens der Satz, der eine Datenbank erklärt.
+   */
+  furtherReading?: { text: Localized; url: string }[];
   /** kurzes Label für besonders hervorgehobene Events (z. B. "Erstes eigenes In-Person-Event") */
   highlightBadge?: Localized;
   /** hebt das Event in den Aufnahmen hervor (z. B. der Kick-off) */
@@ -487,6 +498,78 @@ export const events: PsngEvent[] = [
       youtubeThumbnail: ytMiguel,
       speakerLinkedinUrl: "https://www.linkedin.com/in/miguel-estefano-mora-vera/",
       speakerPhoto: miguelMoraVeraPhoto,
+    },
+  },
+
+  {
+    id: "lecture-schmidt-2026-10-20",
+    title: "The Systematic Scientific Study of Altered States of Consciousness",
+    subtitle: {
+      de: "Wie lassen sich psychedelische und andere veränderte Bewusstseinszustände systematisch beschreiben, messen und vergleichen?",
+      en: "How can psychedelic and other altered states of consciousness be systematically described, measured and compared?",
+    },
+    category: "lecture",
+    column: "vortraege",
+    date: "2026-10-20",
+    showWeekday: true,
+    time: { de: "19:00 – 20:30 Uhr, inkl. Apéro", en: "19:00 – 20:30, incl. apéro" },
+    location: {
+      de: "Zoom und vor Ort: HU Berlin, Philippstraße 12, Haus 4, Hörsaal 4",
+      en: "Zoom and in person: HU Berlin, Philippstraße 12, building 4, lecture hall 4",
+    },
+    speaker: "Prof. Dr. Timo Torsten Schmidt",
+    speakerType: "gast",
+    language: "en",
+    description: {
+      de: "Veränderte Bewusstseinszustände – besonders die durch Psychedelika ausgelösten – verändern Wahrnehmung, Gefühl, Denken und Selbsterleben tiefgreifend. Der Vortrag stellt Ansätze vor, diese vielschichtigen Erfahrungen systematisch zu beschreiben, zu quantifizieren und zu klassifizieren. An der Altered States Database (ASDB) zeigt Timo T. Schmidt, wie psychometrische Daten aus vielen experimentellen Studien den quantitativen Vergleich zwischen verschiedenen Substanzen und anderen bewusstseinsverändernden Techniken möglich machen. Zum Schluss geht es darum, wie groß angelegte Erhebungen und Citizen Science die Vielfalt veränderter Erfahrungen auch außerhalb des Labors kartieren können.",
+      en: "Altered states of consciousness, particularly those induced by psychedelics, involve profound changes across perception, emotion, cognition and self-experience. The talk introduces approaches for systematically describing, quantifying and classifying these multidimensional experiences. Drawing on the Altered States Database (ASDB), Timo T. Schmidt shows how psychometric data accumulated across experimental studies enable quantitative comparisons between different substances and other consciousness-modifying techniques. It closes on how large-scale and citizen-science approaches can help map the diversity of altered experiences beyond traditional laboratory settings.",
+    },
+    speakerBio: {
+      de: "Timo Torsten Schmidt ist Kognitionswissenschaftler und Professor für Cognitive Neuroscience an der Medical School Berlin (MSB), wo er den Masterstudiengang Cognitive Neuroscience leitet. Er forscht zur Neurowissenschaft und Phänomenologie veränderter Bewusstseinszustände – psychedelische Zustände, Meditation, stroboskopische Lichtstimulation. Er hat die Altered States Database gegründet, eine große Sammlung für den quantitativen Vergleich subjektiver Erfahrungen über verschiedene Induktionsmethoden hinweg, und ist Mitgründer und Vorstandsmitglied von CIRCE, einer gemeinnützigen Organisation für interdisziplinäre und partizipative Bewusstseinsforschung.",
+      en: "Timo Torsten Schmidt is a cognitive neuroscientist and Professor of Cognitive Neuroscience at Medical School Berlin (MSB), where he leads the MSc Cognitive Neuroscience programme. His research focuses on the neuroscience and phenomenology of altered states of consciousness, including psychedelic states, meditation and stroboscopic light stimulation. He founded the Altered States Database, a large-scale resource for the quantitative comparison of subjective experiences across different methods of inducing altered states, and is a co-founder and board member of CIRCE, a non-profit organisation promoting interdisciplinary and participatory research on consciousness and altered states.",
+    },
+    audienceNote: {
+      de: "45 Minuten Vortrag, danach Fragen und Antworten.",
+      en: "A 45-minute talk, followed by Q&A.",
+    },
+    furtherReading: [
+      {
+        text: {
+          de: "asdb.info – offene Datenbank mit Fragebogendaten zu veränderten Bewusstseinszuständen, ausgelöst durch Substanzen wie durch Methoden ohne Substanz. Online selbst vergleichbar.",
+          en: "asdb.info – an open-science database of questionnaire data on altered states, induced by substances and by non-drug methods. Compare them yourself online.",
+        },
+        url: "https://asdb.info",
+      },
+      {
+        text: "Fort, L. D., Costines, C., Wittmann, M., Demertzi, A., & Schmidt, T. T. (2025). Classification schemes of altered states of consciousness. Neuroscience & Biobehavioral Reviews, 175, 106178.",
+        url: "https://doi.org/10.1016/j.neubiorev.2025.106178",
+      },
+      {
+        text: "Prugger, J., Derdiyok, E., Dinkelacker, J., Costines, C., & Schmidt, T. T. (2022). The Altered States Database: Psychometric data from a systematic literature review. Scientific Data, 9, 720.",
+        url: "https://doi.org/10.1038/s41597-022-01822-4",
+      },
+    ],
+    partnerCredit: {
+      short: "BPSA",
+      tone: "bpsa",
+      name: "Berlin Psychedelic Science Association",
+      logo: bpsaLogo,
+      role: {
+        de: "Eine Lecture der BPSA, gestreamt über das PSNG-Netzwerk.",
+        en: "A BPSA lecture, streamed through the PSNG network.",
+      },
+      url: BPSA_LINK,
+      instagramUrl: BPSA_INSTAGRAM_LINK,
+    },
+    // Wie beim Vortrag im September: keine Anmeldung, der Zoom-Link kommt
+    // kurz vorher in die WhatsApp-Community.
+    registrationUrl: WHATSAPP_LINK,
+    registrationLabel: {
+      de: "Zoom-Link via WhatsApp",
+      en: "Zoom link via WhatsApp",
+    },
+    assets: {
+      speakerPhoto: timoSchmidtPhoto,
     },
   },
 
@@ -919,7 +1002,10 @@ export function getTimelineEntries(referenceDate: Date = new Date()): {
 
   const upcoming: TimelineEntry[] = [
     ...getUpcomingEvents(referenceDate).map(toEventEntry),
-    ...getUpcomingSeriesDates(3, referenceDate).map(
+    // Nur der nächste Termin der Reihe. Weiter im Voraus wäre es eine
+    // Ankündigung für Abende, von denen wir noch nicht wissen, ob sie im Takt
+    // liegen – die letzten drei lagen es nicht.
+    ...getUpcomingSeriesDates(1, referenceDate).map(
       (series): TimelineEntry => ({
         kind: "series",
         id: series.id,

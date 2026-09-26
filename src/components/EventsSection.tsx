@@ -209,6 +209,40 @@ function PartnerCreditStrip({ credit }: { credit: PartnerCredit }) {
  * Rückverweis auf den Abend, aus dem ein Vortrag stammt. Reiner Anker statt
  * Router-Link: Das Ziel steht auf derselben Seite und trägt die ID schon.
  */
+/**
+ * Was der Speaker zum Weiterlesen nennt – Paper, eine Datenbank, ein Projekt.
+ * Klein gesetzt unter der Kurzvita: Wer sich vorher einlesen will, findet die
+ * Titel verlinkt, statt sie abzutippen. Steht auf der Karte vorher wie im
+ * Rückblick, denn nach dem Vortrag sucht man sie erst recht.
+ */
+function FurtherReading({ event }: { event: PsngEvent }) {
+  const c = useCopy();
+  const locale = useLocale();
+  if (!event.furtherReading?.length) return null;
+
+  return (
+    <div>
+      <p className="font-heading text-xs font-medium text-foreground">
+        {c.events.furtherReading}
+      </p>
+      <ul className="mt-1.5 space-y-1.5">
+        {event.furtherReading.map((entry) => (
+          <li key={entry.url} className="text-xs leading-relaxed">
+            <a
+              href={entry.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground underline decoration-border underline-offset-2 transition-colors hover:text-primary hover:decoration-primary"
+            >
+              {pick(entry.text, locale)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function PartOfLine({ event }: { event: PsngEvent }) {
   const c = useCopy();
   const locale = useLocale();
@@ -391,6 +425,9 @@ function EventCard({
             {pick(event.speakerBio, locale)}
           </p>
         )}
+        <div className="mb-4">
+          <FurtherReading event={event} />
+        </div>
         {event.audienceNote && (
           <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
             {pick(event.audienceNote, locale)}
@@ -426,13 +463,6 @@ function EventCard({
           {pick(event.disclaimer, locale)}
         </p>
       )}
-      {/* Die Karte trägt hier rundum Innenabstand, die Leiste zieht sich mit
-          negativen Rändern wieder an die Kanten. */}
-      {event.partnerCredit && (
-        <div className="-mx-6 -mb-6 mt-5 overflow-hidden rounded-b-2xl">
-          <PartnerCreditStrip credit={event.partnerCredit} />
-        </div>
-      )}
       {!past && isLumaLink(event.registrationUrl) && (
         <p className="text-xs text-muted-foreground mt-3">
           {c.events.lumaHint}
@@ -463,6 +493,15 @@ function EventCard({
           >
             {c.events.lumaLink}
           </a>
+        </div>
+      )}
+      {/* Zuletzt und bewusst: Die Karte trägt rundum Innenabstand, die Leiste
+          zieht sich mit negativen Rändern wieder an die Kanten. Steht noch
+          etwas darunter, zieht der negative Rand es in die Leiste hinein –
+          deshalb kommen Hinweise und Buttons davor. */}
+      {event.partnerCredit && (
+        <div className="-mx-6 -mb-6 mt-5 overflow-hidden rounded-b-2xl">
+          <PartnerCreditStrip credit={event.partnerCredit} />
         </div>
       )}
     </motion.div>
@@ -595,6 +634,7 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
             {pick(ev.speakerBio, locale)}
           </p>
         ) : null}
+        <FurtherReading event={ev} />
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-sm">
           {a.attendees ? (
