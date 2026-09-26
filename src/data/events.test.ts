@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
 import {
   formatEventDate,
+  getEventById,
+  parseTimeRange,
   formatRelativeToToday,
   getEventAnchor,
   getHighlightEvents,
@@ -217,5 +219,43 @@ describe("formatRelativeToToday", () => {
     expect(formatRelativeToToday("2026-09-08", "de", ref)).toBe("in 7 Tagen");
     expect(formatRelativeToToday("2026-10-13", "de", ref)).toBe("in 6 Wochen");
     expect(formatRelativeToToday("2026-12-08", "de", ref)).toBe("in 3 Monaten");
+  });
+});
+
+describe("parseTimeRange", () => {
+  it("reads start and end out of the display text", () => {
+    expect(parseTimeRange("19:00 – 20:00")).toEqual({ start: "19:00", end: "20:00" });
+  });
+
+  it("ignores what comes after them", () => {
+    // Der Einlass ist keine dritte Uhrzeit des Termins.
+    expect(parseTimeRange("16:00 bis 20:00 Uhr (Einlass ab 15:30)")).toEqual({
+      start: "16:00",
+      end: "20:00",
+    });
+  });
+
+  it("pads a single-digit hour", () => {
+    expect(parseTimeRange("9:30 – 11:00").start).toBe("09:30");
+  });
+
+  it("guesses nothing when there is no time", () => {
+    expect(parseTimeRange("ganztägig")).toEqual({});
+    expect(parseTimeRange(undefined)).toEqual({});
+  });
+});
+
+describe("noCalendar", () => {
+  it("keeps the conferences we were only guests at out of the calendar", () => {
+    // Ein Ganztagsblock über drei Tage Funkhaus sagt nichts darüber, wann wir
+    // uns dort treffen – für diese beiden gilt der Kalender der Konferenz.
+    for (const id of ["presence-tryp-expo-2026", "presence-icpr-2026"]) {
+      expect(getEventById(id)?.noCalendar, id).toBe(true);
+    }
+  });
+
+  it("leaves it off everything else", () => {
+    const flagged = events.filter((e) => e.noCalendar).map((e) => e.id);
+    expect(flagged).toHaveLength(2);
   });
 });

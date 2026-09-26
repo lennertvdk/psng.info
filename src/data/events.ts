@@ -253,6 +253,14 @@ export interface PsngEvent {
   /** rendert das Event in den vergangenen Events als große Feature-Karte (Foto-Karussell + Video), statt im normalen 2-Spalten-Grid */
   featuredLarge?: boolean;
   /**
+   * Kein „Zum Kalender hinzufügen“ auf dieser Karte. Für Termine, die man
+   * sich nicht als eigenen Eintrag anlegt: fremde, mehrtägige Konferenzen,
+   * bei denen wir als Community zu Gast waren. Dort gilt der Kalender der
+   * Konferenz, und unser Eintrag wäre ein Ganztagsblock über drei Tage, der
+   * nichts darüber sagt, wann man sich trifft.
+   */
+  noCalendar?: boolean;
+  /**
    * Kooperation mit einer Partnerorganisation: Chip in der Kopfzeile und
    * Leiste am Kartenfuß. Ersetzt für solche Events den `disclaimer`. Die
    * Gestaltung (`badge-bpsa` und `surface-bpsa` in index.css) ist derzeit auf
@@ -304,6 +312,7 @@ export const events: PsngEvent[] = [
   // ── Präsenz in der Community (externe Konferenzen) ────────────────────────
   {
     id: "presence-tryp-expo-2026",
+    noCalendar: true,
     title: "TRYP Expo",
     category: "other",
     column: "community",
@@ -322,6 +331,7 @@ export const events: PsngEvent[] = [
   },
   {
     id: "presence-icpr-2026",
+    noCalendar: true,
     title: "ICPR 2026",
     category: "other",
     column: "community",
@@ -750,6 +760,30 @@ export function formatEventDateShort(iso: string, locale: Locale): string {
     month: "short",
     year: "numeric",
   });
+}
+
+/**
+ * Die Uhrzeit steht in den Daten als Anzeigetext – „19:00 – 20:00“, „16:00
+ * bis 20:00 Uhr (Einlass ab 15:30)“, „ganztägig“. Wer damit rechnen will,
+ * braucht Zahlen: Die erste gefundene Uhrzeit ist der Anfang, die zweite das
+ * Ende, alles Weitere (ein Einlass) bleibt Text. Steht gar keine da, ist der
+ * Termin ganztägig – geraten wird keine.
+ *
+ * Genutzt von den strukturierten Daten und vom Kalendereintrag. Beide müssen
+ * dieselbe Uhrzeit meinen wie die Karte, deshalb steht die Lesart hier einmal.
+ */
+export function parseTimeRange(time: string | undefined): {
+  start?: string;
+  end?: string;
+} {
+  const matches = time?.match(/\d{1,2}:\d{2}/g);
+  if (!matches?.length) return {};
+  // „9:30“ kommt als vier Zeichen – Kalender und Schema wollen „09:30“.
+  const pad = (t: string) => (t.length === 4 ? `0${t}` : t);
+  return {
+    start: pad(matches[0]),
+    end: matches[1] ? pad(matches[1]) : undefined,
+  };
 }
 
 /**

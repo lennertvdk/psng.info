@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from "react-router-do
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
+import AddToCalendar from "@/components/AddToCalendar";
 import {
   Carousel,
   CarouselContent,
@@ -13,6 +14,7 @@ import {
 import {
   LECTURE_SERIES,
   formatEventDate,
+  parseTimeRange,
   formatEventDateShort,
   formatRelativeToToday,
   getEventAnchor,
@@ -27,10 +29,13 @@ import {
   type TimelineEntry,
 } from "@/data/events";
 import { getYouTubeEmbedUrl } from "@/lib/youtube";
+import type { CalendarEvent } from "@/lib/calendar";
 import { WHATSAPP_LINK, INSTAGRAM_LINK } from "@/lib/links";
-import { useCopy } from "@/i18n/copy";
+import { useCopy, type Copy } from "@/i18n/copy";
+import { SITE_URL } from "@/i18n/head";
 import { useLocale, type Locale } from "@/i18n/locale";
 import { pick, type Localized } from "@/i18n/localized";
+import { pathFor } from "@/i18n/routes";
 
 /**
  * Der Typ-Chip. Steht auf jeder Karte und benennt dieselbe Achse wie der
@@ -227,6 +232,73 @@ function isLumaLink(url?: string): boolean {
   return Boolean(url?.includes("luma.com"));
 }
 
+/** Die Karte selbst, als Adresse – sie steht im Kalendereintrag. */
+function cardUrl(locale: Locale, anchor: string): string {
+  return `${SITE_URL}${pathFor("home", locale)}#${anchor}`;
+}
+
+/**
+ * Was von einem Event in den Kalender wandert.
+ *
+ * Nichts wird dafür neu erfunden: Titel, Ort und Beschreibung stehen so im
+ * Eintrag, wie sie auf der Karte stehen, und die Uhrzeit liest derselbe
+ * Parser wie bei den strukturierten Daten. Dazu die Adresse der Karte – in
+ * zwei Wochen weiß sonst niemand mehr, woher der Termin kam.
+ *
+ * Ohne Rückgabe für Termine, die keinen Eintrag bekommen (siehe `noCalendar`).
+ */
+function calendarEntry(
+  event: PsngEvent,
+  locale: Locale,
+  c: Copy,
+): CalendarEvent | undefined {
+  if (event.noCalendar) return undefined;
+  const { start, end } = parseTimeRange(pick(event.time, locale));
+  const registration = event.registrationUrl
+    ? `${pick(event.registrationLabel, locale) ?? c.events.register}: ${
+        event.registrationUrl
+      }`
+    : undefined;
+  return {
+    id: getEventAnchor(event),
+    title: pick(event.title, locale),
+    date: event.date,
+    endDate: event.endDate,
+    startTime: start,
+    endTime: end,
+    location: pick(event.location, locale),
+    description:
+      [pick(event.description, locale), registration].filter(Boolean).join("\n\n") ||
+      undefined,
+    url: cardUrl(locale, getEventAnchor(event)),
+  };
+}
+
+/**
+ * Dasselbe für einen Reihentermin. Thema und Speaker fehlen hier noch – der
+ * Eintrag hält den Abend frei, und der Hinweis dazu sagt, was noch kommt.
+ */
+function seriesCalendarEntry(
+  series: SeriesDate,
+  locale: Locale,
+  c: Copy,
+): CalendarEvent {
+  const { start, end } = parseTimeRange(series.time);
+  return {
+    id: series.id,
+    title:
+      series.labelKey === "semesterStart"
+        ? c.events.seriesSemesterLabel
+        : c.events.seriesLabel,
+    date: series.date,
+    startTime: start,
+    endTime: end,
+    location: series.location,
+    description: c.events.seriesNote,
+    url: cardUrl(locale, "events"),
+  };
+}
+
 function EventCard({
   event,
   i,
@@ -242,6 +314,9 @@ function EventCard({
   const speakerLink = event.speakerWebsiteUrl ?? event.assets?.speakerLinkedinUrl;
   const c = useCopy();
   const locale = useLocale();
+  // Ein vergangener Termin gehört in keinen Kalender mehr – dieselbe
+  // Überlegung wie beim Anmelde-Button darunter.
+  const calendar = past ? undefined : calendarEntry(event, locale, c);
 
   return (
     <motion.div
@@ -363,16 +438,19 @@ function EventCard({
           {c.events.lumaHint}
         </p>
       )}
-      {!past && event.registrationUrl && (
-        <div className="flex flex-wrap gap-3 mt-4">
-          <a
-            href={event.registrationUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center rounded-lg gradient-psychedelic px-4 py-2 text-sm font-heading font-medium text-primary-foreground hover:opacity-90 transition-opacity"
-          >
-            {pick(event.registrationLabel, locale) ?? c.events.register}
-          </a>
+      {!past && (event.registrationUrl || calendar) && (
+        <div className="flex flex-wrap items-center gap-3 mt-4">
+          {event.registrationUrl && (
+            <a
+              href={event.registrationUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-lg gradient-psychedelic px-4 py-2 text-sm font-heading font-medium text-primary-foreground hover:opacity-90 transition-opacity"
+            >
+              {pick(event.registrationLabel, locale) ?? c.events.register}
+            </a>
+          )}
+          {calendar && <AddToCalendar event={calendar} />}
         </div>
       )}
       {past && isLumaLink(event.registrationUrl) && (
@@ -833,6 +911,11 @@ function SeriesRow({ series }: { series: SeriesDate }) {
       <p className="mt-1 text-sm text-muted-foreground">
         {series.time} · {series.location} – {c.events.seriesNote}
       </p>
+      {/* Der Termin steht, das Thema noch nicht – wer ihn sich jetzt schon
+          freihält, erfährt den Rest rechtzeitig. */}
+      <div className="mt-3">
+        <AddToCalendar event={seriesCalendarEntry(series, locale, c)} subtle />
+      </div>
     </div>
   );
 }

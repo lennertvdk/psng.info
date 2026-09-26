@@ -4,6 +4,7 @@ import {
   hasAssets,
   hasContent,
   getEventAnchor,
+  parseTimeRange,
   type PsngEvent,
 } from "@/data/events";
 import { SITE_URL } from "@/i18n/head";
@@ -58,23 +59,21 @@ function absoluteUrl(path: string): string {
  * wäre im Winterhalbjahr schlicht falsch.
  */
 function eventTimes(event: PsngEvent): { startDate: string; endDate?: string } {
-  const time = pick(event.time, "de");
-  const matches = time?.match(/\d{1,2}:\d{2}/g);
+  const { start: startTime, end: endTime } = parseTimeRange(pick(event.time, "de"));
 
-  if (!matches?.length) {
+  if (!startTime) {
     // Ganztägig oder ohne Angabe: Ein mehrtägiger Kongress trägt sein Ende im
     // eigenen Feld, alles andere endet am selben Tag.
     return { startDate: event.date, endDate: event.endDate };
   }
 
-  const pad = (t: string) => (t.length === 4 ? `0${t}` : t);
-  const start = `${event.date}T${pad(matches[0])}`;
+  const start = `${event.date}T${startTime}`;
   // Ein Enddatum im Event schlägt die Uhrzeit: Bei mehrtägigen Terminen sagt
   // die zweite Uhrzeit nichts über den letzten Tag aus.
   if (event.endDate) return { startDate: start, endDate: event.endDate };
   return {
     startDate: start,
-    endDate: matches[1] ? `${event.date}T${pad(matches[1])}` : undefined,
+    endDate: endTime ? `${event.date}T${endTime}` : undefined,
   };
 }
 
