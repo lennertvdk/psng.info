@@ -121,7 +121,7 @@ const de = {
     eyebrow: "Events",
     title: "Veranstaltungen",
     introBefore:
-      "Vorträge, Treffen und Konferenzbesuche – chronologisch, von jetzt rückwärts. (Zoom-)Links zur Teilnahme gibt's über ",
+      "Vorträge, Treffen und Konferenzbesuche. (Zoom-)Links zur Teilnahme gibt's über ",
     introMiddle: " und ",
     introAfter: ".",
     seriesNoteBefore: "Lectures:",
@@ -509,7 +509,7 @@ const en: Copy = {
     eyebrow: "Events",
     title: "Events",
     introBefore:
-      "Talks, meet-ups and conference visits – in chronological order, from now backwards. (Zoom) links to join are shared via ",
+      "Talks, meet-ups and conference visits. (Zoom) links to join are shared via ",
     introMiddle: " and ",
     introAfter: ".",
     seriesNoteBefore: "Lectures:",
