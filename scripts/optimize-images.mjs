@@ -99,6 +99,8 @@ const targets = [
   ["PSNG-kickoff-thumbnail.jpg", 960, 82, "yt-fH9gMcj65l4"],
   // Dasselbe für Torsten Passies Lecture.
   ["Torsten-Passie-YT-Thumbnail-v3.png", 960, 82, "yt-d5nUzSYQPAY"],
+  // Titelbild der ALPS-Konferenz für ihre Karte, solange sie bevorsteht.
+  ["alps-conf-for-psng-events.jpg", 1200, 82, "alps-conference-2026"],
   // Fotos von Miguels Lecture (8.9.) für das Karussell neben dem Text. Die
   // Quellen – Kamera-JPGs und KI-retuschierte Videostills – liegen nur lokal
   // in Miguel-lecture-photos/ und sind zu groß fürs Repo.

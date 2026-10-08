@@ -275,14 +275,14 @@ describe("parseTimeRange", () => {
 describe("noCalendar", () => {
   it("keeps the conferences we were only guests at out of the calendar", () => {
     // Ein Ganztagsblock über drei Tage Funkhaus sagt nichts darüber, wann wir
-    // uns dort treffen – für diese beiden gilt der Kalender der Konferenz.
-    for (const id of ["presence-tryp-expo-2026", "presence-icpr-2026"]) {
+    // uns dort treffen – für diese gilt der Kalender der Konferenz.
+    for (const id of ["presence-tryp-expo-2026", "presence-icpr-2026", "presence-alps-2026"]) {
       expect(getEventById(id)?.noCalendar, id).toBe(true);
     }
   });
 
   it("leaves it off everything else", () => {
     const flagged = events.filter((e) => e.noCalendar).map((e) => e.id);
-    expect(flagged).toHaveLength(2);
+    expect(flagged).toHaveLength(3);
   });
 });

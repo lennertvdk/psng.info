@@ -8,6 +8,7 @@ import type { Locale } from "@/i18n/locale";
 import { intlLocale, pick, type Localized } from "@/i18n/localized";
 import trypPhoto1 from "@/assets/tryp-1.webp";
 import icprPhoto from "@/assets/icpr-1.webp";
+import alpsConferenceCover from "@/assets/alps-conference-2026.webp";
 import bpsaLogo from "@/assets/BPSA-Logo.webp";
 import miguelMoraVeraPhoto from "@/assets/Miguel-Mora-Vera.webp";
 import timoSchmidtPhoto from "@/assets/Timo-Schmidt.webp";
@@ -302,6 +303,16 @@ export interface PsngEvent {
   contribution?: Localized;
   /** kursiver Hinweis am Kartenende (z. B. "Vorläufiges Programm, Änderungen möglich.") */
   disclaimer?: Localized;
+  /**
+   * Bild über einer kommenden Karte, z. B. das Motiv einer Konferenz. Bewusst
+   * nicht unter `assets.photos`: Fotos machen aus der Karte einen Rückblick
+   * ohne Anmelde-Button. Nach dem Termin weicht es echten Fotos.
+   */
+  coverImage?: string;
+  coverAlt?: Localized;
+  /** Website der Veranstaltung, als Link neben dem Anmelde-Button. */
+  websiteUrl?: string;
+  websiteLabel?: Localized;
   registrationUrl?: string;
   /** überschreibt den Standard-Button-Text "Jetzt anmelden" (z. B. "Zoom-Link" bei Online-Talks) */
   registrationLabel?: Localized;
@@ -368,6 +379,35 @@ export const events: PsngEvent[] = [
       photos: [icprPhoto],
       externalUrl: "https://icpr-conference.com",
       externalLabel: "icpr-conference.com",
+    },
+  },
+  {
+    id: "presence-alps-2026",
+    noCalendar: true,
+    title: "ALPS Research Conference 2026",
+    category: "other",
+    column: "community",
+    date: "2026-10-09",
+    endDate: "2026-10-10",
+    time: { de: "ganztägig", en: "all day" },
+    location: "Kultur & Kongresshaus Aarau",
+    description: {
+      de: "Die jährliche Forschungskonferenz der Schweizer ALPS Foundation: Vorträge, Posterpräsentationen, Panels und immersive Formate rund um psychedelische Forschung. Das PSNG trifft sich dort als Community. Wenn du dabei bist, tritt unten der WhatsApp-Gruppe bei: Dort stimmen wir uns ab, besuchen gemeinsam Vorträge und machen zusammen Mittagspause.",
+      en: "The annual research conference of the Swiss ALPS Foundation: talks, research posters, panels and immersive formats on psychedelic research. The PSNG meets up there as a community. If you're going, join the WhatsApp group below: that's where we coordinate, go to talks together and have lunch as a group.",
+    },
+    // Nach der Konferenz: Titelbild, Website-Link und Gruppe durch Fotos der
+    // PSNG-Leute vor Ort ersetzen (assets.photos, externalUrl) – wie bei ICPR.
+    coverImage: alpsConferenceCover,
+    coverAlt: {
+      de: "ALPS Conference 2026, 9.–10. Oktober 2026, Kultur & Kongresshaus Aarau",
+      en: "ALPS Conference 2026, 9–10 October 2026, Kultur & Kongresshaus Aarau",
+    },
+    websiteUrl: "https://alpsconference.com",
+    websiteLabel: "alpsconference.com",
+    registrationUrl: "https://chat.whatsapp.com/LEjzCmBTGk63v1l9lJiq6N?mode=gi_t",
+    registrationLabel: {
+      de: "WhatsApp-Gruppe beitreten",
+      en: "Join the WhatsApp group",
     },
   },
 
@@ -457,7 +497,7 @@ export const events: PsngEvent[] = [
   },
   {
     id: "lecture-6",
-    title: "Logos und Ekstase. Zur Genealogie eines akademischen Tabus",
+    title: "Logos und Ekstase. Zur Genealogie eines akademischen Tabus | Hybrid Event",
     subtitle: {
       de: "Was hat die Geschichte des Denkens mit psychedelischer Erfahrung zu tun?",
       en: "What does the history of thought have to do with psychedelic experience?",

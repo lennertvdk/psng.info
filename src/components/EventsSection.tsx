@@ -361,6 +361,19 @@ function EventCard({
       transition={{ duration: 0.4, delay: i * 0.08 }}
       className="bg-card rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow"
     >
+      {event.coverImage && (
+        <div className="-mx-6 -mt-6 mb-5 aspect-[40/21] overflow-hidden rounded-t-2xl bg-muted">
+          <img
+            src={event.coverImage}
+            alt={pick(event.coverAlt, locale) ?? pick(event.title, locale)}
+            width={1200}
+            height={630}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )}
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <ColumnChip column={event.column} />
         {event.highlightBadge && (
@@ -441,7 +454,8 @@ function EventCard({
       <div className="space-y-1 text-sm text-muted-foreground">
         <p>
           <span className="font-medium text-foreground">{c.events.dateLabel}</span>{" "}
-          {formatEventDate(event.date, locale, event.showWeekday)},{" "}
+          {formatEventDate(event.date, locale, event.showWeekday)}
+          {event.endDate ? ` – ${formatEventDate(event.endDate, locale)}` : null},{" "}
           {pick(event.time, locale)}
         </p>
         {event.location ? (
@@ -469,7 +483,7 @@ function EventCard({
           {c.events.lumaHint}
         </p>
       )}
-      {!past && (event.registrationUrl || calendar) && (
+      {!past && (event.registrationUrl || calendar || event.websiteUrl) && (
         <div className="flex flex-wrap items-center gap-3 mt-4">
           {event.registrationUrl && (
             <a
@@ -482,6 +496,16 @@ function EventCard({
             </a>
           )}
           {calendar && <AddToCalendar event={calendar} />}
+          {event.websiteUrl && (
+            <a
+              href={event.websiteUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              {pick(event.websiteLabel, locale) ?? c.events.learnMore} →
+            </a>
+          )}
         </div>
       )}
       {past && isLumaLink(event.registrationUrl) && (
