@@ -9,7 +9,6 @@ import { intlLocale, pick, type Localized } from "@/i18n/localized";
 import trypPhoto1 from "@/assets/tryp-1.webp";
 import icprPhoto from "@/assets/icpr-1.webp";
 import bpsaLogo from "@/assets/BPSA-Logo.webp";
-import torstenPassiePhoto from "@/assets/Torsten-Passie.webp";
 import miguelMoraVeraPhoto from "@/assets/Miguel-Mora-Vera.webp";
 import timoSchmidtPhoto from "@/assets/Timo-Schmidt.webp";
 import medienBlogThumb from "@/assets/Medien-Blog.webp";
@@ -17,6 +16,7 @@ import ytKickoff from "@/assets/yt-fH9gMcj65l4.webp";
 import ytLonergan from "@/assets/yt-LftC0jVmxuI.webp";
 import ytPrateep from "@/assets/yt-7TlMMklQ34g.webp";
 import ytMiguel from "@/assets/yt-R4pILAsjxWM.webp";
+import ytPassie from "@/assets/yt-d5nUzSYQPAY.webp";
 import ytShortGathering from "@/assets/yt-T5r5fJ9OOm0.webp";
 import abendPhoto01 from "@/assets/abend-rund-um-psychedelika/abend-01.webp";
 import abendPhoto04 from "@/assets/abend-rund-um-psychedelika/abend-04.webp";
@@ -430,16 +430,18 @@ export const events: PsngEvent[] = [
     speakerWebsiteUrl: "http://psychedelic-science.org/",
     language: "de",
     description: {
-      de: "Ein nüchterner Blick auf Wirksamkeit, Methodikkritik und die Grenzen der aktuellen Psychedelika-Forschung.",
-      en: "A sober look at efficacy, methodological criticism and the limits of current psychedelic research.",
+      de: "Ein nüchterner Blick auf Wirksamkeit, Methodikkritik und die Grenzen der aktuellen Psychedelika-Forschung. Es geht unter anderem um Neuroplastizität samt negativer Effekte und Nullergebnisse, um die Haltbarkeit von Therapieeffekten und darum, wie gut sich präklinische Befunde übertragen lassen.",
+      en: "A sober look at efficacy, methodological criticism and the limits of current psychedelic research. Topics include neuroplasticity, including negative effects and null results, how long therapeutic effects last, and how well preclinical findings translate.",
     },
     speakerBio: {
       de: "Torsten Passie ist apl. Professor für Psychiatrie und Psychotherapie an der Medizinischen Hochschule Hannover und Visiting Scientist an der Goethe-Universität Frankfurt am Main. Er forscht seit mehr als 35 Jahren zu Psychedelika und gilt international als anerkannter Experte für die Pharmakologie und therapeutische Anwendung halluzinogener und entaktogener Substanzen.",
       en: "Torsten Passie is adjunct professor of psychiatry and psychotherapy at Hannover Medical School and a visiting scientist at Goethe University Frankfurt. He has researched psychedelics for more than 35 years and is internationally recognised as an expert on the pharmacology and therapeutic use of hallucinogenic and entactogenic substances.",
     },
     registrationUrl: "https://luma.com/jtglh7ct",
+    // Kein Speakerfoto: Das Thumbnail des Videos zeigt ihn schon.
     assets: {
-      speakerPhoto: torstenPassiePhoto,
+      youtubeUrl: "https://www.youtube.com/watch?v=d5nUzSYQPAY",
+      youtubeThumbnail: ytPassie,
     },
   },
   {

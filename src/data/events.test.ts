@@ -10,6 +10,7 @@ import {
   getTimelineEntries,
   getUpcomingEvents,
   getUpcomingSeriesDates,
+  hasAssets,
   hasContent,
   events,
   SERIES_OVERRIDES,
@@ -68,9 +69,18 @@ describe("getHighlightEvents", () => {
 describe("getPastPlainEvents", () => {
   const ref = new Date(2026, 7, 13); // 13. August 2026
 
-  it("includes past events with real content but no material yet", () => {
-    // Torsten Passies Lecture (11.8.) hat noch keine Aufzeichnung.
-    expect(getPastPlainEvents(ref).map((e) => e.id)).toContain("lecture-5");
+  it("only includes past events with real content but no material yet", () => {
+    for (const e of getPastPlainEvents(ref)) {
+      expect(e.date < "2026-08-13").toBe(true);
+      expect(hasContent(e)).toBe(true);
+      expect(hasAssets(e)).toBe(false);
+    }
+  });
+
+  it("moves a lecture to the highlights once its recording is up", () => {
+    // Torsten Passies Lecture (11.8.) hat inzwischen eine Aufzeichnung.
+    expect(getPastPlainEvents(ref).map((e) => e.id)).not.toContain("lecture-5");
+    expect(getHighlightEvents(ref).map((e) => e.id)).toContain("lecture-5");
   });
 
   it("excludes empty placeholder lectures", () => {

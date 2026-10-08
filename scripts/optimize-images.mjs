@@ -97,6 +97,8 @@ const targets = [
   // 16:9-Kachel zu grob; deshalb ein eigenes Motiv, lokal gehostet – siehe
   // Kommentar bei EventAssets.youtubeThumbnail zum Datenschutzgrund.
   ["PSNG-kickoff-thumbnail.jpg", 960, 82, "yt-fH9gMcj65l4"],
+  // Dasselbe für Torsten Passies Lecture.
+  ["Torsten-Passie-YT-Thumbnail-v3.png", 960, 82, "yt-d5nUzSYQPAY"],
   // Screengrab des Medien-Blogs für die Launch-Karte. Der Zuschnitt bringt das
   // 1804x1164-Bild auf 16:9, damit es dieselbe Kachelform hat wie die Videos
   // daneben – und nicht das CSS entscheiden muss, was weggeschnitten wird.
