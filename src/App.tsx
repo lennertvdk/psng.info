@@ -16,6 +16,8 @@ const CodeOfConductEn = lazy(() => import("./pages/CodeOfConductEn"));
 const Leitfaden = lazy(() => import("./pages/Leitfaden"));
 const Guide = lazy(() => import("./pages/Guide"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+// Vorschau einer neuen Startseite, siehe pages/Lab.tsx.
+const Lab = lazy(() => import("./pages/Lab"));
 
 /*
  * Die Pfade kommen aus dem Verzeichnis in i18n/routes.ts, nicht als Literale
@@ -57,6 +59,11 @@ const App = () => (
                 rechtliche Wirkung, die deutsche Fassung ist die maßgebliche. */}
             <Route path={pathFor("imprint", "de")} element={<Impressum />} />
             <Route path={pathFor("privacy", "de")} element={<Datenschutz />} />
+
+            {/* Vorschau, bewusst als Literal und nicht aus routes.ts: Dort
+                landete sie in Sitemap, hreflang und Sprachumschalter. */}
+            <Route path="/lab" element={<Lab />} />
+            <Route path="/en/lab" element={<Lab />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

@@ -1113,3 +1113,38 @@ export function getTimelineEntries(referenceDate: Date = new Date()): {
 
   return { upcoming, past };
 }
+
+/**
+ * Was als Nächstes ansteht, aufsteigend: der nächste Termin zuerst. Dieselben
+ * Einträge wie die obere Hälfte des Zeitstrahls, nur andersherum gelesen – der
+ * Zeitstrahl stapelt von der Zukunft auf heute zu, eine Liste „Als Nächstes"
+ * liest man von heute aus nach vorn. Bewusst aus `getTimelineEntries`
+ * abgeleitet statt neu gefiltert: Welche Termine als kommend gelten, soll an
+ * genau einer Stelle entschieden werden.
+ *
+ * Meilensteine fallen heraus – sie sind Rückblick, kein Termin.
+ */
+export function getUpcomingAgenda(
+  referenceDate: Date = new Date(),
+): Extract<TimelineEntry, { kind: "event" | "series" }>[] {
+  return getTimelineEntries(referenceDate)
+    .upcoming.filter(
+      (entry): entry is Extract<TimelineEntry, { kind: "event" | "series" }> =>
+        entry.kind !== "milestone",
+    )
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+/**
+ * Das jüngste vergangene Event mit Rückmeldung der Teilnehmenden – Anzahl
+ * und Bewertung. Für einen knappen Beleg, dass Veranstaltungen tatsächlich
+ * stattfinden und ankommen, ohne Zahlen zu erfinden: Fehlt so ein Event,
+ * gibt es auch keinen Beleg.
+ */
+export function getLatestRatedEvent(
+  referenceDate: Date = new Date(),
+): PsngEvent | undefined {
+  return getHighlightEvents(referenceDate).find(
+    (e) => e.assets?.attendees && e.assets.rating,
+  );
+}

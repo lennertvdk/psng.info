@@ -7,7 +7,9 @@ import {
   getEventAnchor,
   getHighlightEvents,
   getPastPlainEvents,
+  getLatestRatedEvent,
   getTimelineEntries,
+  getUpcomingAgenda,
   getUpcomingEvents,
   getUpcomingSeriesDates,
   hasAssets,
@@ -284,5 +286,37 @@ describe("noCalendar", () => {
   it("leaves it off everything else", () => {
     const flagged = events.filter((e) => e.noCalendar).map((e) => e.id);
     expect(flagged).toHaveLength(3);
+  });
+});
+
+describe("getUpcomingAgenda", () => {
+  const ref = new Date(2026, 9, 8); // 8. Oktober 2026, lokal
+
+  it("lists the nearest date first, never a later one above an earlier one", () => {
+    const dates = getUpcomingAgenda(ref).map((e) => e.date);
+    expect(dates.length).toBeGreaterThan(0);
+    expect(dates).toEqual([...dates].sort());
+  });
+
+  it("contains nothing that is already over", () => {
+    for (const entry of getUpcomingAgenda(ref)) {
+      expect(entry.date >= "2026-10-08").toBe(true);
+    }
+  });
+
+  it("puts the conference tomorrow ahead of the lecture on 20 October", () => {
+    const ids = getUpcomingAgenda(ref).map((e) => e.id);
+    expect(ids.indexOf("event-presence-alps-2026")).toBeLessThan(
+      ids.indexOf("event-lecture-schmidt-2026-10-20"),
+    );
+  });
+});
+
+describe("getLatestRatedEvent", () => {
+  it("returns a past event that carries both attendance and rating", () => {
+    const event = getLatestRatedEvent(new Date(2026, 9, 8));
+    expect(event?.assets?.attendees).toBeGreaterThan(0);
+    expect(event?.assets?.rating).toBeTruthy();
+    expect(event!.date < "2026-10-08").toBe(true);
   });
 });

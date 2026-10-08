@@ -373,6 +373,97 @@ const de = {
     back: "Zurück zur Startseite",
   },
 
+  /*
+   * Die Vorschau unter /lab. Nur was dort neu ist, steht hier – alles, wofür es
+   * auf der Startseite schon einen Text gibt (Einstiege, Kennzahlen,
+   * Gruppen-Überschrift, Abschluss), liest die Seite von dort.
+   */
+  lab: {
+    title: "PSNG – Vorschau",
+    nav: {
+      events: "Termine",
+      groups: "Hochschulgruppen",
+      guide: "Leitfaden",
+      about: "Über uns",
+    },
+    hero: {
+      eyebrow: "Psychedelic Student Network Germany",
+      headlineBefore: "Deutschlands studentisches Netzwerk für ",
+      headlineAccent: "psychedelische Wissenschaft",
+      headlineAfter: ".",
+      text: "Wir bringen Studierende zusammen, die sich für psychedelische Forschung interessieren: mit Lectures, Community Calls und Unterstützung beim Gründen einer Hochschulgruppe.",
+    },
+    upNext: "Als Nächstes",
+    since: "Seit März 2026 aktiv",
+    agenda: {
+      eyebrow: "Termine",
+      title: "Danach im Kalender",
+      all: "Alle Termine & Aufzeichnungen →",
+    },
+    groups: {
+      eyebrow: "Hochschulgruppen",
+      intro:
+        "Ob du einer bestehenden Gruppe beitrittst oder an deiner Hochschule eine gründest: Wir vernetzen dich mit anderen und helfen beim Aufbau.",
+      steps: [
+        {
+          key: "team",
+          title: "Team finden",
+          desc: "2–3 Leute an deiner Hochschule, oder über die Stadtgruppen in der WhatsApp-Community.",
+        },
+        {
+          key: "contact",
+          title: "Bei uns melden",
+          desc: "Wir helfen beim Aufbau und vernetzen euch mit anderen Gruppen.",
+        },
+        {
+          key: "meeting",
+          title: "Erstes Treffen planen",
+          desc: "An unsere Lectures anlehnen oder eigene Formate entwickeln.",
+        },
+        {
+          key: "resources",
+          title: "Ressourcen nutzen",
+          desc: "Leitfaden, Curriculum und die Aufzeichnungen vergangener Events.",
+        },
+      ],
+      cta: "Gruppe gründen",
+    },
+    credibility: {
+      eyebrow: "Wofür wir stehen",
+      title: "Was das PSNG ist – und was nicht.",
+      mission:
+        "Wir bringen engagierte Studierende zusammen und bauen eine Community auf, die gemeinsam an einer verantwortungsvollen Zukunft dieses Forschungsfeldes arbeitet.",
+      items: [
+        {
+          key: "students",
+          title: "Studentisch organisiert",
+          desc: "Getragen von Psychologie- und Medizinstudierenden aus Berlin und Wuppertal.",
+        },
+        {
+          key: "science",
+          title: "Wissenschaftsbasiert",
+          desc: "Lectures, Journal Clubs und Austausch über aktuelle Forschung, aus der Community und mit eingeladenen Expert:innen.",
+        },
+        {
+          key: "conduct",
+          title: "Mit klaren Regeln",
+          desc: "Kein Substanzkonsum oder -verkauf, keine therapeutischen Angebote.",
+        },
+        {
+          key: "europe",
+          title: "Europäisch vernetzt",
+          desc: "Nach dem Vorbild der Studierendennetzwerke in der Schweiz (SPSN) und Italien (UNePSI), mit denen wir kooperieren.",
+        },
+      ],
+      codeOfConduct: "Code of Conduct lesen →",
+      about: "Mehr über das PSNG →",
+    },
+    proof: {
+      eyebrow: "Rückblick",
+      more: "Zum Rückblick →",
+    },
+  },
+
   meta: {
     home: {
       title: "PSNG – Psychedelic Student Network Germany",
@@ -756,6 +847,92 @@ const en: Copy = {
 
   legal: {
     back: "Back to the homepage",
+  },
+
+  lab: {
+    title: "PSNG – preview",
+    nav: {
+      events: "Events",
+      groups: "University groups",
+      guide: "Guide",
+      about: "About",
+    },
+    hero: {
+      eyebrow: "Psychedelic Student Network Germany",
+      headlineBefore: "Germany's student network for ",
+      headlineAccent: "psychedelic science",
+      headlineAfter: ".",
+      text: "We bring together students interested in psychedelic research: with lectures, community calls and support for starting a university group.",
+    },
+    upNext: "Up next",
+    since: "Active since March 2026",
+    agenda: {
+      eyebrow: "Events",
+      title: "Coming up after that",
+      all: "All events & recordings →",
+    },
+    groups: {
+      eyebrow: "University groups",
+      intro:
+        "Whether you join an existing group or start one at your university, we'll connect you with others and help you set it up.",
+      steps: [
+        {
+          key: "team",
+          title: "Find a team",
+          desc: "2–3 people at your university, or through the city groups in the WhatsApp community.",
+        },
+        {
+          key: "contact",
+          title: "Get in touch",
+          desc: "We help you set things up and connect you with other groups.",
+        },
+        {
+          key: "meeting",
+          title: "Plan a first meeting",
+          desc: "Build on our lectures or develop formats of your own.",
+        },
+        {
+          key: "resources",
+          title: "Use the resources",
+          desc: "The guide, the curriculum and recordings of past events.",
+        },
+      ],
+      cta: "Start a group",
+    },
+    credibility: {
+      eyebrow: "What we stand for",
+      title: "What the PSNG is, and what it isn't.",
+      mission:
+        "We bring committed students together and build a community that works towards a responsible future for this field of research.",
+      items: [
+        {
+          key: "students",
+          title: "Student-led",
+          desc: "Organised by psychology and medical students in Berlin and Wuppertal.",
+        },
+        {
+          key: "science",
+          title: "Science-based",
+          desc: "Lectures, journal clubs and discussion of current research, from within the community and with invited experts.",
+        },
+        {
+          key: "conduct",
+          title: "Clear rules",
+          desc: "No use or sale of substances, no therapeutic services.",
+        },
+        {
+          key: "europe",
+          title: "Connected across Europe",
+          desc: "Modelled on the student networks in Switzerland (SPSN) and Italy (UNePSI), both of which we work with.",
+        },
+      ],
+      codeOfConduct: "Read the code of conduct →",
+      about: "More about the PSNG →",
+    },
+    proof: {
+      eyebrow: "Looking back",
+      more: "See the recap →",
+    },
   },
 
   meta: {
