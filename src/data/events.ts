@@ -532,8 +532,8 @@ export const events: PsngEvent[] = [
       name: "Berlin Psychedelic Science Association",
       logo: bpsaLogo,
       role: {
-        de: "Eine Lecture der BPSA, gestreamt über das PSNG-Netzwerk.",
-        en: "A BPSA lecture, streamed through the PSNG network.",
+        de: "Eine gemeinsame Lecture von PSNG und BPSA.",
+        en: "A joint lecture by the PSNG and the BPSA.",
       },
       url: BPSA_LINK,
       instagramUrl: BPSA_INSTAGRAM_LINK,
@@ -634,8 +634,8 @@ export const events: PsngEvent[] = [
       name: "Berlin Psychedelic Science Association",
       logo: bpsaLogo,
       role: {
-        de: "Eine Lecture der BPSA, gestreamt über das PSNG-Netzwerk.",
-        en: "A BPSA lecture, streamed through the PSNG network.",
+        de: "Eine gemeinsame Lecture von PSNG und BPSA.",
+        en: "A joint lecture by the PSNG and the BPSA.",
       },
       url: BPSA_LINK,
       instagramUrl: BPSA_INSTAGRAM_LINK,
