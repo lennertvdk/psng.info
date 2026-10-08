@@ -18,6 +18,17 @@ import ytPrateep from "@/assets/yt-7TlMMklQ34g.webp";
 import ytMiguel from "@/assets/yt-R4pILAsjxWM.webp";
 import ytPassie from "@/assets/yt-d5nUzSYQPAY.webp";
 import ytShortGathering from "@/assets/yt-T5r5fJ9OOm0.webp";
+import miguelPhoto01 from "@/assets/miguel-lecture/miguel-01.webp";
+import miguelPhoto02 from "@/assets/miguel-lecture/miguel-02.webp";
+import miguelPhoto03 from "@/assets/miguel-lecture/miguel-03.webp";
+import miguelPhoto04 from "@/assets/miguel-lecture/miguel-04.webp";
+import miguelPhoto05 from "@/assets/miguel-lecture/miguel-05.webp";
+import miguelPhoto06 from "@/assets/miguel-lecture/miguel-06.webp";
+import miguelPhoto07 from "@/assets/miguel-lecture/miguel-07.webp";
+import miguelPhoto08 from "@/assets/miguel-lecture/miguel-08.webp";
+import miguelPhoto09 from "@/assets/miguel-lecture/miguel-09.webp";
+import miguelPhoto10 from "@/assets/miguel-lecture/miguel-10.webp";
+import miguelPhoto11 from "@/assets/miguel-lecture/miguel-11.webp";
 import abendPhoto01 from "@/assets/abend-rund-um-psychedelika/abend-01.webp";
 import abendPhoto04 from "@/assets/abend-rund-um-psychedelika/abend-04.webp";
 import abendPhoto06 from "@/assets/abend-rund-um-psychedelika/abend-06.webp";
@@ -498,6 +509,32 @@ export const events: PsngEvent[] = [
     assets: {
       youtubeUrl: "https://www.youtube.com/watch?v=R4pILAsjxWM",
       youtubeThumbnail: ytMiguel,
+      photos: [
+        miguelPhoto01,
+        miguelPhoto02,
+        miguelPhoto03,
+        miguelPhoto04,
+        miguelPhoto05,
+        miguelPhoto06,
+        miguelPhoto07,
+        miguelPhoto08,
+        miguelPhoto09,
+        miguelPhoto10,
+        miguelPhoto11,
+      ],
+      photoAlts: [
+        { de: "Eine Reihe aufmerksamer Zuhörender", en: "A row of attentive listeners" },
+        { de: "Miguel erklärt mit erhobener Hand", en: "Miguel explaining with a raised hand" },
+        { de: "Zuhörende in der ersten Reihe, eine lacht", en: "Listeners in the front row, one of them laughing" },
+        { de: "Miguel spricht, den Stift in der Hand", en: "Miguel speaking, pen in hand" },
+        { de: "Zuhörende, nah aufgenommen", en: "Listeners, close up" },
+        { de: "Mitschrift mit Füller im Notizbuch", en: "Notes taken with a fountain pen" },
+        { de: "Zwei Zuhörende im Profil", en: "Two listeners in profile" },
+        { de: "Ein Teilnehmer stellt in der Diskussion eine Frage", en: "A participant asking a question in the discussion" },
+        { de: "Ein Teilnehmer gestikuliert in der Diskussion", en: "A participant gesturing during the discussion" },
+        { de: "Der Raum von hinten: Miguel am Tisch, im Vordergrund der Laptop für den Zoom-Stream", en: "The room from the back: Miguel at the desk, the laptop for the Zoom stream in front" },
+        { de: "Laptop mit Zoom: Die Online-Teilnehmenden während der Fragerunde", en: "Laptop with Zoom: the online participants during the Q&A" },
+      ],
       speakerLinkedinUrl: "https://www.linkedin.com/in/miguel-estefano-mora-vera/",
       speakerPhoto: miguelMoraVeraPhoto,
     },

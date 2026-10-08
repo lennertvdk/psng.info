@@ -99,6 +99,27 @@ const targets = [
   ["PSNG-kickoff-thumbnail.jpg", 960, 82, "yt-fH9gMcj65l4"],
   // Dasselbe für Torsten Passies Lecture.
   ["Torsten-Passie-YT-Thumbnail-v3.png", 960, 82, "yt-d5nUzSYQPAY"],
+  // Fotos von Miguels Lecture (8.9.) für das Karussell neben dem Text. Die
+  // Quellen – Kamera-JPGs und KI-retuschierte Videostills – liegen nur lokal
+  // in Miguel-lecture-photos/ und sind zu groß fürs Repo.
+  ...[
+    ["Mov-Stills-Edited-AI/ChatGPT Image Sep 26, 2026, 06_52_54 PM.png", "01"],
+    ["Mov-Stills-Edited-AI/ChatGPT Image Sep 26, 2026, 06_48_28 PM.png", "02"],
+    ["Mov-Stills-Edited-AI/ChatGPT Image Sep 11, 2026, 08_26_03 PM.png", "03"],
+    ["Mov-Stills-Edited-AI/ChatGPT Image Sep 26, 2026, 06_45_53 PM.png", "04"],
+    ["Mov-Stills-Edited-AI/ChatGPT Image Sep 26, 2026, 06_53_00 PM.png", "05"],
+    ["Actual-photos-unedited/DSC_0036.JPG", "06"],
+    ["Mov-Stills-Edited-AI/ChatGPT Image Sep 26, 2026, 06_56_13 PM.png", "07"],
+    ["Mov-Stills-Edited-AI/ChatGPT Image Sep 26, 2026, 06_52_28 PM.png", "08"],
+    ["Mov-Stills-Edited-AI/ChatGPT Image Sep 26, 2026, 06_52_10 PM.png", "09"],
+    ["Actual-photos-unedited/DSC_0050.JPG", "10"],
+    ["Actual-photos-unedited/DSC_0051.JPG", "11"],
+  ].map(([src, n]) => [
+    `Miguel-lecture-photos/${src}`,
+    1200,
+    80,
+    `miguel-lecture/miguel-${n}`,
+  ]),
   // Screengrab des Medien-Blogs für die Launch-Karte. Der Zuschnitt bringt das
   // 1804x1164-Bild auf 16:9, damit es dieselbe Kachelform hat wie die Videos
   // daneben – und nicht das CSS entscheiden muss, was weggeschnitten wird.

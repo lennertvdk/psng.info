@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
@@ -6,6 +6,7 @@ import SectionHeader from "@/components/SectionHeader";
 import AddToCalendar from "@/components/AddToCalendar";
 import {
   Carousel,
+  type CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
@@ -526,6 +527,9 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
   const thumb = a.youtubeThumbnail ?? null;
   const embed = a.youtubeUrl ? getYouTubeEmbedUrl(a.youtubeUrl) : null;
   const heroPhoto = a.photos?.[0];
+  // Mit Video oben bekommen die Fotos eine eigene Spalte neben dem Text,
+  // statt dass das erste davon ungesehen hinter dem Video verschwindet.
+  const sidePhotos = a.youtubeUrl && a.photos?.length ? a.photos : null;
 
   return (
     <div className="overflow-hidden rounded-xl border border-border/60 bg-card hover:shadow-lg transition-shadow">
@@ -578,119 +582,128 @@ function HighlightCard({ ev }: { ev: PsngEvent }) {
         </div>
       ) : null}
 
-      <div className="space-y-3 p-5">
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-          <ColumnChip column={ev.column} />
-          {ev.speakerType && (
-            <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
-              {ev.speakerType === "student"
-                ? c.events.speakerTypes.student
-                : c.events.speakerTypes.guest}
-            </span>
-          )}
-          {ev.partnerCredit && <CreditBadge credit={ev.partnerCredit} />}
-          {ev.featured && (
-            <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
-              {c.events.firstEvent}
-            </span>
-          )}
-          <span>{formatEventDate(ev.date, locale)}</span>
-        </div>
+      <div className={sidePhotos ? "grid gap-5 p-5 md:grid-cols-2 md:gap-6" : "p-5"}>
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+            <ColumnChip column={ev.column} />
+            {ev.speakerType && (
+              <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                {ev.speakerType === "student"
+                  ? c.events.speakerTypes.student
+                  : c.events.speakerTypes.guest}
+              </span>
+            )}
+            {ev.partnerCredit && <CreditBadge credit={ev.partnerCredit} />}
+            {ev.featured && (
+              <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
+                {c.events.firstEvent}
+              </span>
+            )}
+            <span>{formatEventDate(ev.date, locale)}</span>
+          </div>
 
-        <div className="space-y-2">
-          <h3 className="text-lg font-semibold leading-snug">
-            {pick(ev.title, locale)}
-          </h3>
-          {ev.subtitle ? (
-            <p className="text-sm font-medium leading-relaxed text-foreground/80">
-              {pick(ev.subtitle, locale)}
-            </p>
-          ) : null}
-          {/* Speaker und Ort nebeneinander statt entweder/oder: Sonst fällt bei
-              jedem Vortrag der Ort weg, weil ein Speaker davorsteht – und im
-              Rückblick ist gerade er die Angabe, die sonst nirgends mehr steht. */}
-          {ev.speaker ? (
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold leading-snug">
+              {pick(ev.title, locale)}
+            </h3>
+            {ev.subtitle ? (
+              <p className="text-sm font-medium leading-relaxed text-foreground/80">
+                {pick(ev.subtitle, locale)}
+              </p>
+            ) : null}
+            {/* Speaker und Ort nebeneinander statt entweder/oder: Sonst fällt bei
+                jedem Vortrag der Ort weg, weil ein Speaker davorsteht – und im
+                Rückblick ist gerade er die Angabe, die sonst nirgends mehr steht. */}
+            {ev.speaker ? (
+              <p className="text-sm text-muted-foreground">
+                {c.events.with} {ev.speaker}
+              </p>
+            ) : null}
+            {ev.location ? (
+              <p className="text-sm text-muted-foreground">
+                {pick(ev.location, locale)}
+              </p>
+            ) : null}
+            <PartOfLine event={ev} />
+            <LanguageNote event={ev} />
+          </div>
+          {ev.description ? (
             <p className="text-sm text-muted-foreground">
-              {c.events.with} {ev.speaker}
+              {pick(ev.description, locale)}
             </p>
           ) : null}
-          {ev.location ? (
+          {/* Die Kurzvita gehört auch in den Rückblick: Wer den Vortrag Monate
+              später findet, kennt den Namen darüber in der Regel nicht. */}
+          {ev.speakerBio ? (
             <p className="text-sm text-muted-foreground">
-              {pick(ev.location, locale)}
+              {pick(ev.speakerBio, locale)}
             </p>
           ) : null}
-          <PartOfLine event={ev} />
-          <LanguageNote event={ev} />
-        </div>
-        {ev.description ? (
-          <p className="text-sm text-muted-foreground">
-            {pick(ev.description, locale)}
-          </p>
-        ) : null}
-        {/* Die Kurzvita gehört auch in den Rückblick: Wer den Vortrag Monate
-            später findet, kennt den Namen darüber in der Regel nicht. */}
-        {ev.speakerBio ? (
-          <p className="text-sm text-muted-foreground">
-            {pick(ev.speakerBio, locale)}
-          </p>
-        ) : null}
-        <FurtherReading event={ev} />
+          <FurtherReading event={ev} />
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-sm">
-          {a.attendees ? (
-            <span className="text-muted-foreground">
-              {a.attendees}+ {c.events.attendeesPlus}
-            </span>
-          ) : null}
-          {a.slidesUrl ? (
-            <a
-              href={a.slidesUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary hover:underline"
-            >
-              {c.events.slides}
-            </a>
-          ) : null}
-          {a.recapUrl ? (
-            <a
-              href={a.recapUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary hover:underline"
-            >
-              {c.events.recap}
-            </a>
-          ) : null}
-          {a.speakerLinkedinUrl ? (
-            <a
-              href={a.speakerLinkedinUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary hover:underline"
-            >
-              {ev.speaker
-                ? `${c.events.linkedinOf} ${ev.speaker}`
-                : c.events.linkedin}{" "}
-              →
-            </a>
-          ) : null}
-          {a.externalUrl ? (
-            <a
-              href={a.externalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary hover:underline"
-            >
-              {pick(a.externalLabel, locale) ?? c.events.learnMore} →
-            </a>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-sm">
+            {a.attendees ? (
+              <span className="text-muted-foreground">
+                {a.attendees}+ {c.events.attendeesPlus}
+              </span>
+            ) : null}
+            {a.slidesUrl ? (
+              <a
+                href={a.slidesUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary hover:underline"
+              >
+                {c.events.slides}
+              </a>
+            ) : null}
+            {a.recapUrl ? (
+              <a
+                href={a.recapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary hover:underline"
+              >
+                {c.events.recap}
+              </a>
+            ) : null}
+            {a.speakerLinkedinUrl ? (
+              <a
+                href={a.speakerLinkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary hover:underline"
+              >
+                {ev.speaker
+                  ? `${c.events.linkedinOf} ${ev.speaker}`
+                  : c.events.linkedin}{" "}
+                →
+              </a>
+            ) : null}
+            {a.externalUrl ? (
+              <a
+                href={a.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary hover:underline"
+              >
+                {pick(a.externalLabel, locale) ?? c.events.learnMore} →
+              </a>
+            ) : null}
+          </div>
+
+          {ev.disclaimer ? (
+            <p className="text-xs italic text-muted-foreground">
+              {pick(ev.disclaimer, locale)}
+            </p>
           ) : null}
         </div>
-
-        {ev.disclaimer ? (
-          <p className="text-xs italic text-muted-foreground">
-            {pick(ev.disclaimer, locale)}
-          </p>
+        {sidePhotos ? (
+          <SidePhotoCarousel
+            photos={sidePhotos}
+            alts={a.photoAlts}
+            title={pick(ev.title, locale)}
+          />
         ) : null}
       </div>
 
@@ -738,6 +751,69 @@ function GatheringPhotoCarousel({
       <CarouselPrevious className="left-2" />
       <CarouselNext className="right-2" />
     </Carousel>
+  );
+}
+
+/**
+ * Die Fotos einer Lecture in der Spalte neben dem Text. Anders als beim
+ * Gathering-Karussell ein festes 3:2 mit Beschnitt: Die Spalte ist schmal,
+ * und gelettert blieben von einem 16:9-Still dort nur Streifen übrig. Kamera-
+ * fotos sind ohnehin 3:2, bei den Stills fällt an den Rändern wenig weg.
+ */
+function SidePhotoCarousel({
+  photos,
+  alts,
+  title,
+}: {
+  photos: string[];
+  alts?: Localized[];
+  title: string;
+}) {
+  const c = useCopy();
+  const locale = useLocale();
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+    const update = () => setCurrent(api.selectedScrollSnap());
+    update();
+    api.on("select", update);
+    return () => {
+      api.off("select", update);
+    };
+  }, [api]);
+
+  return (
+    <div className="space-y-2 md:self-start">
+      <Carousel opts={{ loop: true }} setApi={setApi} className="w-full">
+        <CarouselContent>
+          {photos.map((src, i) => (
+            <CarouselItem key={src}>
+              <div className="aspect-[3/2] w-full overflow-hidden rounded-lg bg-muted">
+                <img
+                  src={src}
+                  alt={
+                    pick(alts?.[i], locale) ??
+                    `${title} – ${c.events.photoFallback} ${i + 1}`
+                  }
+                  width={1200}
+                  height={800}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="left-2" />
+        <CarouselNext className="right-2" />
+      </Carousel>
+      <p className="text-center text-xs tabular-nums text-muted-foreground" aria-live="polite">
+        {current + 1} / {photos.length}
+      </p>
+    </div>
   );
 }
 
