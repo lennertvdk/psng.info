@@ -704,8 +704,8 @@ export const events: PsngEvent[] = [
     speaker: "Dr. med. Tomislav Majić",
     speakerType: "gast",
     description: {
-      de: "Tomislav Majić spricht darüber, warum es Psychedelic Harm Reduction braucht.",
-      en: "Tomislav Majić talks about why we need psychedelic harm reduction.",
+      de: "Harm reduction is an approach in more recent drug research and therapy that is concerned with the health and social consequences of using addictive substances rather than with the goal of abstinence. Since psychedelics, although they are counted among the psychoactive substances, are generally not associated with the development of dependence, the term “psychedelic harm reduction” may not seem immediately self-evident. All the more so since, in the eyes of many users, psychedelics are considered harmless and safe. This lecture will address the possible risks and complications of psychedelics. Following a brief historical overview, a classification of psychedelic-related complications will be proposed that is based on the temporal dynamics of the substances’ effects.",
+      en: "Harm reduction is an approach in more recent drug research and therapy that is concerned with the health and social consequences of using addictive substances rather than with the goal of abstinence. Since psychedelics, although they are counted among the psychoactive substances, are generally not associated with the development of dependence, the term “psychedelic harm reduction” may not seem immediately self-evident. All the more so since, in the eyes of many users, psychedelics are considered harmless and safe. This lecture will address the possible risks and complications of psychedelics. Following a brief historical overview, a classification of psychedelic-related complications will be proposed that is based on the temporal dynamics of the substances’ effects.",
     },
     audienceNote: {
       de: "Nur live, vor Ort und über Zoom – eine Aufzeichnung gibt es diesmal nicht.",
