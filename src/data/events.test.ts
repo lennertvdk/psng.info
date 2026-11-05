@@ -212,10 +212,8 @@ describe("getTimelineEntries", () => {
     expect(dates).toEqual([...dates].sort().reverse());
   });
 
-  it("pads the upcoming half with series dates, not just events", () => {
-    const { upcoming } = getTimelineEntries(ref);
-    expect(upcoming.filter((e) => e.kind === "event").length).toBeGreaterThan(0);
-    expect(upcoming.filter((e) => e.kind === "series").length).toBeGreaterThan(0);
+  it("shows no computed dates while the placeholders are off", () => {
+    expect(getTimelineEntries(ref).upcoming.filter((e) => e.kind === "series")).toEqual([]);
   });
 
   it("counts a milestone dated today as already past", () => {

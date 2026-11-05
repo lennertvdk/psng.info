@@ -127,6 +127,8 @@ export interface PsngMilestone {
  * zu pflegen. Berechnet reißt der Takt nie ab.
  */
 export const LECTURE_SERIES = {
+  /** Berechnete Termine zeigen. Aus: Auf der Seite steht nur, was als Event eingetragen ist. */
+  placeholders: false,
   /** Wochentag nach `Date#getDay`: 2 = Dienstag. */
   weekday: 2,
   /** Der wievielte dieses Wochentags im Monat. */
@@ -1243,7 +1245,7 @@ export function getTimelineEntries(referenceDate: Date = new Date()): {
     // Nur der nächste Termin der Reihe. Weiter im Voraus wäre es eine
     // Ankündigung für Abende, von denen wir noch nicht wissen, ob sie im Takt
     // liegen – die letzten drei lagen es nicht.
-    ...getUpcomingSeriesDates(1, referenceDate).map(
+    ...(LECTURE_SERIES.placeholders ? getUpcomingSeriesDates(1, referenceDate) : []).map(
       (series): TimelineEntry => ({
         kind: "series",
         id: series.id,
