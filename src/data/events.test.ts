@@ -135,11 +135,11 @@ describe("getUpcomingSeriesDates", () => {
     // September bis Dezember fehlen: Auf dem 08.09. steht lecture-6, auf dem
     // 20.10. die Lecture von Timo Schmidt, auf dem 04.11. (Override, erster
     // Mittwoch) die Lecture von Tomislav Majić, auf dem 03.12. (Override) die
-    // von Jelena Brasanac, und der Januartermin entfällt.
+    // von Jelena Brasanac, und Januar- und Februartermin entfallen.
     expect(getUpcomingSeriesDates(3, ref).map((s) => s.date)).toEqual([
-      "2027-02-09",
       "2027-03-09",
       "2027-04-13",
+      "2027-05-11",
     ]);
   });
 
@@ -157,7 +157,7 @@ describe("getUpcomingSeriesDates", () => {
 
   it("drops a skipped month entirely", () => {
     const dates = getUpcomingSeriesDates(6, ref).map((s) => s.date);
-    expect(dates.filter((d) => d.startsWith("2027-01"))).toEqual([]);
+    expect(dates.filter((d) => d.startsWith("2027-01") || d.startsWith("2027-02"))).toEqual([]);
   });
 
   it("keeps the computed date out even when the override date is taken", () => {
@@ -197,8 +197,8 @@ describe("getUpcomingSeriesDates", () => {
 
   it("still lists a date that falls on the reference day", () => {
     // Eine Lecture heute Abend ist kein vergangener Termin.
-    expect(getUpcomingSeriesDates(1, new Date(2027, 1, 9))[0]?.date).toBe(
-      "2027-02-09",
+    expect(getUpcomingSeriesDates(1, new Date(2027, 2, 9))[0]?.date).toBe(
+      "2027-03-09",
     );
   });
 });

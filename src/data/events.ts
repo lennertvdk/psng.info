@@ -168,6 +168,7 @@ export const SERIES_OVERRIDES: SeriesOverride[] = [
   { date: "2026-11-04" },
   { date: "2026-12-03" },
   { date: "2027-01-12", skip: true },
+  { date: "2027-02-09", skip: true },
 ];
 
 /** Ein berechneter Termin der Reihe – kein Event, solange kein Thema feststeht. */
