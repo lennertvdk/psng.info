@@ -16,7 +16,6 @@ import timoSchmidtPhoto from "@/assets/Timo-Schmidt.webp";
 import tomislavMajicPhoto from "@/assets/Tomislav-Majic.webp";
 import majicPhoto01 from "@/assets/majic-lecture/photo-01.webp";
 import majicPhoto02 from "@/assets/majic-lecture/photo-02.webp";
-import majicPhoto03 from "@/assets/majic-lecture/photo-03.webp";
 import ttsPhoto01 from "@/assets/tts-lecture/photo-01.webp";
 import ttsPhoto02 from "@/assets/tts-lecture/photo-02.webp";
 import ttsPhoto03 from "@/assets/tts-lecture/photo-03.webp";
@@ -749,11 +748,10 @@ export const events: PsngEvent[] = [
       instagramUrl: BPSA_INSTAGRAM_LINK,
     },
     assets: {
-      photos: [majicPhoto01, majicPhoto02, majicPhoto03],
+      photos: [majicPhoto01, majicPhoto02],
       photoAlts: [
         { de: "Tomislav Majić spricht am Mikrofon, hinter ihm die Folie „Why Psychedelic Harm Reduction: SUD?“ mit dem Cover von T. C. Boyles Roman „Outside Looking In“", en: "Tomislav Majić speaking into the microphone, behind him the slide “Why Psychedelic Harm Reduction: SUD?” with the cover of T. C. Boyle’s novel “Outside Looking In”" },
         { de: "Blick von den oberen Reihen in den Hörsaal, Tomislav Majić am Pult, die Zuhörenden verteilt in den Reihen", en: "View from the upper rows into the lecture hall, Tomislav Majić at the lectern, listeners spread across the rows" },
-        { de: "Tomislav Majić vor der Folie „Differential diagnosis of postpsychedelic complications“", en: "Tomislav Majić in front of the slide “Differential diagnosis of postpsychedelic complications”" },
       ],
       attendees: 61,
       attendeesOnline: 46,
