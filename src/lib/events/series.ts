@@ -13,6 +13,8 @@ import type { EventColumn, SeriesLabelKey } from "./types";
  * echtes Event in src/content/events – und der Platzhalter verschwindet.
  */
 export const LECTURE_SERIES = {
+  /** Berechnete Termine zeigen. Aus: Auf der Seite steht nur, was als Event eingetragen ist. */
+  placeholders: false,
   /** Wochentag nach `Date#getDay`: 2 = Dienstag. */
   weekday: 2,
   /** Der wievielte dieses Wochentags im Monat. */

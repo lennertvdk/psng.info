@@ -202,6 +202,11 @@ export function getUpcomingSeriesDates(events: SiteEvent[], count: number, ref: 
   return out;
 }
 
+/** Der nächste Termin der Reihe, soweit die Seite berechnete Termine zeigt. */
+function visibleSeriesDates(events: SiteEvent[], ref: Date): SeriesDate[] {
+  return LECTURE_SERIES.placeholders ? getUpcomingSeriesDates(events, 1, ref) : [];
+}
+
 // ── Zeitstrahl ───────────────────────────────────────────────────────────────
 
 /** Wie eine vergangene Veranstaltung im Archiv gerendert wird. */
@@ -241,7 +246,7 @@ export function getTimelineEntries(
 ): { upcoming: TimelineEntry[]; past: TimelineEntry[] } {
   const upcoming = [
     ...getUpcomingEvents(events, ref).map(toEventEntry),
-    ...getUpcomingSeriesDates(events, 1, ref).map(toSeriesEntry),
+    ...visibleSeriesDates(events, ref).map(toSeriesEntry),
   ].sort(byDateDesc);
 
   const past = [
@@ -312,7 +317,7 @@ export function getHeroSlot(
   events: SiteEvent[],
   features: Feature[],
   ref: Date,
-  series: SeriesDate[] = getUpcomingSeriesDates(events, 1, ref),
+  series: SeriesDate[] = visibleSeriesDates(events, ref),
 ): HeroSlot {
   const inWindow = (iso: string) => {
     const days = daysUntil(iso, ref);

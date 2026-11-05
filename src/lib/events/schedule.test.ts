@@ -248,8 +248,13 @@ describe("getHeroSlot", () => {
     expect(slot.kind).toBe("feature");
   });
 
+  it("shows no computed date while the placeholders are off", () => {
+    expect(getHeroSlot(events, [], new Date(2027, 1, 20)).kind).not.toBe("series");
+  });
+
   it("falls back to the next lecture date when no event is near", () => {
-    const slot = getHeroSlot(events, [], new Date(2027, 1, 20));
+    const ref = new Date(2027, 1, 20);
+    const slot = getHeroSlot(events, [], ref, getUpcomingSeriesDates(events, 1, ref));
     expect(slot.kind === "series" && slot.series.date).toBe("2027-03-09");
   });
 
