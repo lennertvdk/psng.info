@@ -778,8 +778,8 @@ export const events: PsngEvent[] = [
     speakerType: "gast",
     speakerLinkedinUrl: "https://www.linkedin.com/in/jelena-brasanac-phd-985a3b4a",
     speakerBio: {
-      de: "Jelena Brasanac forscht als Postdoc.",
-      en: "Jelena Brasanac is a postdoctoral researcher.",
+      de: "Jelena Brasanac forscht als Postdoc an der Charité – Universitätsmedizin Berlin.",
+      en: "Jelena Brasanac is a postdoctoral researcher at Charité – Universitätsmedizin Berlin.",
     },
     partner: {
       short: "BPSA",
