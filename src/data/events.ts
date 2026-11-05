@@ -151,6 +151,8 @@ export interface SeriesOverride {
   labelKey?: SeriesLabelKey;
   /** Nur den Monat nennen, solange der genaue Tag noch nicht feststeht. */
   monthOnly?: boolean;
+  /** Der Termin dieses Monats entfällt: kein Platzhalter, auch kein berechneter. */
+  skip?: boolean;
 }
 
 /**
@@ -166,6 +168,7 @@ export const SERIES_OVERRIDES: SeriesOverride[] = [
   { date: "2026-10-20", labelKey: "semesterStart" },
   { date: "2026-11-04" },
   { date: "2026-12-03" },
+  { date: "2027-01-12", skip: true },
 ];
 
 /** Ein berechneter Termin der Reihe – kein Event, solange kein Thema feststeht. */
@@ -1175,6 +1178,7 @@ export function getUpcomingSeriesDates(
       LECTURE_SERIES.ordinal,
     );
     const override = overrides.get(toIsoDate(d).slice(0, 7));
+    if (override?.skip) continue;
     const iso = override?.date ?? toIsoDate(d);
     if (startOfDay(parseEventDate(iso)) < today || booked.has(iso)) continue;
     out.push({

@@ -135,24 +135,29 @@ describe("getUpcomingSeriesDates", () => {
     // September bis Dezember fehlen: Auf dem 08.09. steht lecture-6, auf dem
     // 20.10. die Lecture von Timo Schmidt, auf dem 04.11. (Override, erster
     // Mittwoch) die Lecture von Tomislav Majić, auf dem 03.12. (Override) die
-    // von Jelena Brasanac.
+    // von Jelena Brasanac, und der Januartermin entfällt.
     expect(getUpcomingSeriesDates(3, ref).map((s) => s.date)).toEqual([
-      "2027-01-12",
       "2027-02-09",
       "2027-03-09",
+      "2027-04-13",
     ]);
   });
 
   it("lets an override replace its month's date instead of adding to it", () => {
     const dates = getUpcomingSeriesDates(6, ref).map((s) => s.date);
-    for (const { date } of SERIES_OVERRIDES) {
+    for (const { date, skip } of SERIES_OVERRIDES) {
       const month = dates.filter((d) => d.startsWith(date.slice(0, 7)));
       // Entweder der Termin aus dem Override – oder gar keiner, wenn dort
       // schon ein echtes Event steht. Der berechnete Termin desselben Monats
       // darf nie danebenstehen.
       expect(month.every((d) => d === date)).toBe(true);
-      if (!events.some((e) => e.date === date)) expect(dates).toContain(date);
+      if (!skip && !events.some((e) => e.date === date)) expect(dates).toContain(date);
     }
+  });
+
+  it("drops a skipped month entirely", () => {
+    const dates = getUpcomingSeriesDates(6, ref).map((s) => s.date);
+    expect(dates.filter((d) => d.startsWith("2027-01"))).toEqual([]);
   });
 
   it("keeps the computed date out even when the override date is taken", () => {
@@ -192,8 +197,8 @@ describe("getUpcomingSeriesDates", () => {
 
   it("still lists a date that falls on the reference day", () => {
     // Eine Lecture heute Abend ist kein vergangener Termin.
-    expect(getUpcomingSeriesDates(1, new Date(2027, 0, 12))[0]?.date).toBe(
-      "2027-01-12",
+    expect(getUpcomingSeriesDates(1, new Date(2027, 1, 9))[0]?.date).toBe(
+      "2027-02-09",
     );
   });
 });
