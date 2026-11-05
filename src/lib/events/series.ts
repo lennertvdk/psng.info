@@ -50,4 +50,5 @@ export const SERIES_OVERRIDES: SeriesOverride[] = [
   { date: "2026-11-04" },
   { date: "2026-12-03", coHost: "BPSA" },
   { date: "2027-01-12", skip: true },
+  { date: "2027-02-09", skip: true },
 ];

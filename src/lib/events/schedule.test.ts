@@ -120,11 +120,11 @@ describe("getUpcomingSeriesDates", () => {
   it("computes the second Tuesday, skipping months that carry a real event", () => {
     // September (Miguel), Oktober (Override 20.10., Timo Schmidt), November
     // (Override 4.11., Majić) und Dezember (Override 3.12., Brasanac) sind belegt,
-    // der Januartermin entfällt.
+    // Januar- und Februartermin entfallen.
     expect(getUpcomingSeriesDates(events, 3, ref).map((s) => s.date)).toEqual([
-      "2027-02-09",
       "2027-03-09",
       "2027-04-13",
+      "2027-05-11",
     ]);
   });
 
@@ -138,11 +138,11 @@ describe("getUpcomingSeriesDates", () => {
 
   it("drops a skipped month entirely", () => {
     const dates = getUpcomingSeriesDates(events, 6, ref).map((s) => s.date);
-    expect(dates.filter((d) => d.startsWith("2027-01"))).toEqual([]);
+    expect(dates.filter((d) => d.startsWith("2027-01") || d.startsWith("2027-02"))).toEqual([]);
   });
 
   it("still lists a date that falls on the reference day", () => {
-    expect(getUpcomingSeriesDates(events, 1, new Date(2027, 1, 9))[0]?.date).toBe("2027-02-09");
+    expect(getUpcomingSeriesDates(events, 1, new Date(2027, 2, 9))[0]?.date).toBe("2027-03-09");
   });
 });
 
@@ -244,13 +244,13 @@ describe("getHeroSlot", () => {
   });
 
   it("puts an active feature above a lecture date without topic", () => {
-    const slot = getHeroSlot(events, [feature({ from: "2027-01-10", until: "2027-01-31" })], new Date(2027, 0, 20));
+    const slot = getHeroSlot(events, [feature({ from: "2027-02-10", until: "2027-02-28" })], new Date(2027, 1, 20));
     expect(slot.kind).toBe("feature");
   });
 
   it("falls back to the next lecture date when no event is near", () => {
-    const slot = getHeroSlot(events, [], new Date(2027, 0, 20));
-    expect(slot.kind === "series" && slot.series.date).toBe("2027-02-09");
+    const slot = getHeroSlot(events, [], new Date(2027, 1, 20));
+    expect(slot.kind === "series" && slot.series.date).toBe("2027-03-09");
   });
 
   it("shows the active feature with the highest priority when nothing is scheduled", () => {
