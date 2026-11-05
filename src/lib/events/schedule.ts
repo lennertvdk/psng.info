@@ -185,6 +185,7 @@ export function getUpcomingSeriesDates(events: SiteEvent[], count: number, ref: 
   for (let i = 0; out.length < count && i < count + 12; i++) {
     const d = nthWeekdayOfMonth(ref.getFullYear(), ref.getMonth() + i, LECTURE_SERIES.weekday, LECTURE_SERIES.ordinal);
     const override = overrides.get(toIsoDate(d).slice(0, 7));
+    if (override?.skip) continue;
     const iso = override?.date ?? toIsoDate(d);
     if (startOfDay(parseEventDate(iso)) < today || booked.has(iso)) continue;
     out.push({

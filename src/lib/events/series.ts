@@ -31,6 +31,8 @@ export interface SeriesOverride {
   labelKey?: SeriesLabelKey;
   /** Kurzname eines Mitveranstalters, wenn der Termin gemeinsam stattfindet. */
   coHost?: string;
+  /** Der Termin dieses Monats entfällt: kein Platzhalter, auch kein berechneter. */
+  skip?: boolean;
 }
 
 /**
@@ -47,4 +49,5 @@ export const SERIES_OVERRIDES: SeriesOverride[] = [
   { date: "2026-10-20", labelKey: "semesterStart" },
   { date: "2026-11-04" },
   { date: "2026-12-03", coHost: "BPSA" },
+  { date: "2027-01-12", skip: true },
 ];
