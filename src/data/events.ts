@@ -165,8 +165,7 @@ export interface SeriesOverride {
 export const SERIES_OVERRIDES: SeriesOverride[] = [
   { date: "2026-10-20", labelKey: "semesterStart" },
   { date: "2026-11-04" },
-  // Der Dezembertermin steht noch nicht fest, nur der Monat.
-  { date: "2026-12-08", monthOnly: true },
+  { date: "2026-12-03" },
 ];
 
 /** Ein berechneter Termin der Reihe – kein Event, solange kein Thema feststeht. */
@@ -756,6 +755,43 @@ export const events: PsngEvent[] = [
       attendees: 61,
       attendeesOnline: 46,
       speakerPhoto: tomislavMajicPhoto,
+    },
+    registrationUrl: WHATSAPP_LINK,
+    registrationLabel: {
+      de: "Zoom-Link via WhatsApp",
+      en: "Zoom link via WhatsApp",
+    },
+  },
+
+  // Speaker, Datum und Beginn stehen, Thema, Ende und Ort noch nicht.
+  {
+    id: "lecture-brasanac-2026-12-03",
+    title: { de: "Lecture mit Jelena Brasanac, PhD", en: "Lecture with Jelena Brasanac, PhD" },
+    subtitle: { de: "Thema folgt", en: "Topic to be announced" },
+    category: "lecture",
+    column: "vortraege",
+    date: "2026-12-03",
+    showWeekday: true,
+    time: "18:30",
+    location: { de: "Ort folgt", en: "Location to be announced" },
+    speaker: "Jelena Brasanac, PhD",
+    speakerType: "gast",
+    speakerLinkedinUrl: "https://www.linkedin.com/in/jelena-brasanac-phd-985a3b4a",
+    speakerBio: {
+      de: "Jelena Brasanac forscht als Postdoc.",
+      en: "Jelena Brasanac is a postdoctoral researcher.",
+    },
+    partner: {
+      short: "BPSA",
+      name: "Berlin Psychedelic Science Association",
+      logo: bpsaLogo,
+      tone: "bpsa",
+      role: {
+        de: "Eine gemeinsame Lecture von PSNG und BPSA.",
+        en: "A joint lecture by the PSNG and the BPSA.",
+      },
+      url: BPSA_LINK,
+      instagramUrl: BPSA_INSTAGRAM_LINK,
     },
     registrationUrl: WHATSAPP_LINK,
     registrationLabel: {
