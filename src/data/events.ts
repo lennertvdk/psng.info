@@ -780,12 +780,11 @@ export const events: PsngEvent[] = [
     location: { de: "Ort folgt", en: "Location to be announced" },
     speaker: "Jelena Brasanac, PhD",
     speakerType: "gast",
-    speakerLinkedinUrl: "https://www.linkedin.com/in/jelena-brasanac-phd-985a3b4a",
     speakerBio: {
       de: "Jelena Brasanac forscht als Postdoc an der Charité – Universitätsmedizin Berlin.",
       en: "Jelena Brasanac is a postdoctoral researcher at Charité – Universitätsmedizin Berlin.",
     },
-    partner: {
+    partnerCredit: {
       short: "BPSA",
       name: "Berlin Psychedelic Science Association",
       logo: bpsaLogo,
@@ -796,6 +795,9 @@ export const events: PsngEvent[] = [
       },
       url: BPSA_LINK,
       instagramUrl: BPSA_INSTAGRAM_LINK,
+    },
+    assets: {
+      speakerLinkedinUrl: "https://de.linkedin.com/in/jelena-brasanac-phd-985a3b4a",
     },
     registrationUrl: WHATSAPP_LINK,
     registrationLabel: {
