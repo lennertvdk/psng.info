@@ -118,12 +118,12 @@ describe("getUpcomingSeriesDates", () => {
   const ref = new Date(2026, 8, 1); // 1. September 2026
 
   it("computes the second Tuesday, skipping months that carry a real event", () => {
-    // September (Miguel), Oktober (Override 20.10., Timo Schmidt) und
-    // November (Override 4.11., Majić) sind schon belegt; Dezember per Override am 3.
+    // September (Miguel), Oktober (Override 20.10., Timo Schmidt), November
+    // (Override 4.11., Majić) und Dezember (Override 3.12., Brasanac) sind belegt.
     expect(getUpcomingSeriesDates(events, 3, ref).map((s) => s.date)).toEqual([
-      "2026-12-03",
       "2027-01-12",
       "2027-02-09",
+      "2027-03-09",
     ]);
   });
 
@@ -233,17 +233,18 @@ describe("getHeroSlot", () => {
 
   it("skips a cancelled event and falls through to what comes next", () => {
     const changed = events.map((e) => (e.slug === "lecture-tomislav-majic" ? { ...e, status: "cancelled" as const } : e));
-    expect(getHeroSlot(changed, [], new Date(2026, 10, 1)).kind).not.toBe("event");
+    const slot = getHeroSlot(changed, [], new Date(2026, 10, 1));
+    expect(slot.kind === "event" && slot.event.slug).toBe("lecture-jelena-brasanac");
   });
 
   it("puts an active feature above a lecture date without topic", () => {
-    const slot = getHeroSlot(events, [feature({ from: "2026-11-10", until: "2026-11-30" })], new Date(2026, 10, 20));
+    const slot = getHeroSlot(events, [feature({ from: "2026-12-10", until: "2026-12-31" })], new Date(2026, 11, 20));
     expect(slot.kind).toBe("feature");
   });
 
   it("falls back to the next lecture date when no event is near", () => {
-    const slot = getHeroSlot(events, [], new Date(2026, 10, 20));
-    expect(slot.kind === "series" && slot.series.date).toBe("2026-12-03");
+    const slot = getHeroSlot(events, [], new Date(2026, 11, 20));
+    expect(slot.kind === "series" && slot.series.date).toBe("2027-01-12");
   });
 
   it("shows the active feature with the highest priority when nothing is scheduled", () => {

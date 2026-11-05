@@ -1,0 +1,30 @@
+title:
+  de: Lecture mit Jelena Brasanac, PhD
+  en: Lecture with Jelena Brasanac, PhD
+subtitle:
+  de: Thema folgt
+  en: Topic to be announced
+role: co-hosted
+category: lecture
+column: vortraege
+date: "2026-12-03"
+showWeekday: true
+startTime: "18:30"
+location:
+  de: Ort folgt
+  en: Location to be announced
+speaker: Jelena Brasanac, PhD
+speakerType: gast
+speakerLinkedinUrl: https://www.linkedin.com/in/jelena-brasanac-phd-985a3b4a
+speakerBio:
+  de: Jelena Brasanac forscht als Postdoc.
+  en: Jelena Brasanac is a postdoctoral researcher.
+partner:
+  id: bpsa
+  role:
+    de: Eine gemeinsame Lecture von PSNG und BPSA.
+    en: A joint lecture by the PSNG and the BPSA.
+registrationUrl: whatsapp
+registrationLabel:
+  de: Zoom-Link via WhatsApp
+  en: Zoom link via WhatsApp
