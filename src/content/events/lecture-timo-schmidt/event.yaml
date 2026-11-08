@@ -84,3 +84,8 @@ photos:
       en: "Zoom stream: live demo of the Altered States Database, MEQ30 scores for psilocybin as a spider plot"
 attendees: 38
 attendeesOnline: 30
+socialImage:
+  src: ./social.webp
+  alt:
+    de: "PSNG × BPSA Lecture: „The Systematic Scientific Study of Altered States of Consciousness“ mit Prof. Dr. Timo T. Schmidt"
+    en: "PSNG × BPSA Lecture: “The Systematic Scientific Study of Altered States of Consciousness” with Prof. Dr. Timo T. Schmidt"

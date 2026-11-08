@@ -11,3 +11,4 @@ Skript liest von dort.
 | Datei | Verwendung |
 | --- | --- |
 | `Design-solo-v1.png` | Ankündigung „Logos und Ekstase", Miguel Estéfano Mora Vera, 08.09.2026. Instagram-Format 4:5. |
+| `thumbnails/YT-Thumbnail-Timo-Schmidt.png` | YouTube-Thumbnail der Schmidt-Lecture (20.10.2026), 1920×1080. Als `social.webp` im Event-Ordner Vorschaubild für geteilte Links. |
