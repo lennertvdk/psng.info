@@ -120,6 +120,12 @@ for (const [, href] of sitemap.matchAll(/hreflang="[^"]+" href="([^"]+)"/g)) {
   check(res.status === 200, `hreflang-Ziel ${path}: Status ${res.status}`);
 }
 
+// Abonnierbarer Kalender
+const ics = await get("/events.ics");
+check(ics.status === 200, `/events.ics: Status ${ics.status}`);
+check((ics.headers.get("content-type") ?? "").startsWith("text/calendar"), `/events.ics: Content-Type ${ics.headers.get("content-type")}`);
+check((await ics.text()).startsWith("BEGIN:VCALENDAR"), "/events.ics: beginnt nicht mit BEGIN:VCALENDAR");
+
 // Echte 404
 for (const path of ["/gibt-es-nicht", "/events/gibt-es-nicht", "/en/gibt-es-nicht"]) {
   const res = await get(path);

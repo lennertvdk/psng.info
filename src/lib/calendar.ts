@@ -240,7 +240,15 @@ export function toIcsCalendar(events: CalendarEvent[], now: Date = new Date(), n
     "PRODID:-//PSNG//psng.info//DE",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
-    ...(name ? [`X-WR-CALNAME:${escapeText(name)}`, "X-WR-TIMEZONE:Europe/Berlin"] : []),
+    // Ein benannter Kalender ist ein Abo: Clients sollen täglich neu laden.
+    ...(name
+      ? [
+          `X-WR-CALNAME:${escapeText(name)}`,
+          "X-WR-TIMEZONE:Europe/Berlin",
+          "REFRESH-INTERVAL;VALUE=DURATION:P1D",
+          "X-PUBLISHED-TTL:P1D",
+        ]
+      : []),
     ...events.flatMap((e) => veventLines(e, now)),
     "END:VCALENDAR",
   ];

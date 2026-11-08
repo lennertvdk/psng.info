@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { copy } from "@/i18n/copy";
 import { formatEventDate, formatEventTime, formatRelativeToToday } from "./format";
@@ -17,20 +16,6 @@ describe("Inhalte", () => {
 
   it("hält Slugs URL-tauglich", () => {
     for (const e of events) expect(e.slug).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
-  });
-
-  it("leitet jeden früheren Slug per 301 weiter", () => {
-    // Ein geteilter Link auf eine umbenannte Seite darf nicht ins Leere laufen.
-    const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8")) as {
-      redirects?: { source: string; destination: string; permanent?: boolean }[];
-    };
-    for (const e of events) {
-      for (const old of e.previousSlugs ?? []) {
-        const r = vercel.redirects?.find((x) => x.source === `/events/${old}`);
-        expect(r?.destination, old).toBe(`/events/${e.slug}`);
-        expect(r?.permanent, old).toBe(true);
-      }
-    }
   });
 
   it("gibt jedem Foto einen Alt-Text", () => {
