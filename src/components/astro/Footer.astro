@@ -39,7 +39,7 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
           <a
             href={href}
             {...(ext ? external : {})}
-            class="flex items-center gap-2 text-sm text-primary-foreground/80 transition-colors hover:text-primary-foreground"
+            class="flex items-center gap-2 text-sm text-primary-foreground underline-offset-4 hover:underline"
           >
             <Icon size={16} aria-hidden="true" />
             {label}
@@ -61,14 +61,14 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
             <a
               href={href}
               {...(ext ? external : {})}
-              class="font-heading text-xs text-primary-foreground/60 transition-colors hover:text-primary-foreground"
+              class="font-heading text-xs text-primary-foreground underline-offset-4 hover:underline"
             >
               {label}
             </a>
           ))}
         </div>
-        <p class="font-heading text-xs text-primary-foreground/50">© {new Date().getFullYear()} {c.footer.rights}</p>
-        <p class="mt-2 font-heading text-xs text-primary-foreground/50">{c.footer.thanks}</p>
+        <p class="font-heading text-xs text-primary-foreground">© {new Date().getFullYear()} {c.footer.rights}</p>
+        <p class="mt-2 font-heading text-xs text-primary-foreground">{c.footer.thanks}</p>
       </div>
     </div>
   </div>

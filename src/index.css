@@ -43,6 +43,13 @@
     --blush: 340 30% 96%;
     --deep-rose: 340 60% 35%;
 
+    /* Verlauf unter weißer Schrift (Buttons, Footer, Chips). Die dekorativen
+       Töne oben (pink/coral/salmon) sind zu hell dafür: 4,4 / 3,1 / 2,1 : 1.
+       Gleiche Farbtöne, Helligkeit gesenkt – jeder Stopp ≥ 5,1 : 1 mit Weiß. */
+    --grad-from: 339 68% 48%;
+    --grad-mid: 5 78% 46%;
+    --grad-to: 350 70% 48%;
+
     /*
      * BPSA-Palette, entnommen aus dem Logo der Berlin Psychedelic Science
      * Association. Bewusst eine eigene Achse neben den PSNG-Rosétönen: Inhalte
@@ -204,7 +211,7 @@
   }
 
   .gradient-psychedelic {
-    background: linear-gradient(135deg, hsl(var(--pink)), hsl(var(--coral)), hsl(var(--salmon)));
+    background: linear-gradient(135deg, hsl(var(--grad-from)), hsl(var(--grad-mid)), hsl(var(--grad-to)));
   }
 
   /*
