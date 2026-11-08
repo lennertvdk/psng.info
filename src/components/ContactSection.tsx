@@ -109,7 +109,7 @@ const ContactSection = () => {
             <div
               role="status"
               aria-live="polite"
-              className="bg-card rounded-2xl border border-border p-8 text-center hover:shadow-lg transition-shadow"
+              className="bg-card rounded-2xl border border-border p-8 text-center"
             >
               <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
                 {c.contact.successTitle}
@@ -129,7 +129,7 @@ const ContactSection = () => {
             <form
               name="kontakt"
               onSubmit={handleSubmit}
-              className="bg-card rounded-2xl border border-border p-6 md:p-8 space-y-5 hover:shadow-lg transition-shadow"
+              className="bg-card rounded-2xl border border-border p-6 md:p-8 space-y-5"
             >
               <p className="hidden">
                 <label>

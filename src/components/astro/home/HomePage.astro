@@ -110,9 +110,8 @@ const proofFigure = (e: (typeof proof)[number]) => {
       ]}
     >
       <div class="animate-rise-in">
-        <p class={`${eyebrow} mb-4`}>{c.lab.hero.eyebrow}</p>
         <h1 class="font-heading text-[2rem] font-bold leading-[1.1] text-foreground sm:text-5xl lg:text-[3.5rem]">
-          {c.lab.hero.headlineBefore}<span class="gradient-text">{c.lab.hero.headlineAccent}</span>{c.lab.hero.headlineAfter}
+          {c.lab.hero.headlineBefore}<span class="text-primary">{c.lab.hero.headlineAccent}</span>{c.lab.hero.headlineAfter}
         </h1>
         <p class="mt-5 max-w-xl text-base leading-relaxed text-foreground/75 md:text-lg">{c.lab.hero.text}</p>
         <div class="mt-7 flex flex-col gap-3 sm:flex-row">
@@ -123,6 +122,16 @@ const proofFigure = (e: (typeof proof)[number]) => {
           {/* Ab Laptop-Breite beginnt jeder Satz in einer eigenen Zeile. */}
           {c.lab.hero.whatsappNote.split(/(?<=\.) /).map((s, i) => (i ? [<br class="hidden md:inline" />, " ", s] : s))}
         </p>
+        <ul class="mt-8 flex flex-wrap gap-x-8 gap-y-3 border-t border-foreground/10 pt-5">
+          {
+            stats.map((item) => (
+              <li class:list={["font-heading text-sm text-foreground/75", !item.lead && "self-end"]}>
+                {item.lead && <strong class="block text-2xl font-bold leading-none text-foreground">{item.lead}</strong>}
+                <span class:list={[item.lead && "mt-1 block"]}>{item.rest}</span>
+              </li>
+            ))
+          }
+        </ul>
       </div>
       {
         slot.kind !== "none" && (
@@ -134,37 +143,18 @@ const proofFigure = (e: (typeof proof)[number]) => {
     </div>
   </section>
 
-  <div class="border-y border-border bg-card">
-    <ul class="container mx-auto flex flex-wrap items-center justify-center gap-x-8 gap-y-2 px-4 py-4 sm:px-6">
-      {
-        stats.map((item, i) => (
-          <li class="flex items-center gap-8 font-heading text-sm text-muted-foreground">
-            {i > 0 && <span class="hidden h-4 w-px bg-border sm:block" aria-hidden="true" />}
-            <span>
-              {item.lead && <strong class="font-bold text-foreground">{item.lead}</strong>} {item.rest}
-            </span>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
-
   <section aria-labelledby="home-ways" class="bg-white py-16 md:py-24">
     <div class="container mx-auto px-4 sm:px-6">
       <div class="mb-10 max-w-2xl" data-reveal>
-        <p class={`${eyebrow} mb-3`}>{c.onboarding.eyebrow}</p>
         <h2 id="home-ways" class={sectionTitle}>{c.onboarding.title}</h2>
       </div>
       <ol class="grid gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-3" data-reveal>
         {
-          c.onboarding.steps.map((step, i) => {
+          c.onboarding.steps.map((step) => {
             const target = onboardingTargets[step.key];
             return (
               <li class="flex flex-col bg-card p-6 md:p-8">
-                <span class="font-heading text-sm font-bold text-primary" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 class="mt-3 font-heading text-xl font-semibold text-foreground">{step.title}</h3>
+                <h3 class="font-heading text-xl font-semibold text-foreground">{step.title}</h3>
                 <p class="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">{step.desc}</p>
                 <a href={target.href} {...(target.external ? external : {})} class={`${secondaryButton} mt-6 self-start`}>
                   {step.cta}
@@ -268,7 +258,6 @@ const proofFigure = (e: (typeof proof)[number]) => {
         <div class="container mx-auto px-4 sm:px-6">
           <div class="flex flex-wrap items-end justify-between gap-4" data-reveal>
             <div>
-              <p class={`${eyebrow} mb-3`}>{c.lab.proof.eyebrow}</p>
               <h2 id="home-proof" class={sectionTitle}>{c.lab.proof.title}</h2>
             </div>
             <a href={pathFor("events", locale)} class={textLink}>{c.lab.agenda.all}</a>
@@ -333,7 +322,6 @@ const proofFigure = (e: (typeof proof)[number]) => {
   <section id={HOME_ANCHORS.groups} aria-labelledby="home-groups" class="scroll-mt-20 bg-white py-16 md:py-24">
     <div class="container mx-auto grid gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16">
       <div data-reveal>
-        <p class={`${eyebrow} mb-3`}>{c.lab.groups.eyebrow}</p>
         <h2 id="home-groups" class={sectionTitle}>{c.guide.title}</h2>
         <p class="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground">{c.lab.groups.intro}</p>
         <div class="mt-7 flex flex-col gap-3 sm:flex-row">
@@ -362,7 +350,6 @@ const proofFigure = (e: (typeof proof)[number]) => {
   <section aria-labelledby="home-credibility" class="bg-primary/5 py-16 md:py-24">
     <div class="container mx-auto px-4 sm:px-6">
       <div class="max-w-3xl" data-reveal>
-        <p class={`${eyebrow} mb-3`}>{c.lab.credibility.eyebrow}</p>
         <h2 id="home-credibility" class={sectionTitle}>{c.lab.credibility.title}</h2>
         <p class="mt-4 text-lg leading-relaxed text-foreground/75">{c.lab.credibility.mission}</p>
       </div>
@@ -407,7 +394,7 @@ const proofFigure = (e: (typeof proof)[number]) => {
       <div class="mx-auto max-w-2xl space-y-3" data-reveal>
         {
           c.faq.items.map((faq) => (
-            <details class="group rounded-xl border border-border bg-card px-6 transition-shadow hover:shadow-lg open:shadow-sm">
+            <details class="group rounded-xl border border-border bg-card px-6 transition-colors hover:border-primary/30">
               <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-heading text-sm font-medium text-foreground hover:text-primary [&::-webkit-details-marker]:hidden">
                 {faq.question}
                 <ChevronDown size={16} aria-hidden="true" className="shrink-0 transition-transform duration-200 group-open:rotate-180" />
@@ -416,24 +403,6 @@ const proofFigure = (e: (typeof proof)[number]) => {
             </details>
           ))
         }
-      </div>
-    </div>
-  </section>
-
-  <section aria-labelledby="home-final" class="pb-16 md:pb-24">
-    <div class="container mx-auto px-4 sm:px-6">
-      <div class="mx-auto max-w-3xl rounded-2xl bg-foreground px-6 py-12 text-center md:px-12" data-reveal>
-        <h2 id="home-final" class="font-heading text-3xl font-bold text-background">{c.midCta.title}</h2>
-        <p class="mx-auto mt-3 max-w-lg text-background/70">{c.midCta.text}</p>
-        <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <a href={whatsappHref("abschluss")} {...external} class={primaryButton}>{c.midCta.cta}</a>
-          <a
-            href={anchor(HOME_ANCHORS.groups)}
-            class="inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-background/30 px-6 py-3 font-heading text-sm font-medium text-background transition-colors hover:bg-background/10"
-          >
-            {c.hero.foundGroup}
-          </a>
-        </div>
       </div>
     </div>
   </section>
