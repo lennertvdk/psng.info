@@ -388,7 +388,7 @@ const proofFigure = (e: (typeof proof)[number]) => {
 
   <section id={HOME_ANCHORS.faq} aria-labelledby="home-faq" class="scroll-mt-20 py-16 md:py-24">
     <div class="container mx-auto px-4 sm:px-6">
-      <div class="mx-auto mb-10 max-w-3xl text-center" data-reveal>
+      <div class="mx-auto mb-10 max-w-2xl" data-reveal>
         <h2 id="home-faq" class={sectionTitle}>{c.faq.title}</h2>
       </div>
       <div class="mx-auto max-w-2xl space-y-3" data-reveal>
@@ -399,7 +399,7 @@ const proofFigure = (e: (typeof proof)[number]) => {
                 {faq.question}
                 <ChevronDown size={16} aria-hidden="true" className="shrink-0 transition-transform duration-200 group-open:rotate-180" />
               </summary>
-              <p class="pb-4 text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
+              <p class="pb-5 text-reading">{faq.answer}</p>
             </details>
           ))
         }

@@ -60,10 +60,9 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
   <link slot="head" rel="alternate" type="text/calendar" title="PSNG – Veranstaltungen" href="/events.ics" />
   <section class="pb-24 pt-32 md:pb-32 md:pt-40">
     <div class="container mx-auto max-w-6xl px-6">
-      <div class="mx-auto mb-10 max-w-3xl text-center">
-        <p class="mb-4 font-heading text-sm uppercase tracking-[0.2em] text-primary">{c.events.eyebrow}</p>
+      <div class="mb-10 max-w-3xl">
         <h1 class="mb-4 font-heading text-3xl font-bold text-foreground md:text-5xl">{c.events.title}</h1>
-        <p class="text-lg leading-relaxed text-muted-foreground">
+        <p class="max-w-[68ch] text-lg leading-relaxed text-foreground/80">
           {c.events.introBefore}<a href={whatsappHref("events-intro")} {...external} class={link}>WhatsApp</a>{c.events.introMiddle}<a
             href={INSTAGRAM_LINK}
             {...external}
@@ -72,7 +71,7 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
         </p>
       </div>
 
-      <div class="mb-10 flex flex-col items-center gap-4">
+      <div class="mb-10 flex flex-col items-start gap-4">
         <nav aria-label={c.events.eyebrow} class="inline-flex rounded-full bg-muted p-1">
           {
             filters.map((f) => (
@@ -90,7 +89,7 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
       </div>
 
       <div class="mx-auto max-w-5xl">
-        {upcoming.length === 0 && <p class="mb-8 text-center text-muted-foreground">{c.eventPage.noUpcoming}</p>}
+        {upcoming.length === 0 && <p class="mb-8 text-muted-foreground">{c.eventPage.noUpcoming}</p>}
         <ol class="timeline relative">
           <span aria-hidden="true" class="absolute bottom-2 top-2 left-[0.75rem] w-px bg-border md:left-[7.25rem]"></span>
           {upcoming.map((entry) => <TimelineRow entry={entry} events={events} locale={locale} upcoming isNext={entry.id === nextId} ref={ref} />)}

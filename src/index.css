@@ -160,6 +160,18 @@
 
 @layer utilities {
   /*
+   * Lesetext: Abstracts, Bios, Beschreibungen. 16 px statt 14 px, dunkler als
+   * Metadaten und nie breiter als rund 68 Zeichen.
+   */
+  .text-reading {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: hsl(var(--foreground) / 0.8);
+    max-width: 68ch;
+    text-wrap: pretty;
+  }
+
+  /*
    * Einblenden für den Hero-Bereich – bewusst als CSS-Animation statt über
    * framer-motion: Der Ausgangszustand ist sichtbar, die Animation blendet nur
    * zusätzlich ein. Läuft sie nicht (Hintergrund-Tab, angehaltene Frames,

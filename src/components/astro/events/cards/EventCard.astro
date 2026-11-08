@@ -111,25 +111,30 @@ const label = "font-medium text-foreground";
         )
       }
       <div class="mb-2"><LanguageNote event={e} locale={locale} /></div>
-      <p class="mb-4 max-w-[70ch] whitespace-pre-line text-sm leading-relaxed text-muted-foreground">{pick(e.description, locale) ?? c.events.detailsSoon}</p>
-      {e.speakerBio && <p class="mb-4 max-w-[70ch] text-sm leading-relaxed text-muted-foreground">{pick(e.speakerBio, locale)}</p>}
+      <p class="mb-4 whitespace-pre-line text-reading">{pick(e.description, locale) ?? c.events.detailsSoon}</p>
+      {e.speakerBio && (
+        <div class="mb-4">
+          <p class="font-heading text-xs font-medium text-foreground">{c.eventPage.speaker}</p>
+          <p class="mt-1 text-reading">{pick(e.speakerBio, locale)}</p>
+        </div>
+      )}
       {
         e.furtherReading?.length && (
           <div class="mb-4">
             <p class="font-heading text-xs font-medium text-foreground">{c.events.furtherReading}</p>
-            <ul class="mt-1.5 space-y-1.5">
+            <ol class="mt-1.5 max-w-[68ch] list-decimal space-y-1.5 pl-5 marker:text-muted-foreground">
               {e.furtherReading.map((r) => (
-                <li class="text-xs leading-relaxed">
+                <li class="pl-1 text-sm leading-relaxed">
                   <a href={r.url} {...external} class="text-muted-foreground underline decoration-border underline-offset-2 transition-colors hover:text-primary hover:decoration-primary">
                     {pick(r.text, locale)}
                   </a>
                 </li>
               ))}
-            </ul>
+            </ol>
           </div>
         )
       }
-      {e.audienceNote && <p class="mb-4 max-w-[70ch] text-sm leading-relaxed text-muted-foreground">{pick(e.audienceNote, locale)}</p>}
+      {e.audienceNote && <p class="mb-4 max-w-[68ch] text-sm leading-relaxed text-muted-foreground">{pick(e.audienceNote, locale)}</p>}
       {
         parent && (
           <p class="mb-4 text-sm text-muted-foreground">

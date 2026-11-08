@@ -95,11 +95,16 @@ const link = "font-medium text-primary hover:underline";
         }
         <LanguageNote event={e} locale={locale} />
       </div>
-      {e.description && <p class="whitespace-pre-line text-sm text-muted-foreground">{pick(e.description, locale)}</p>}
+      {e.description && <p class="whitespace-pre-line text-reading">{pick(e.description, locale)}</p>}
       {
         // Die Kurzvita gehört auch in den Rückblick: Wer den Vortrag Monate
         // später findet, kennt den Namen darüber in der Regel nicht.
-        e.speakerBio && <p class="text-sm text-muted-foreground">{pick(e.speakerBio, locale)}</p>
+        e.speakerBio && (
+          <div>
+            <p class="font-heading text-xs font-medium text-foreground">{c.eventPage.speaker}</p>
+            <p class="mt-1 text-reading">{pick(e.speakerBio, locale)}</p>
+          </div>
+        )
       }
       {
         e.furtherReading?.length && (
