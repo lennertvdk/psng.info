@@ -102,7 +102,8 @@ const events = defineCollection({
 
         description: localized.optional(),
         /** Offizieller Abstract des Vortrags – nur auf der eigenen Seite, /events zeigt `description`. */
-        abstract: z.object({ title: localized.optional(), text: localized }).optional(),
+        /** `lang`: Sprache des Abstracts, wenn es nur in einer Sprache vorliegt – die andere Seite kennzeichnet es dann. */
+        abstract: z.object({ title: localized.optional(), text: localized, lang: z.enum(["de", "en"]).optional() }).optional(),
         /** Für wen das Event gedacht ist. */
         audienceNote: localized.optional(),
         /** Teilnahmebeitrag. */

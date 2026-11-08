@@ -248,7 +248,10 @@ const textLink = "inline-flex items-center gap-1 text-sm font-medium text-primar
       {
         (e.description || e.abstract) && (
           <section>
-            <h2 class={h2}>{e.abstract ? p.abstract : p.about}</h2>
+            <h2 class={h2}>
+              {e.abstract ? p.abstract : p.about}
+              {e.abstract?.lang && e.abstract.lang !== locale && ` (${c.events.languages[e.abstract.lang]})`}
+            </h2>
             {e.language && e.language !== locale && (
               <p class="mb-3 text-sm text-muted-foreground">
                 {(e.category === "lecture" ? c.events.languageNote.talk : c.events.languageNote.event).before}
@@ -260,8 +263,8 @@ const textLink = "inline-flex items-center gap-1 text-sm font-medium text-primar
             )}
             {e.abstract ? (
               <>
-                {e.abstract.title && <h3 class="mb-2 font-heading font-semibold text-foreground">{pick(e.abstract.title, locale)}</h3>}
-                <p class="whitespace-pre-line leading-relaxed text-muted-foreground">{pick(e.abstract.text, locale)}</p>
+                {e.abstract.title && <h3 lang={e.abstract.lang} class="mb-2 font-heading font-semibold text-foreground">{pick(e.abstract.title, locale)}</h3>}
+                <p lang={e.abstract.lang} class="whitespace-pre-line leading-relaxed text-muted-foreground">{pick(e.abstract.text, locale)}</p>
               </>
             ) : (
               <p class="whitespace-pre-line leading-relaxed text-muted-foreground">{pick(e.description, locale)}</p>
