@@ -99,7 +99,7 @@ console.log(`Prüfe ${base}${bypass ? " (mit Bypass-Header)" : ""}`);
 for (const path of PAGES) await checkPage(path);
 
 // Event-Seiten: aus der Sitemap, jede mit Event-JSON-LD.
-const NO_EVENT_JSONLD = new Set(["kickoff", "lecture-jelena-brasanac"]);
+const NO_EVENT_JSONLD = new Set([]);
 const sitemapRes = await get("/sitemap.xml");
 check(sitemapRes.status === 200, `/sitemap.xml: Status ${sitemapRes.status}`);
 const sitemap = await sitemapRes.text();

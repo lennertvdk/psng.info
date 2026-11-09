@@ -43,9 +43,14 @@ describe("eventNode", () => {
 
   it("gibt kein Event aus, wenn nicht feststeht, wie man teilnimmt – ohne Ort ist es ungültig", () => {
     expect(eventNode(withChanges("lecture-tomislav-majic", { attendance: undefined }), "de")).toBeUndefined();
-    expect(eventNode(bySlug("kickoff"), "de")).toBeUndefined();
-    expect(eventNode(bySlug("lecture-jelena-brasanac"), "de")).toBeUndefined();
+    expect(eventNode(withChanges("kickoff", { attendance: undefined }), "de")).toBeUndefined();
     expect(graph(organizationNode("x"), undefined)["@graph"]).toHaveLength(1);
+  });
+
+  it("zeigt hybrid ohne bekannten Saal nur den Online-Zugang", () => {
+    const node = eventNode(bySlug("lecture-jelena-brasanac"), "de")!;
+    expect(node.eventAttendanceMode).toBe("https://schema.org/MixedEventAttendanceMode");
+    expect(node.location).toEqual({ "@type": "VirtualLocation", url: "https://psng.info/events/lecture-jelena-brasanac" });
   });
 
   it("gibt jedem ausgegebenen Event einen Ort, ein Bild und eine Beschreibung", () => {
