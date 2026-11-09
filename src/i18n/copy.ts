@@ -59,32 +59,19 @@ const de = {
     modelsTitle: "Vorbilder: Schweiz & Italien",
     modelsText:
       "In der Schweiz sind lokale Hochschulgruppen im Swiss Psychedelic Student Network (SPSN) zusammengeschlossen. In Italien verbindet das University Network for Psychedelic Students (UNePSI) Studierende an verschiedenen Universitäten. Diese Netzwerke dienen als Vorbilder für das PSNG.",
-    pillars: [
-      {
-        key: "network",
-        title: "Vernetzung",
-        description:
-          "Wir verbinden bestehende Studierendeninitiativen und unterstützen neue Hochschulgruppen bei ihrer Gründung.",
-      },
-      {
-        key: "education",
-        title: "Bildung",
-        description:
-          "Regelmäßige Lectures und Journal Clubs zu psychedelischer Wissenschaft und Therapie.",
-      },
-      {
-        key: "research",
-        title: "Forschung",
-        description:
-          "Förderung studentischer Forschungsprojekte und Zusammenarbeit mit akademischen Institutionen.",
-      },
-      {
-        key: "resources",
-        title: "Ressourcen",
-        description:
-          "Gründungsdokumente, Vorlagen, Kontakte und organisatorische Hilfsmittel für lokale Gruppen.",
-      },
-    ],
+    figures: {
+      events: "Events seit März 2026",
+      partners: "Partnerorganisationen",
+    },
+    joinTeam: {
+      title: "Mach das PSNG mit.",
+      text: "Wir suchen Leute, die mehr wollen als dabei sein. Du startest mit einer kleinen, konkreten Aufgabe für vier Wochen, mit einer festen Ansprechperson aus dem Team. Remote geht, Vorwissen ist kein Muss.",
+      areasLabel: "Hier kannst du mitmachen",
+      areas: ["Lecture-Serie", "Social Media & Grafik", "Events", "Community", "Forschungs-Matching", "Vereinsgründung"],
+      cocBefore: "Im Team wie in der Community gilt unser ",
+      cocLink: "Code of Conduct",
+      cocAfter: ".",
+    },
   },
 
   onboarding: {
@@ -299,16 +286,9 @@ const de = {
     intro:
       "Das PSNG wird organisiert durch Psychologie- und Medizinstudierende aus Berlin, Essen und Wuppertal. Events stemmen wir meist gemeinsam als ganzes Orga-Team.",
     linkedin: "LinkedIn →",
-    contactCta: "Kontakt aufnehmen",
     photoCaption: "Team 2026 im August",
     founderNotePrefix: "Mitgegründet mit ",
     founderNoteSuffix: ", der das PSNG über ein Jahr lang mit aufgebaut hat. Danke, Cam!",
-    recruiting: {
-      name: "Teil des Teams werden",
-      tag: "Wir suchen Verstärkung",
-      place: "Bundesweit",
-      text: "Du begeisterst dich für psychedelische Wissenschaft und möchtest das PSNG aktiv mitgestalten? Wir freuen uns über engagierte Studierende aus ganz Deutschland, die unser Netzwerk stärken wollen.",
-    },
   },
 
   partners: {
@@ -320,6 +300,12 @@ const de = {
     instagram: "Instagram",
     telegram: "Telegram",
     opportunity: "Forschungsmöglichkeiten",
+    categories: {
+      network: "Netzwerke",
+      "student-group": "Hochschulgruppen",
+      foundation: "Stiftungen",
+      community: "Community und Medien",
+    },
     ctaBefore:
       "Du möchtest mit uns kooperieren für Events, Reichweite, Forschung oder Ideen-Sparring? ",
     ctaLink: "Schreib uns",
@@ -613,32 +599,19 @@ const en: Copy = {
     modelsTitle: "Models: Switzerland & Italy",
     modelsText:
       "In Switzerland, local university groups are joined together in the Swiss Psychedelic Student Network (SPSN). In Italy, the University Network for Psychedelic Students (UNePSI) connects students across different universities. Both networks served as models for the PSNG.",
-    pillars: [
-      {
-        key: "network",
-        title: "Connection",
-        description:
-          "We link up existing student initiatives and help new university groups get off the ground.",
-      },
-      {
-        key: "education",
-        title: "Education",
-        description:
-          "Regular lectures and journal clubs on psychedelic science and therapy.",
-      },
-      {
-        key: "research",
-        title: "Research",
-        description:
-          "Support for student research projects and collaboration with academic institutions.",
-      },
-      {
-        key: "resources",
-        title: "Resources",
-        description:
-          "Founding documents, templates, contacts and organisational tools for local groups.",
-      },
-    ],
+    figures: {
+      events: "events since March 2026",
+      partners: "partner organisations",
+    },
+    joinTeam: {
+      title: "Help run the PSNG.",
+      text: "We're looking for people who want to do more than attend. You start with a small, concrete task for four weeks, with a fixed contact person from the team. Remote is fine, no prior knowledge needed.",
+      areasLabel: "Where you can help",
+      areas: ["Lecture series", "Social media & design", "Events", "Community", "Research matching", "Founding the association"],
+      cocBefore: "In the team as in the community, our ",
+      cocLink: "code of conduct",
+      cocAfter: " applies.",
+    },
   },
 
   onboarding: {
@@ -852,16 +825,9 @@ const en: Copy = {
     intro:
       "The PSNG is organised by psychology and medical students in Berlin, Essen and Wuppertal. Events are usually a joint effort of the whole organising team.",
     linkedin: "LinkedIn →",
-    contactCta: "Get in touch",
     photoCaption: "The team in August 2026",
     founderNotePrefix: "Co-founded with ",
     founderNoteSuffix: ", who helped build the PSNG for over a year. Thanks, Cam!",
-    recruiting: {
-      name: "Join the team",
-      tag: "We're looking for people",
-      place: "Nationwide",
-      text: "Excited about psychedelic science and keen to help shape the PSNG? We'd love to hear from committed students across Germany who want to strengthen the network.",
-    },
   },
 
   partners: {
@@ -873,6 +839,12 @@ const en: Copy = {
     instagram: "Instagram",
     telegram: "Telegram",
     opportunity: "Research opportunities",
+    categories: {
+      network: "Networks",
+      "student-group": "University groups",
+      foundation: "Foundations",
+      community: "Community and media",
+    },
     ctaBefore:
       "Would you like to work with us on events, reach, research or simply to bounce around ideas? ",
     ctaLink: "Write to us",

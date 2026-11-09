@@ -42,10 +42,18 @@ const subjectParamMap: Record<string, string> = {
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-const ContactSection = () => {
+interface Props {
+  /** Vorgewähltes Anliegen als Schlüssel wie in `?subject=`, z. B. „team“. */
+  defaultSubject?: keyof typeof subjectParamMap;
+  /** Nur das Formular, ohne eigene Sektion und Überschrift – für „Mach mit“ auf /ueber-uns. */
+  embedded?: boolean;
+}
+
+const ContactSection = ({ defaultSubject, embedded = false }: Props) => {
   const c = useCopy();
+  const initialSubject = defaultSubject ? subjectParamMap[defaultSubject] : "";
   const [status, setStatus] = useState<Status>("idle");
-  const [subject, setSubject] = useState("");
+  const [subject, setSubject] = useState(initialSubject);
   // Nach dem Absenden verschwindet das Formular; der Fokus geht auf die
   // Bestätigung, statt ins Leere zu fallen.
   const successRef = useRef<HTMLHeadingElement>(null);
@@ -82,7 +90,7 @@ const ContactSection = () => {
       setStatus("success");
       track(`kontakt/${subject || "ohne-anliegen"}`);
       form.reset();
-      setSubject("");
+      setSubject(initialSubject);
     } catch {
       setStatus("error");
     }
@@ -90,28 +98,10 @@ const ContactSection = () => {
 
   const resetForm = () => {
     setStatus("idle");
-    setSubject("");
+    setSubject(initialSubject);
   };
 
-  return (
-    <section id="kontakt" className="py-24 md:py-32">
-      <div className="container mx-auto px-6">
-        <div className="max-w-2xl mx-auto mb-12"
-        >
-          <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary mb-4">
-            {c.contact.eyebrow}
-          </p>
-          <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
-            {c.contact.title}
-          </h2>
-          <p className="text-foreground/80 text-lg leading-relaxed max-w-[68ch]">
-            {c.contact.intro}
-          </p>
-        </div>
-
-        <div className="max-w-2xl mx-auto"
-        >
-          {status === "success" ? (
+  const body = status === "success" ? (
             <div
               role="status"
               aria-live="polite"
@@ -222,8 +212,25 @@ const ContactSection = () => {
                 )}
               </div>
             </form>
-          )}
+          );
+
+  if (embedded) return body;
+
+  return (
+    <section id="kontakt" className="py-24 md:py-32">
+      <div className="container mx-auto px-6">
+        <div className="max-w-2xl mx-auto mb-12">
+          <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary mb-4">
+            {c.contact.eyebrow}
+          </p>
+          <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
+            {c.contact.title}
+          </h2>
+          <p className="text-foreground/80 text-lg leading-relaxed max-w-[68ch]">
+            {c.contact.intro}
+          </p>
         </div>
+        <div className="max-w-2xl mx-auto">{body}</div>
       </div>
     </section>
   );

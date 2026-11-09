@@ -1,5 +1,6 @@
 name: "Nachtschatten Verlag"
 order: 8
+category: community
 logo: ./logo.webp
 url: https://nachtschatten.ch/
 description:

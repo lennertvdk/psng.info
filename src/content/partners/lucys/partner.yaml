@@ -1,5 +1,6 @@
 name: "Lucys Magazin"
 order: 9
+category: community
 logo: ./logo.webp
 url: https://www.lucys-magazin.com/
 instagramUrl: https://www.instagram.com/lucys.magazin/

@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { ExternalLink } from "lucide-react";
 import teamPhoto from "@/assets/Team-2026-08.webp";
+import ContactSection from "@/components/ContactSection";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { copy } from "@/i18n/copy";
 import type { Locale } from "@/i18n/locale";
@@ -9,6 +10,8 @@ import { pick } from "@/i18n/localized";
 import { pathFor } from "@/i18n/routes";
 import { HOME_ANCHORS } from "@/lib/anchors";
 import { loadPartnerList, loadTeam } from "@/lib/content";
+import { loadEvents } from "@/lib/events/load";
+import { isPast } from "@/lib/events/schedule";
 import { alternatesOf } from "@/lib/seo/alternates";
 
 /*
@@ -21,12 +24,35 @@ interface Props {
 
 const { locale } = Astro.props;
 const c = copy[locale];
-const [team, partnerList] = await Promise.all([loadTeam(), loadPartnerList()]);
-// Hier alphabetisch, damit keine Reihenfolge eine Rangfolge behauptet; `order`
-// gilt weiter für die Logoleiste der Startseite.
-const partners = partnerList.toSorted((a, b) =>
-  (a.displayName ?? a.name).localeCompare(b.displayName ?? b.name, locale),
-);
+const [team, partnerList, events] = await Promise.all([loadTeam(), loadPartnerList(), loadEvents()]);
+// Nach Art gruppiert, Netzwerke zuerst; in der Gruppe alphabetisch, damit
+// keine Reihenfolge eine Rangfolge behauptet. `order` gilt weiter für die
+// Logoleiste der Startseite.
+const categories = ["network", "student-group", "foundation", "community"] as const;
+const partnerGroups = categories
+  .map((category) => ({
+    category,
+    partners: partnerList
+      .filter((p) => p.category === category)
+      .toSorted((a, b) => (a.displayName ?? a.name).localeCompare(b.displayName ?? b.name, locale)),
+  }))
+  .filter((g) => g.partners.length > 0);
+
+// Zahlen statt Vermutung: zwei aus dem Hero, zwei aus den Inhalten gezählt.
+// Nur eigene und mitveranstaltete Events, ohne besuchte Konferenzen und ohne
+// die Vorträge, die nur Teil eines größeren Abends waren.
+const ref = new Date();
+const heldEvents = events.filter((e) => isPast(e, ref) && e.role !== "external" && !e.partOf && e.status !== "cancelled").length;
+const split = (item: string) => {
+  const [lead, ...rest] = item.split(" ");
+  return { value: lead, label: rest.join(" ") };
+};
+const figures = [
+  split(c.hero.students),
+  split(c.hero.cities),
+  { value: String(heldEvents), label: c.about.figures.events },
+  { value: String(partnerList.length), label: c.about.figures.partners },
+];
 const contact = (subject: string) => `${pathFor("home", locale)}?subject=${subject}#${HOME_ANCHORS.contact}`;
 
 const h2 = "mb-4 font-heading text-3xl font-bold text-foreground md:text-4xl";
@@ -43,7 +69,7 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
 >
   <section class="pb-16 pt-32 md:pb-24 md:pt-40">
     <div class="container mx-auto max-w-6xl px-4 sm:px-6">
-      <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16" data-reveal>
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16" data-reveal>
         <div>
           <h1 class="font-heading text-4xl font-bold leading-[1.1] text-foreground md:text-5xl">{c.about.title}</h1>
           <p class="mt-6 max-w-[65ch] text-lg leading-relaxed text-foreground/75">{c.about.intro}</p>
@@ -54,21 +80,21 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
         </div>
       </div>
 
-      <ul class="mt-16 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4" data-reveal>
-        {
-          c.about.pillars.map((pillar) => (
-            <li class="border-t-2 border-primary/40 pt-4">
-              <h3 class="font-heading text-lg font-semibold text-foreground">{pillar.title}</h3>
-              <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{pillar.description}</p>
-            </li>
-          ))
-        }
-      </ul>
 
-      <div class="mt-16 grid gap-10 md:grid-cols-2 md:gap-16" data-reveal>
+      <div class="mt-16 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16" data-reveal>
         <div>
           <h2 class="font-heading text-xl font-semibold text-foreground">{c.about.statusTitle}</h2>
           <p class="mt-3 text-reading">{c.about.statusText}</p>
+          <dl class="mt-6 grid grid-cols-2 gap-x-6 gap-y-4">
+            {
+              figures.map((f) => (
+                <div class="flex flex-col-reverse border-t-2 border-coral pt-3">
+                  <dt class="text-sm text-muted-foreground">{f.label}</dt>
+                  <dd class="font-heading text-2xl font-bold tabular-nums text-foreground">{f.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
         </div>
         <div>
           <h2 class="font-heading text-xl font-semibold text-foreground">{c.about.modelsTitle}</h2>
@@ -81,7 +107,7 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
   <section id="team" class="bg-primary/5 py-16 md:py-24">
     <div class="container mx-auto max-w-6xl px-4 sm:px-6">
       {/* Das Teamfoto ist hochkant: groß neben dem Text, auf dem Handy über die volle Breite. */}
-      <div class="mb-16 grid items-start gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16" data-reveal>
+      <div class="mb-16 grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16" data-reveal>
         <div class="lg:sticky lg:top-28">
           <h2 class={h2}>{c.team.title}</h2>
           <p class="text-reading text-lg">{c.team.intro}</p>
@@ -97,7 +123,7 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
           <figcaption class="mt-3 text-sm text-muted-foreground">{c.team.photoCaption}</figcaption>
         </figure>
       </div>
-      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {
           team.map((member, i) => (
             <div class={card} data-reveal style={`--reveal-delay: ${(i % 3) * 0.08}s`}>
@@ -132,24 +158,6 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
             </div>
           ))
         }
-        <div class={card.replace("bg-card", "bg-primary/5")} data-reveal>
-          <div class="flex flex-1 flex-col">
-            <h3 class="font-heading text-base font-semibold text-foreground">{c.team.recruiting.name}</h3>
-            <ul class="mt-2 flex flex-wrap gap-1.5">
-              <li class="chip-accent">{c.team.recruiting.tag}</li>
-            </ul>
-            <p class="mt-2 text-xs text-muted-foreground">{c.team.recruiting.place}</p>
-            <p class="mt-3 text-[0.9375rem] leading-relaxed text-foreground/80">{c.team.recruiting.text}</p>
-            <div class="mt-auto pt-4">
-              <a
-                href={contact("team")}
-                class="inline-flex items-center justify-center rounded-lg border border-primary/30 px-5 py-2 font-heading text-xs font-medium text-primary transition-colors hover:bg-primary/5"
-              >
-                {c.team.contactCta}
-              </a>
-            </div>
-          </div>
-        </div>
       </div>
       <p class="mt-12 text-sm text-muted-foreground">
         {c.team.founderNotePrefix}Cameron Hornung{c.team.founderNoteSuffix}
@@ -163,49 +171,60 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
         <h2 class={h2}>{c.partners.title}</h2>
         <p class="max-w-[65ch] text-lg leading-relaxed text-muted-foreground">{c.partners.intro}</p>
       </div>
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="space-y-14">
         {
-          partners.map((partner, i) => {
-            const name = partner.displayName ?? partner.name;
-            const links: { href: string; label: string; icon?: boolean; strong?: boolean }[] = [
-              { href: partner.url, label: c.partners.website, icon: true },
-            ];
-            if (partner.instagramUrl) links.push({ href: partner.instagramUrl, label: c.partners.instagram });
-            if (partner.telegramUrl) links.push({ href: partner.telegramUrl, label: c.partners.telegram });
-            if (partner.opportunity) {
-              const label = partner.opportunity.label;
-              links.push({ href: partner.opportunity.url, label: label ? pick(label, locale) : c.partners.opportunity, strong: true });
-            }
-            return (
-              <div class={card} data-reveal style={`--reveal-delay: ${(i % 3) * 0.08}s`}>
-                <div class="mb-4 flex justify-center">
-                  <Image
-                    src={partner.logo}
-                    alt={`${name} Logo`}
-                    height={112}
-                    densities={[1, 2]}
-                    class="h-28 w-auto max-w-full object-contain"
-                  />
-                </div>
-                <div class="flex-grow">
-                  <h3 class="mb-2 font-heading text-base font-semibold text-foreground">{name}</h3>
-                  <p class="mb-4 text-[0.9375rem] leading-relaxed text-foreground/80">{pick(partner.description, locale)}</p>
-                </div>
-                <div class="mt-auto flex flex-wrap justify-center gap-3 border-t border-border/50 pt-4">
-                  {links.map((l) => (
-                    <a
-                      href={l.href}
-                      {...external}
-                      class={`inline-flex items-center gap-1 text-xs text-primary hover:underline ${l.strong ? "font-medium" : ""}`}
-                    >
-                      {l.icon && <ExternalLink size={12} aria-hidden="true" />}
-                      {l.label}
-                    </a>
-                  ))}
-                </div>
+          partnerGroups.map(({ category, partners }) => (
+            <section aria-labelledby={`partner-${category}`}>
+              <h3 id={`partner-${category}`} class="mb-6 font-heading text-xl font-semibold text-foreground">
+                {c.partners.categories[category]}
+              </h3>
+              <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {
+                  partners.map((partner, i) => {
+                    const name = partner.displayName ?? partner.name;
+                    const links: { href: string; label: string; icon?: boolean; strong?: boolean }[] = [
+                      { href: partner.url, label: c.partners.website, icon: true },
+                    ];
+                    if (partner.instagramUrl) links.push({ href: partner.instagramUrl, label: c.partners.instagram });
+                    if (partner.telegramUrl) links.push({ href: partner.telegramUrl, label: c.partners.telegram });
+                    if (partner.opportunity) {
+                      const label = partner.opportunity.label;
+                      links.push({ href: partner.opportunity.url, label: label ? pick(label, locale) : c.partners.opportunity, strong: true });
+                    }
+                    return (
+                      <div class={card} data-reveal style={`--reveal-delay: ${(i % 3) * 0.08}s`}>
+                        <div class="mb-4 flex justify-center">
+                          <Image
+                            src={partner.logo}
+                            alt={`${name} Logo`}
+                            height={112}
+                            densities={[1, 2]}
+                            class="h-28 w-auto max-w-full object-contain"
+                          />
+                        </div>
+                        <div class="flex-grow">
+                          <h4 class="mb-2 font-heading text-base font-semibold text-foreground">{name}</h4>
+                          <p class="mb-4 text-[0.9375rem] leading-relaxed text-foreground/80">{pick(partner.description, locale)}</p>
+                        </div>
+                        <div class="mt-auto flex flex-wrap justify-center gap-3 border-t border-border/50 pt-4">
+                          {links.map((l) => (
+                            <a
+                              href={l.href}
+                              {...external}
+                              class={`inline-flex items-center gap-1 text-xs text-primary hover:underline ${l.strong ? "font-medium" : ""}`}
+                            >
+                              {l.icon && <ExternalLink size={12} aria-hidden="true" />}
+                              {l.label}
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })
+                }
               </div>
-            );
-          })
+            </section>
+          ))
         }
       </div>
       <div class="mt-12 rounded-2xl border border-border bg-card p-6" data-reveal>
@@ -215,6 +234,24 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
           >{c.partners.ctaAfter}
         </p>
       </div>
+    </div>
+  </section>
+  <section id="mitmachen" aria-labelledby="mitmachen-titel" class="bg-primary/5 py-16 md:py-24">
+    <div class="container mx-auto grid max-w-6xl grid-cols-1 items-start gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+      <div class="lg:sticky lg:top-28" data-reveal>
+        <h2 id="mitmachen-titel" class={h2}>{c.about.joinTeam.title}</h2>
+        <p class="text-reading text-lg">{c.about.joinTeam.text}</p>
+        <h3 class="mt-8 font-heading text-sm font-semibold text-foreground">{c.about.joinTeam.areasLabel}</h3>
+        <ul class="mt-3 flex flex-wrap gap-2">
+          {c.about.joinTeam.areas.map((area) => <li class="chip-accent px-3 py-1 text-sm">{area}</li>)}
+        </ul>
+        <p class="mt-8 text-sm text-muted-foreground">
+          {c.about.joinTeam.cocBefore}<a href={pathFor("codeOfConduct", locale)} class="font-medium text-primary hover:underline"
+            >{c.about.joinTeam.cocLink}</a
+          >{c.about.joinTeam.cocAfter}
+        </p>
+      </div>
+      <ContactSection client:visible locale={locale} defaultSubject="team" embedded />
     </div>
   </section>
 </BaseLayout>
