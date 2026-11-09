@@ -81,14 +81,12 @@ const anchor = (hash: string) => `#${hash}`;
 const external = { target: "_blank", rel: "noopener noreferrer" };
 const onboardingTargets: Record<string, { href: string; external?: boolean }> = {
   join: { href: whatsappHref("einstieg"), external: true },
-  // Zur Übersicht, nicht zum Abschnitt darunter: Der ist leer, wenn die
-  // Hero-Karte den einzigen Termin schon zeigt.
-  events: { href: pathFor("events", locale) },
+  team: { href: `${pathFor("about", locale)}#mitmachen` },
   start: { href: pathFor("guide", locale) },
 };
 
 const stats = [c.hero.students, c.hero.cities, c.lab.since].map((item) => {
-  // „250+ Studierende“: Die Zahl trägt, das Wort erklärt.
+  // „450+ Mitglieder“: Die Zahl trägt, das Wort erklärt.
   const [first, ...rest] = item.split(" ");
   return /\d/.test(first) ? { lead: first, rest: rest.join(" ") } : { rest: item };
 });

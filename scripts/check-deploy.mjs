@@ -11,6 +11,7 @@
  * Header mit. Der Wert wird nie ausgegeben.
  */
 
+const JOIN_FORM_LINK = "https://forms.gle/2EK6dCXMhZtwWEVKA";
 const base = process.argv[2]?.replace(/\/$/, "");
 if (!base) {
   console.error("Aufruf: node scripts/check-deploy.mjs <url>");
@@ -154,6 +155,8 @@ for (const [from, status, to] of REDIRECTS) {
 }
 const hr = await get("/hr");
 check([301, 302, 307, 308].includes(hr.status) && (hr.headers.get("location") ?? "").startsWith("https://claude.ai/"), `/hr: ${hr.status}`);
+const join = await get("/mitmachen");
+check([302, 307].includes(join.status) && (join.headers.get("location") ?? "") === JOIN_FORM_LINK, `/mitmachen: ${join.status} → ${join.headers.get("location") ?? "–"}`);
 
 // WhatsApp-Zähler: HEAD leitet weiter, ohne einen Beitritt zu zählen.
 const wa = await get("/whatsapp?from=check", { method: "HEAD" });

@@ -26,6 +26,11 @@
       "permanent": true
     },
     {
+      "source": "/mitmachen",
+      "destination": "https://forms.gle/2EK6dCXMhZtwWEVKA",
+      "permanent": false
+    },
+    {
       "source": "/hr",
       "destination": "https://claude.ai/artifact/2BY5S6qyf5zfnCuLknC7SE",
       "permanent": false
