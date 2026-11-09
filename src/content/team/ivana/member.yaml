@@ -4,7 +4,6 @@ photo: ./photo.webp
 roles:
   - de: "Vereinsgründung"
     en: "Founding the association"
-  - "Lectures"
 study:
   de: "Medizinstudentin"
   en: "Medical student"
