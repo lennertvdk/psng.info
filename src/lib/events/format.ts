@@ -6,26 +6,26 @@ import type { SeriesDate, SiteEvent } from "./types";
 export function formatEventDate(iso: string, locale: Locale, withWeekday = false): string {
   return parseEventDate(iso).toLocaleDateString(intlLocale(locale), {
     ...(withWeekday ? { weekday: "long" as const } : {}),
-    day: "2-digit",
+    day: "numeric",
     month: "long",
     year: "numeric",
   });
 }
 
+/** „8. Aug.“ – für die Datumsspalte des Zeitstrahls, dessen Jahresmarken das Jahr tragen. */
 export function formatEventDateShort(iso: string, locale: Locale): string {
   return parseEventDate(iso).toLocaleDateString(intlLocale(locale), {
-    day: "2-digit",
+    day: "numeric",
     month: "short",
-    year: "numeric",
   });
 }
 
 /** Datum, bei mehrtägigen Events bis zum letzten Tag. */
 export function formatEventDateRange(e: SiteEvent, locale: Locale): string {
   if (!e.endDate || e.endDate === e.date) return formatEventDate(e.date, locale, e.showWeekday);
-  // Ohne Wochentag fasst Intl gleiche Monate und Jahre zusammen: „09.–10. Oktober 2026“.
+  // Ohne Wochentag fasst Intl gleiche Monate und Jahre zusammen: „9.–10. Oktober 2026“.
   if (!e.showWeekday) {
-    return new Intl.DateTimeFormat(intlLocale(locale), { day: "2-digit", month: "long", year: "numeric" }).formatRange(
+    return new Intl.DateTimeFormat(intlLocale(locale), { day: "numeric", month: "long", year: "numeric" }).formatRange(
       parseEventDate(e.date),
       parseEventDate(e.endDate),
     );

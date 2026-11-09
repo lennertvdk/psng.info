@@ -11,6 +11,7 @@ import { formatEventDate, formatEventDateShort, formatRelativeToToday } from "@/
 import type { TimelineEntry } from "@/lib/events/schedule";
 import type { SiteEvent } from "@/lib/events/types";
 import { columnLabel } from "@/lib/events/view";
+import CardHead from "./cards/CardHead.astro";
 import EventCard from "./cards/EventCard.astro";
 import GatheringCard from "./cards/GatheringCard.astro";
 import HighlightCard from "./cards/HighlightCard.astro";
@@ -69,13 +70,12 @@ const card = "rounded-xl border border-border/60 bg-card";
     {
       entry.kind === "series" && (
         <div class="rounded-xl border border-dashed border-border bg-card/50 px-5 py-4">
-          <div class="mb-2 flex flex-wrap items-center gap-2">
+          <CardHead date={formatEventDate(entry.date, locale)} class="mb-2">
             <span class={chip}>{columnLabel(entry.column, c)}</span>
-            <span class="text-xs text-muted-foreground md:hidden">{formatEventDate(entry.date, locale)}</span>
-          </div>
-          <p class="font-heading text-base font-semibold text-foreground">
+          </CardHead>
+          <h3 class="font-heading text-base font-semibold text-foreground">
             {entry.series.labelKey === "semesterStart" ? c.events.seriesSemesterLabel : c.events.seriesLabel}
-          </p>
+          </h3>
           <p class="mt-1 text-sm text-muted-foreground">
             {entry.series.startTime} – {entry.series.endTime} · {entry.series.location} – {c.events.seriesNote}
             {entry.series.coHost && ` ${c.events.seriesCoHost} ${entry.series.coHost}.`}
@@ -94,16 +94,15 @@ const card = "rounded-xl border border-border/60 bg-card";
             <Image src={entry.milestone.image as ImageMetadata} alt="" widths={[640, 960, 1280]} sizes={wide} class="aspect-video w-full bg-muted object-cover object-top" />
           )}
           <div class="p-5">
-          <div class="mb-2 flex flex-wrap items-center gap-2">
+          <CardHead date={formatEventDate(entry.date, locale)} class="mb-2">
             {entry.milestone.badge && (
               <span class="chip-accent">
                 {pick(entry.milestone.badge, locale)}
               </span>
             )}
             {entry.milestone.partner && <PartnerChip partner={entry.milestone.partner} />}
-            <span class="text-xs text-muted-foreground md:hidden">{formatEventDate(entry.date, locale)}</span>
-          </div>
-          <h2 class="font-heading text-lg font-semibold text-foreground">{pick(entry.milestone.title, locale)}</h2>
+          </CardHead>
+          <h3 class="font-heading text-lg font-semibold text-foreground">{pick(entry.milestone.title, locale)}</h3>
           <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{pick(entry.milestone.description, locale)}</p>
           {entry.milestone.links && (
             <div class="mt-3 flex flex-wrap gap-4">

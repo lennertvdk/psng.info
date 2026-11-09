@@ -1,0 +1,20 @@
+---
+/*
+ * Der gemeinsame Kopf aller Karten im Zeitstrahl: zuerst das Datum, dann die
+ * Einordnung als Chips. Ab md steht das Datum in der Spalte links neben der
+ * Schiene, deshalb hier nur auf dem Handy.
+ */
+interface Props {
+  date: string;
+  class?: string;
+}
+
+const { date, class: className } = Astro.props;
+---
+
+<div class:list={["space-y-2", className]}>
+  <p class="font-heading text-sm font-semibold text-foreground md:hidden">{date}</p>
+  <div class="flex flex-wrap items-center gap-2">
+    <slot />
+  </div>
+</div>

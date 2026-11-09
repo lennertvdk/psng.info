@@ -53,7 +53,7 @@ describe("formatEventTime", () => {
 describe("formatEventDate", () => {
   it("renders the calendar date, not a timezone-shifted one", () => {
     expect(formatEventDate("2026-07-28", "de")).toBe("28. Juli 2026");
-    expect(formatEventDate("2026-01-01", "de")).toBe("01. Januar 2026");
+    expect(formatEventDate("2026-01-01", "de")).toBe("1. Januar 2026");
   });
 });
 

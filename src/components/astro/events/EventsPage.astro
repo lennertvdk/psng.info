@@ -1,15 +1,17 @@
 ---
+import { CalendarPlus } from "lucide-react";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { copy } from "@/i18n/copy";
 import type { Locale } from "@/i18n/locale";
 import { pathFor } from "@/i18n/routes";
 import { HOME_ANCHORS } from "@/lib/anchors";
 import { loadEvents, loadMilestones } from "@/lib/events/load";
-import { getTimelineEntries } from "@/lib/events/schedule";
+import { getTimelineEntries, toIsoDate } from "@/lib/events/schedule";
 import { INSTAGRAM_LINK, whatsappHref } from "@/lib/links";
 import { alternatesOf } from "@/lib/seo/alternates";
 import { primaryButton, secondaryButton } from "../home/styles";
 import TimelineRow from "./TimelineRow.astro";
+import TimelineMark from "./TimelineMark.astro";
 
 /*
  * /events: ein durchgehender Zeitstrahl – oben der am weitesten entfernte
@@ -43,6 +45,23 @@ const seriesNote = [
 ].join(" ");
 const link = "text-primary underline hover:no-underline";
 const external = { target: "_blank", rel: "noopener noreferrer" };
+
+// Jahres- und Monatsmarken vor dem ersten Eintrag jedes Jahres und Monats,
+// absteigend wie der Zeitstrahl. Der Heute-Marker zählt zum laufenden Monat,
+// damit er nicht im Block eines kommenden steht.
+let last = "";
+const marksBefore = (iso: string) => {
+  const month = iso.slice(0, 7);
+  if (month === last) return [];
+  const marks = month.slice(0, 4) === last.slice(0, 4) ? [month] : [month.slice(0, 4), month];
+  last = month;
+  return marks;
+};
+const upcomingRows = upcoming.map((entry) => ({ entry, marks: marksBefore(entry.date) }));
+const todayMarks = marksBefore(toIsoDate(ref));
+const pastRows = past.map((entry) => ({ entry, marks: marksBefore(entry.date) }));
+const feed = new URL("/events.ics", Astro.site);
+const webcal = feed.href.replace(/^https?:/, "webcal:");
 ---
 
 <BaseLayout
@@ -66,7 +85,7 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
         </p>
       </div>
 
-      <div class="mb-10 flex flex-col items-start gap-4">
+      <div class="mb-12 flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
         <nav aria-label={c.events.eyebrow} class="inline-flex rounded-full bg-muted p-1">
           {
             filters.map((f) => (
@@ -81,21 +100,45 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
             ))
           }
         </nav>
+        <div class="max-w-sm md:text-right">
+          <a href={webcal} class="inline-flex items-center gap-2 font-heading text-sm font-medium text-primary hover:underline">
+            <CalendarPlus size={16} aria-hidden="true" />
+            {c.events.subscribe}
+          </a>
+          <p class="mt-1 text-xs leading-relaxed text-muted-foreground">
+            {c.events.subscribeHint} <a href={feed.href} class="break-all underline hover:text-primary">{feed.host}{feed.pathname}</a>
+          </p>
+        </div>
       </div>
 
       <div class="mx-auto max-w-5xl">
         {upcoming.length === 0 && <p class="mb-8 text-muted-foreground">{c.eventPage.noUpcoming}</p>}
         <ol class="timeline relative">
           <span aria-hidden="true" class="absolute bottom-2 top-2 left-[0.75rem] w-px bg-border md:left-[7.25rem]"></span>
-          {upcoming.map((entry) => <TimelineRow entry={entry} events={events} locale={locale} upcoming isNext={entry.id === nextId} ref={ref} />)}
+          {
+            upcomingRows.map(({ entry, marks }) => (
+              <>
+                {marks.map((mark) => <TimelineMark mark={mark} locale={locale} />)}
+                <TimelineRow entry={entry} events={events} locale={locale} upcoming isNext={entry.id === nextId} ref={ref} />
+              </>
+            ))
+          }
+          {todayMarks.map((mark) => <TimelineMark mark={mark} locale={locale} />)}
           <li class="timeline-today grid grid-cols-[1.5rem_minmax(0,1fr)] items-center md:grid-cols-[6.5rem_1.5rem_minmax(0,1fr)] my-1" aria-hidden="true">
-            <p class="hidden pr-4 text-right font-heading text-xs uppercase tracking-[0.2em] text-primary md:block" data-today-label={c.events.today}>
-              {c.events.today}
+            <p class="hidden pr-4 text-right font-heading text-xs uppercase tracking-[0.2em] text-primary md:block">
+              {c.events.today}<span class="block normal-case tracking-normal" data-today-date></span>
             </p>
             <div class="flex items-center justify-center"><span class="gradient-psychedelic h-0.5 w-full rounded-full"></span></div>
-            <p class="pl-3 font-heading text-xs uppercase tracking-[0.2em] text-primary md:hidden" data-today-label={c.events.today}>{c.events.today}</p>
+            <p class="pl-3 font-heading text-xs uppercase tracking-[0.2em] text-primary md:hidden">{c.events.today}<span class="normal-case tracking-normal" data-today-date data-separator=" · "></span></p>
           </li>
-          {past.map((entry) => <TimelineRow entry={entry} events={events} locale={locale} upcoming={false} ref={ref} />)}
+          {
+            pastRows.map(({ entry, marks }) => (
+              <>
+                {marks.map((mark) => <TimelineMark mark={mark} locale={locale} />)}
+                <TimelineRow entry={entry} events={events} locale={locale} upcoming={false} ref={ref} />
+              </>
+            ))
+          }
         </ol>
       </div>
 

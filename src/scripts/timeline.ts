@@ -10,7 +10,8 @@ import type { Locale } from "@/i18n/locale";
  * - Heute-Marker und „in 6 Tagen“, falls seit dem Build ein Tag vergangen ist
  *   (die tägliche Neuerstellung holt den Rest nach),
  * - der Filter aus `?filter=` – in der URL, damit man auf eine gefilterte
- *   Ansicht verlinken kann und Zurück den Wechsel rückgängig macht.
+ *   Ansicht verlinken kann und Zurück den Wechsel rückgängig macht,
+ * - die Jahres- und Monatsmarken, die mit ihren Einträgen ausgeblendet werden.
  */
 const FILTERS = ["alle", "vortraege", "community"] as const;
 type Filter = (typeof FILTERS)[number];
@@ -34,12 +35,23 @@ export function initTimeline(): void {
     }
   }
   const firstPast = rows.find((r) => r.dataset.phase === "past");
-  list.insertBefore(marker, firstPast ?? null);
+  // Beginnt mit dem ersten vergangenen Eintrag ein früherer Monat, gehört der
+  // Marker vor dessen Marken, nicht hinein.
+  const month = today.slice(0, 7);
+  let anchor: HTMLElement | null = firstPast ?? null;
+  for (
+    let prev = anchor?.previousElementSibling as HTMLElement | null;
+    prev?.dataset.mark && !month.startsWith(prev.dataset.mark);
+    prev = prev.previousElementSibling as HTMLElement | null
+  ) {
+    anchor = prev;
+  }
+  list.insertBefore(marker, anchor);
   // „Heute · 9. Nov.“: Das Datum kommt erst hier dazu, damit ohne JavaScript
   // nie das Datum des Builds als heute dasteht.
   const date = new Date().toLocaleDateString(intlLocale(locale), { day: "numeric", month: "short" });
-  for (const label of marker.querySelectorAll<HTMLElement>("[data-today-label]")) {
-    label.textContent = `${label.dataset.todayLabel} · ${date}`;
+  for (const slot of marker.querySelectorAll<HTMLElement>("[data-today-date]")) {
+    slot.textContent = `${slot.dataset.separator ?? ""}${date}`;
   }
 
   const current = (): Filter => {
@@ -58,6 +70,18 @@ export function initTimeline(): void {
     // Der Marker trennt zwei Hälften; ist die obere leergefiltert, sagte er nur
     // noch „darüber kommt nichts“.
     marker.hidden = !matching.some((r) => r.dataset.phase === "upcoming");
+    // Eine Marke ohne sichtbaren Eintrag darunter fällt weg. Ein Monat endet
+    // an der nächsten Marke, ein Jahr erst an der nächsten Jahresmarke.
+    for (const mark of list.querySelectorAll<HTMLElement>(".timeline-mark")) {
+      const ends = (el: HTMLElement) => el.dataset.level === "year" || (mark.dataset.level === "month" && !!el.dataset.mark);
+      let el = mark.nextElementSibling as HTMLElement | null;
+      let visible = false;
+      while (el && !ends(el) && !visible) {
+        visible = !el.hidden && (el.classList.contains("timeline-row") || el === marker);
+        el = el.nextElementSibling as HTMLElement | null;
+      }
+      mark.hidden = !visible;
+    }
   };
 
   for (const link of document.querySelectorAll<HTMLAnchorElement>("a[data-filter]")) {

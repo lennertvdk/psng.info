@@ -138,6 +138,8 @@ const de = {
     seriesNote: "Termin steht. Thema und Speaker geben wir rechtzeitig bekannt.",
     seriesCoHost: "In Kooperation mit der",
     today: "heute",
+    subscribe: "Alle Termine abonnieren",
+    subscribeHint: "Der Kalender aktualisiert sich selbst. Für Google Kalender die Adresse per URL hinzufügen:",
     detailsSoon: "Weitere Details folgen bald.",
     prevPhoto: "Vorheriges Foto",
     nextPhoto: "Nächstes Foto",
@@ -484,7 +486,7 @@ const de = {
 
   eventPage: {
     allEvents: "Alle Events",
-    eventPage: "Eigene Seite zum Event",
+    eventPage: "Zur Event-Seite",
     upcomingTitle: "Kommende Termine",
     pastTitle: "Rückblick",
     noUpcoming:
@@ -690,6 +692,8 @@ const en: Copy = {
     seriesNote: "The date is set. We'll announce topic and speaker in good time.",
     seriesCoHost: "In cooperation with the",
     today: "today",
+    subscribe: "Subscribe to all events",
+    subscribeHint: "The calendar keeps itself up to date. For Google Calendar, add the address by URL:",
     detailsSoon: "More details to follow.",
     prevPhoto: "Previous photo",
     nextPhoto: "Next photo",
