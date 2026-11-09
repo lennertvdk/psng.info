@@ -81,7 +81,7 @@ const de = {
       partners: "Partnerorganisationen",
     },
     joinTeam: {
-      title: "Mach das PSNG mit.",
+      title: "Mach mit",
       text: "Das Orga-Team plant Lectures, Events, die Konferenz und den Verein. Alle Aufgaben sind ehrenamtlich und gehen komplett remote. Vorwissen brauchst du nicht, Neugier und Verlässlichkeit zählen.",
       gets: "Dafür bekommst du Einblick ins Feld, Kontakte zu Forschenden, Labs und Speaker:innen, ein interdisziplinäres Team, eine eigene @psng.info-Adresse und auf Wunsch eine Ehrenamtsbescheinigung.",
       apply: "Jetzt bewerben",
@@ -646,7 +646,7 @@ const en: Copy = {
       partners: "partner organisations",
     },
     joinTeam: {
-      title: "Help run the PSNG.",
+      title: "Get involved",
       text: "The organising team runs lectures, events, the conference and the association. Every role is voluntary and fully remote. You don't need prior knowledge; curiosity and reliability are what count.",
       gets: "In return you get insight into the field, contacts with researchers, labs and speakers, an interdisciplinary team, your own @psng.info address and, if you like, a volunteering certificate.",
       apply: "Apply now",
