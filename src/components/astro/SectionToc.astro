@@ -3,7 +3,7 @@
  * Inhaltsverzeichnis am linken Rand, nach dem Vorbild von LessWrong
  * (Referenz: Commit a594f84, damals als React-Insel auf der Startseite).
  *
- * Ein schmaler Streifen: eine Linie, ein Punkt je Abschnitt, die Abstände
+ * Ein schmaler Streifen: oben der Seitentitel in Serifen-Kapitälchen, eine Linie, ein Punkt je Abschnitt, die Abstände
  * maßstäblich zur Länge der Abschnitte, dazu ein Balken für den Teil der
  * Seite, der gerade im Bild ist. Die Namen stehen immer da; der erreichte
  * Abschnitt bekommt einen größeren Punkt in Himbeer. Der Streifen sitzt am
@@ -18,9 +18,11 @@
 interface Props {
   items: { href: string; label: string; strong?: boolean }[];
   label: string;
+  /** Seitentitel oben im Streifen, in Serifen-Kapitälchen; springt nach oben. */
+  title: string;
 }
 
-const { items, label } = Astro.props;
+const { items, label, title } = Astro.props;
 ---
 
 <nav aria-label={label} data-toc class="sticky top-28 h-[calc(100svh-9rem)] max-w-[15rem] overflow-y-auto overscroll-contain pl-1 print:hidden [@media(max-height:520px)]:hidden">
@@ -29,6 +31,13 @@ const { items, label } = Astro.props;
       <div data-toc-bar class="absolute -left-[0.5px] top-0 h-0 w-[2px] rounded-full bg-primary"></div>
     </div>
     <div class="flex min-w-0 flex-1 flex-col">
+      <a
+        href="#"
+        data-toc-title
+        class="ml-[13px] block pb-3 pt-0.5 font-toc text-[1.0625rem] leading-tight text-muted-foreground transition-colors [font-variant:small-caps] hover:text-foreground aria-[current]:text-foreground"
+      >
+        {title}
+      </a>
       <div data-toc-intro class="flex-[0_1_0%]"></div>
       <ol data-toc-list class="flex flex-1 flex-col">
         {

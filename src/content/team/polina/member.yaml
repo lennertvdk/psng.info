@@ -4,7 +4,6 @@ photo: ./photo.webp
 roles:
   - de: "Lecture-Reihe"
     en: "Lecture series"
-  - "Community"
 study:
   de: "Psychologie-Promovendin"
   en: "Psychology PhD student"

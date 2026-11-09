@@ -17,6 +17,8 @@ export default {
       fontFamily: {
         heading: ['Schibsted Grotesk', 'sans-serif'],
         body: ['DM Sans', 'sans-serif'],
+        // Nur der Seitentitel im Inhaltsverzeichnis am Rand (LessWrong-Vorbild).
+        toc: ['Palatino', '"Palatino Linotype"', '"Book Antiqua"', 'Georgia', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -34,4 +34,11 @@ export const PARAB_INSTAGRAM_LINK =
 export const YOUTUBE_LINK =
   "https://www.youtube.com/channel/UCMHHH4dOREJTJF_ySpgV7mA";
 export const LINKEDIN_LINK = "https://www.linkedin.com/company/111432265";
+/**
+ * Bewerbung fürs Orga-Team (Google-Formular, etwa 3 Minuten). Kurzlink zum
+ * Weitergeben: psng.info/mitmachen (Weiterleitung in vercel.json, ein Test
+ * vergleicht beide).
+ */
+export const JOIN_FORM_LINK = "https://forms.gle/2EK6dCXMhZtwWEVKA";
+
 export const CONTACT_EMAIL = "kontakt@psng.info";

@@ -5,18 +5,34 @@ import { alternatesOf } from "@/lib/seo/alternates";
 
 const locale = "de";
 const meta = copy[locale].meta.codeOfConduct;
+// Abschnitte für das Inhaltsverzeichnis am Rand.
+const toc = [
+  { label: "1 · Geltungsbereich", href: "#abschnitt-1" },
+  { label: "2 · Rahmenbedingungen", href: "#abschnitt-2" },
+  { label: "3 · Werte & Haltung", href: "#abschnitt-3" },
+  { label: "4 · Verantwortung", href: "#abschnitt-4" },
+  { label: "5 · Respekt & Diskriminierungsschutz", href: "#abschnitt-5" },
+  { label: "6 · Vertraulichkeit", href: "#abschnitt-6" },
+  { label: "7 · Fürsorge", href: "#abschnitt-7" },
+  { label: "8 · Wissenschaftliche Verantwortung", href: "#abschnitt-8" },
+  { label: "9 · Recht & Harm Reduction", href: "#abschnitt-9" },
+  { label: "10 · Interessenkonflikte", href: "#abschnitt-10" },
+  { label: "11 · Öffentliche Kommunikation", href: "#abschnitt-11" },
+  { label: "12 · Anerkennung", href: "#abschnitt-12" },
+];
 ---
 
 <ProseLayout
   locale={locale}
   title={meta.title}
   description={meta.description}
+  toc={toc}
   alternates={alternatesOf("codeOfConduct")}
   heading="Code of Conduct"
 >
   <p class="text-sm text-muted-foreground">Version: 07 Januar 2026</p>
 
-  <h2>1. Geltungsbereich</h2>
+  <h2 id="abschnitt-1">1. Geltungsbereich</h2>
   <p>Dieser Code of Conduct gilt für:</p>
   <ul>
     <li>alle PSNG-Veranstaltungen (online und in Präsenz),</li>
@@ -31,7 +47,7 @@ const meta = copy[locale].meta.codeOfConduct;
     Referierende, Gäste und Kooperationspartner*innen.
   </p>
 
-  <h2>2. Funktion und Rahmenbedingungen des Netzwerks</h2>
+  <h2 id="abschnitt-2">2. Funktion und Rahmenbedingungen des Netzwerks</h2>
   <p>
     Das PSNG ist ein bildungsorientiertes, studentisch organisiertes
     Netzwerk, das Wissenschaft, Forschung und kritische
@@ -63,7 +79,7 @@ const meta = copy[locale].meta.codeOfConduct;
     können.
   </p>
 
-  <h2>3. Werte &amp; Haltung</h2>
+  <h2 id="abschnitt-3">3. Werte &amp; Haltung</h2>
   <p>Das PSNG steht für:</p>
   <ul>
     <li>Respektvolle und inklusive Safer Spaces,</li>
@@ -80,7 +96,7 @@ const meta = copy[locale].meta.codeOfConduct;
     </li>
   </ul>
 
-  <h2>4. Eigenverantwortung &amp; gemeinschaftliche Verantwortung</h2>
+  <h2 id="abschnitt-4">4. Eigenverantwortung &amp; gemeinschaftliche Verantwortung</h2>
   <p>
     Die Lokalgruppen des PSNGs sind dezentral organisiert. Das PSNG
     setzt auf Selbstverantwortung, Integrität und kollektive
@@ -104,7 +120,7 @@ const meta = copy[locale].meta.codeOfConduct;
     </li>
   </ul>
 
-  <h2>5. Respektvolles Miteinander &amp; Diskriminierungsschutz</h2>
+  <h2 id="abschnitt-5">5. Respektvolles Miteinander &amp; Diskriminierungsschutz</h2>
   <p>
     Das PSNG verpflichtet sich zu respektvollen, zugänglichen und
     inklusiven Räumen.
@@ -126,7 +142,7 @@ const meta = copy[locale].meta.codeOfConduct;
     Hilfs- und Beratungsangebote.
   </p>
 
-  <h2>6. Vertraulichkeit, Datenschutz &amp; Privatsphäre</h2>
+  <h2 id="abschnitt-6">6. Vertraulichkeit, Datenschutz &amp; Privatsphäre</h2>
   <p>
     Das PSNG folgt den Kernprinzipien der DSGVO: Einwilligung,
     Zweckbindung, Datensparsamkeit, Sicherheit und Löschung.
@@ -149,7 +165,7 @@ const meta = copy[locale].meta.codeOfConduct;
     </li>
   </ul>
 
-  <h2>7. Verantwortungsvolle Fürsorge – ohne therapeutische Verantwortung</h2>
+  <h2 id="abschnitt-7">7. Verantwortungsvolle Fürsorge – ohne therapeutische Verantwortung</h2>
   <p>
     Das PSNG fördert eine Kultur von Achtsamkeit, Respekt und Umsicht.
     Gleichzeitig gilt:
@@ -169,7 +185,7 @@ const meta = copy[locale].meta.codeOfConduct;
     </li>
   </ul>
 
-  <h2>8. Wissenschaftliche Verantwortung &amp; Informationsqualität</h2>
+  <h2 id="abschnitt-8">8. Wissenschaftliche Verantwortung &amp; Informationsqualität</h2>
   <p>
     Das PSNG versteht sich als Bildungsnetzwerk für wissenschaftliche
     Forschung und kritisch reflektierte Therapie- und
@@ -195,7 +211,7 @@ const meta = copy[locale].meta.codeOfConduct;
     Fakten oder Empfehlungen dargestellt werden.
   </p>
 
-  <h2>9. Recht &amp; Harm Reduction</h2>
+  <h2 id="abschnitt-9">9. Recht &amp; Harm Reduction</h2>
   <p>Das PSNG:</p>
   <ul>
     <li>
@@ -209,7 +225,7 @@ const meta = copy[locale].meta.codeOfConduct;
     </li>
   </ul>
 
-  <h2>10. Interessenkonflikte, Kommerzialisierung &amp; Einflussnahme</h2>
+  <h2 id="abschnitt-10">10. Interessenkonflikte, Kommerzialisierung &amp; Einflussnahme</h2>
   <p>Zur Wahrung von Unabhängigkeit und Integrität gilt:</p>
   <ul>
     <li>keine verdeckte Werbung oder instrumentelle Nutzung des Netzwerks,</li>
@@ -227,7 +243,7 @@ const meta = copy[locale].meta.codeOfConduct;
     oder Ausnutzung der Gemeinschaft.
   </p>
 
-  <h2>11. Repräsentation &amp; öffentliche Kommunikation</h2>
+  <h2 id="abschnitt-11">11. Repräsentation &amp; öffentliche Kommunikation</h2>
   <p>Wer PSNG repräsentiert, verpflichtet sich:</p>
   <ul>
     <li>
@@ -245,7 +261,7 @@ const meta = copy[locale].meta.codeOfConduct;
     </li>
   </ul>
 
-  <h2>12. Anerkennung</h2>
+  <h2 id="abschnitt-12">12. Anerkennung</h2>
   <p>
     Durch Teilnahme an PSNG-Räumen, Veranstaltungen und
     Kommunikationsplattformen erkennen Mitglieder diesen Code of

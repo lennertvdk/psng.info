@@ -3,7 +3,6 @@ order: 5
 photo: ./photo.webp
 roles:
   - "Marketing"
-  - "Outreach"
   - de: "Social Media"
     en: "Social media"
 study:

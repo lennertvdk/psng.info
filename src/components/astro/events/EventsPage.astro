@@ -95,7 +95,7 @@ const webcal = feed.href.replace(/^https?:/, "webcal:");
     {/* Ab 960 px steht das Inhaltsverzeichnis am linken Fensterrand, der Rest
          mittig daneben (wie in ProseLayout). */}
     <div class="hidden min-[960px]:block">
-      <SectionToc items={tocItems} label={c.nav.tocLabel} />
+      <SectionToc items={tocItems} label={c.nav.tocLabel} title={c.events.title} />
     </div>
     <div class="container mx-auto max-w-6xl px-4 sm:px-6">
       <div class="mb-10 max-w-3xl">
