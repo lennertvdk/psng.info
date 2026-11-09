@@ -65,16 +65,16 @@ const link = "font-medium text-primary hover:underline";
   <div class:list={[sidePhotos ? "grid gap-5 p-5 md:grid-cols-2 md:gap-6" : "p-5"]}>
     <div class="space-y-3">
       <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-        <span class="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">{columnLabel(e.column, c)}</span>
+        <span class="chip">{columnLabel(e.column, c)}</span>
         {
           e.speakerType && (
-            <span class="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+            <span class="chip-accent">
               {e.speakerType === "student" ? c.events.speakerTypes.student : c.events.speakerTypes.guest}
             </span>
           )
         }
         {e.partner?.tone && <PartnerChip partner={e.partner} />}
-        {e.featured && <span class="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">{c.events.firstEvent}</span>}
+        {e.featured && <span class="chip-accent">{c.events.firstEvent}</span>}
         <span>{formatEventDate(e.date, locale)}</span>
       </div>
 

@@ -111,16 +111,16 @@ const textLink = "inline-flex items-center gap-1 text-sm font-medium text-primar
 
   <header class="mb-10">
     <div class="mb-3 flex flex-wrap items-center gap-2">
-      <span class="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">{columnLabel(e.column, c)}</span>
+      <span class="chip">{columnLabel(e.column, c)}</span>
       {
         e.speakerType && (
-          <span class="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+          <span class="chip-accent">
             {e.speakerType === "student" ? c.events.speakerTypes.student : c.events.speakerTypes.guest}
           </span>
         )
       }
       {e.partner?.tone && <PartnerChip partner={e.partner} />}
-      {e.highlightBadge && <span class="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">{pick(e.highlightBadge, locale)}</span>}
+      {e.highlightBadge && <span class="chip-accent">{pick(e.highlightBadge, locale)}</span>}
     </div>
     {/* Bei Vorträgen trägt der Vortragstitel die Seite, der Name steht in der Byline. */}
     <h1 lang={talkTitle && e.abstract?.title ? e.abstract.lang : undefined} class="text-balance font-heading text-3xl font-bold leading-tight text-foreground md:text-5xl">{talkTitle ?? title}</h1>
@@ -158,7 +158,7 @@ const textLink = "inline-flex items-center gap-1 text-sm font-medium text-primar
     ) : (
       e.rescheduledFrom &&
       !past && (
-        <p class="mb-10 rounded-xl bg-amber-50 px-5 py-3 text-sm text-amber-900" role="status">
+        <p class="mb-10 rounded-xl bg-notice px-5 py-3 text-sm text-notice-foreground" role="status">
           {p.status.rescheduledBefore}
           {formatEventDate(e.rescheduledFrom, locale)}.
         </p>
@@ -408,7 +408,7 @@ const textLink = "inline-flex items-center gap-1 text-sm font-medium text-primar
             <a
               href={registerHref(e, "event-seite")}
               {...external}
-              class="gradient-psychedelic flex w-full items-center justify-center gap-1.5 rounded-lg px-4 py-2.5 font-heading text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              class="flex w-full bg-primary items-center justify-center gap-1.5 rounded-lg px-4 py-2.5 font-heading text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
             >
               {pick(e.registrationLabel, locale) ?? c.events.register}
               <ExternalLink size={14} aria-hidden="true" />

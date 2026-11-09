@@ -39,11 +39,11 @@ const c = copy[locale];
 const end = entry.kind === "event" ? (entry.event.endDate ?? entry.date) : entry.date;
 const dot = upcoming
   ? isNext
-    ? "border-2 border-primary bg-background ring-4 ring-primary/10"
+    ? "bg-coral ring-4 ring-coral/25"
     : "border-2 border-primary/35 bg-background"
   : "bg-primary/30";
 const wide = "(min-width: 1024px) 860px, (min-width: 768px) calc(100vw - 12rem), 100vw";
-const chip = "rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground";
+const chip = "chip";
 const card = "rounded-xl border border-border/60 bg-card";
 ---
 
@@ -96,7 +96,7 @@ const card = "rounded-xl border border-border/60 bg-card";
           <div class="p-5">
           <div class="mb-2 flex flex-wrap items-center gap-2">
             {entry.milestone.badge && (
-              <span class="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+              <span class="chip-accent">
                 {pick(entry.milestone.badge, locale)}
               </span>
             )}

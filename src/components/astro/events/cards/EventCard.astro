@@ -59,15 +59,15 @@ const label = "font-medium text-foreground";
   }
   <div class="p-6">
     <div class="mb-3 flex flex-wrap items-center gap-2">
-      <span class="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">{columnLabel(e.column, c)}</span>
+      <span class="chip">{columnLabel(e.column, c)}</span>
       {
         e.highlightBadge && (
-          <span class="gradient-psychedelic rounded-full px-2.5 py-0.5 text-xs font-medium text-primary-foreground">{pick(e.highlightBadge, locale)}</span>
+          <span class="chip-accent">{pick(e.highlightBadge, locale)}</span>
         )
       }
       {
         e.speakerType && (
-          <span class="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+          <span class="chip-accent">
             {e.speakerType === "student" ? c.events.speakerTypes.student : c.events.speakerTypes.guest}
           </span>
         )
@@ -75,7 +75,7 @@ const label = "font-medium text-foreground";
       {e.partner?.tone && <PartnerChip partner={e.partner} />}
       {
         e.status !== "scheduled" && (
-          <span class="rounded-full bg-destructive/10 px-2.5 py-0.5 text-xs font-medium text-destructive">
+          <span class="chip-status">
             {e.status === "cancelled" ? c.eventPage.status.cancelled : c.eventPage.status.postponed}
           </span>
         )
@@ -161,7 +161,7 @@ const label = "font-medium text-foreground";
           <a
             href={registerHref(e, "events")}
             {...external}
-            class="gradient-psychedelic inline-flex items-center justify-center rounded-lg px-4 py-2 font-heading text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            class="inline-flex bg-primary items-center justify-center rounded-lg px-4 py-2 font-heading text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
           >
             {pick(e.registrationLabel, locale) ?? c.events.register}
           </a>

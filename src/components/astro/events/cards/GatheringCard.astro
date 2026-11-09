@@ -41,10 +41,10 @@ const link = "text-sm font-medium text-primary hover:underline";
   <div class="grid items-start gap-6 p-5 lg:grid-cols-2">
     <div class="space-y-3">
       <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-        <span class="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">{columnLabel(e.column, c)}</span>
+        <span class="chip">{columnLabel(e.column, c)}</span>
         {
           e.highlightBadge && (
-            <span class="gradient-psychedelic rounded-full px-2.5 py-0.5 text-xs font-medium text-primary-foreground">{pick(e.highlightBadge, locale)}</span>
+            <span class="chip-accent">{pick(e.highlightBadge, locale)}</span>
           )
         }
         {e.partner?.tone && <PartnerChip partner={e.partner} />}

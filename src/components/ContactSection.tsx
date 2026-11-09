@@ -201,7 +201,7 @@ const ContactSection = () => {
                 <Button
                   type="submit"
                   disabled={status === "submitting" || !subject}
-                  className="w-full gradient-psychedelic text-primary-foreground font-heading"
+                  className="w-full bg-primary text-primary-foreground font-heading hover:bg-primary-hover"
                 >
                   {status === "submitting" ? c.contact.submitting : c.contact.submit}
                 </Button>

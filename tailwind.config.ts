@@ -27,10 +27,15 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          hover: "hsl(var(--primary-hover))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        notice: {
+          DEFAULT: "hsl(var(--notice))",
+          foreground: "hsl(var(--notice-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -52,12 +57,7 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        pink: "hsl(var(--pink))",
         coral: "hsl(var(--coral))",
-        rose: "hsl(var(--rose))",
-        salmon: "hsl(var(--salmon))",
-        blush: "hsl(var(--blush))",
-        "deep-rose": "hsl(var(--deep-rose))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

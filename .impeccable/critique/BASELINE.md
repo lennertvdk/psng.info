@@ -288,6 +288,7 @@ harden (6) kann vorher als kleiner PR auf `main`. Das Inhaltsverzeichnis (11) ko
 - **Seitenleiste (Hebel 11):** ja, auf `/leitfaden` und `/events`.
 - **Deutschlandkarte:** später.
 
+- **Koralle** ist wieder hell (wie im Logo) und tritt nur als Fläche, Linie oder Punkt ohne Text auf. Knöpfe sind Himbeer-Vollton, der Verlauf bleibt nur im Footer.
 - **Hero-Text** bleibt, wie er ist. „Erstes bundesweites“ wird nicht ergänzt.
 - **Community Calls** sind von der ganzen Website gestrichen (DE und EN), ersetzt durch Lectures, WhatsApp-Community oder Kontaktformular. Seit 09.11.2026 live auf `main` (53fe177).
 

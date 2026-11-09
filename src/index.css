@@ -15,20 +15,30 @@
 
     --primary: 339 63% 48%;
     --primary-foreground: 0 0% 100%;
+    /* Hover der Himbeer-Knöpfe: dunkler statt durchscheinend. */
+    --primary-hover: 339 63% 41%;
 
-    /* Füllung der Spalten-Chips (Vortrag/Community) unter weißem Text: bei
-       60 % Helligkeit nur 3:1, bei 44 % 4,8:1 – die AA-Grenze für kleine Schrift ist 4,5:1. */
-    --secondary: 15 80% 44%;
-    --secondary-foreground: 0 0% 100%;
+    /* Neutrale Zweitfläche (shadcn-Rolle). Früher abgedunkelte Koralle unter
+       weißer Schrift; Koralle trägt seit dem Refinement keinen Text mehr. */
+    --secondary: 340 20% 96%;
+    --secondary-foreground: 340 20% 15%;
 
     --muted: 340 20% 96%;
-    --muted-foreground: 340 10% 45%;
+    /* 42 % statt 45 %: hält auch auf den getönten Flächen (Hero, Pink-Schleier) 4,5:1. */
+    --muted-foreground: 340 10% 42%;
 
-    --accent: 340 70% 55%;
-    --accent-foreground: 0 0% 100%;
+    /* Hover- und Fokusfläche der Formular-Bausteine, kein dritter Pinkton. */
+    --accent: 340 30% 96%;
+    --accent-foreground: 340 20% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Fehler und Absagen: 0 72 % 42 % hält 5,9:1 auf Weiß (vorher 3,8:1). */
+    --destructive: 0 72% 42%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Hinweise (verschoben, Sonderformat): warmes Bernstein als Fläche mit
+       dunkler Schrift, 9,6:1. */
+    --notice: 40 90% 94%;
+    --notice-foreground: 30 80% 24%;
 
     --border: 340 15% 90%;
     --input: 340 15% 90%;
@@ -36,16 +46,15 @@
 
     --radius: 0.75rem;
 
-    --pink: 339 68% 54%;
+    /*
+     * Koralle, hell wie im Logo. Nur als Fläche, Linie oder Punkt, nie unter
+     * oder als Text (Entscheidung vom 09.11.2026). Himbeer (--primary) ist die
+     * einzige Farbe für Aktionen und farbigen Text.
+     */
     --coral: 5 78% 65%;
-    --rose: 350 60% 70%;
-    --salmon: 350 70% 77%;
-    --blush: 340 30% 96%;
-    --deep-rose: 340 60% 35%;
 
-    /* Verlauf unter weißer Schrift (Buttons, Footer, Chips). Die dekorativen
-       Töne oben (pink/coral/salmon) sind zu hell dafür: 4,4 / 3,1 / 2,1 : 1.
-       Gleiche Farbtöne, Helligkeit gesenkt – jeder Stopp ≥ 5,1 : 1 mit Weiß. */
+    /* Der Verlauf Himbeer → Koralle, nur noch im Footer unter weißer Schrift.
+       Deshalb abgedunkelt: jeder Stopp ≥ 5,1 : 1 mit Weiß. */
     --grad-from: 339 68% 48%;
     --grad-mid: 5 78% 46%;
     --grad-to: 350 70% 48%;
@@ -153,6 +162,21 @@
 
 @layer utilities {
   /*
+   * Chips in drei Rollen. Neutral: Einordnung (Vortrag, Community, Partner).
+   * Akzent: was ein Event auszeichnet (Gastvortrag, Sonderformat). Status:
+   * Absage oder Verschiebung.
+   */
+  .chip {
+    @apply inline-flex items-center rounded-full border border-border bg-card px-2.5 py-0.5 text-xs font-medium text-foreground/75;
+  }
+  .chip-accent {
+    @apply inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary;
+  }
+  .chip-status {
+    @apply inline-flex items-center rounded-full bg-destructive/10 px-2.5 py-0.5 text-xs font-medium text-destructive;
+  }
+
+  /*
    * Lesetext: Abstracts, Bios, Beschreibungen. 16 px statt 14 px, dunkler als
    * Metadaten und nie breiter als rund 68 Zeichen.
    */
@@ -227,7 +251,7 @@
    * Karte, der sonst denselben Wert überschreiben würde.
    */
   .next-event-glow > * {
-    filter: drop-shadow(0 6px 14px hsl(var(--pink) / 0.3));
+    filter: drop-shadow(0 10px 18px hsl(var(--foreground) / 0.12));
   }
 
   .gradient-bpsa {
@@ -272,9 +296,7 @@
       hsl(var(--card));
   }
 
-  .gradient-soft {
-    background: linear-gradient(135deg, hsl(var(--blush)), hsl(0 0% 100%));
-  }
+
 
   .glass {
     background: hsl(0 0% 100% / 0.85);

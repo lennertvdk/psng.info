@@ -131,7 +131,7 @@ function SiteNav({ switchTo, current }: Props) {
             href={whatsappHref("nav")}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-lg gradient-psychedelic px-4 py-2 font-heading text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-lg bg-primary px-4 py-2 font-heading text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
           >
             {c.hero.joinWhatsapp}
           </a>
@@ -148,7 +148,7 @@ function SiteNav({ switchTo, current }: Props) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={c.hero.joinWhatsapp}
-            className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-lg gradient-psychedelic px-3 font-heading text-xs font-medium text-primary-foreground"
+            className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-lg bg-primary px-3 font-heading text-xs font-medium text-primary-foreground"
           >
             WhatsApp
           </a>
