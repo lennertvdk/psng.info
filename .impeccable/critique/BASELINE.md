@@ -288,6 +288,8 @@ harden (6) kann vorher als kleiner PR auf `main`. Das Inhaltsverzeichnis (11) ko
 - **Seitenleiste (Hebel 11):** ja, auf `/leitfaden` und `/events`.
 - **Deutschlandkarte:** später.
 
+- **Hero-Text** bleibt, wie er ist. „Erstes bundesweites“ wird nicht ergänzt.
+- **Community Calls** sind von der ganzen Website gestrichen (DE und EN), ersetzt durch Lectures, WhatsApp-Community oder Kontaktformular. Seit 09.11.2026 live auf `main` (53fe177).
+
 ### Noch offen
-1. **BPSA-Partnertext:** Passt „Ihre Lectures finden gelegentlich in Zusammenarbeit mit dem PSNG statt“ (`src/content/partners/bpsa/partner.yaml`) zu deiner Präzisierung, dass Lectures PSNG-Lectures sind und Lokalgruppen zusätzlich streamen können?
-2. **„Erstes bundesweites“** im Hero ist unbeantwortet. Nicht ändern, bis Lennert entscheidet.
+1. **BPSA-Partnertext** (`src/content/partners/bpsa/partner.yaml`): Er kommt später und bleibt bis dahin unverändert.
