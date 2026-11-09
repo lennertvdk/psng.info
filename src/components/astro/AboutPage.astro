@@ -4,6 +4,7 @@ import { ExternalLink } from "lucide-react";
 import teamPhoto from "@/assets/Team-2026-08.webp";
 import ContactSection from "@/components/ContactSection";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionToc from "@/components/astro/SectionToc.astro";
 import { copy } from "@/i18n/copy";
 import type { Locale } from "@/i18n/locale";
 import { pick } from "@/i18n/localized";
@@ -58,6 +59,19 @@ const contact = (subject: string) => `${pathFor("home", locale)}?subject=${subje
 const h2 = "mb-4 font-heading text-3xl font-bold text-foreground md:text-4xl";
 const card = "flex flex-col rounded-2xl border border-border bg-card p-6";
 const external = { target: "_blank", rel: "noopener noreferrer" };
+
+// Inhaltsverzeichnis am linken Rand wie auf /events und den Textseiten. Die
+// Abschnitte behalten ihre Hintergründe über die volle Breite; ab 960 px steht
+// ihr Inhalt in der mittleren Spalte desselben Rasters, das auch den Streifen
+// trägt.
+const band =
+  "min-[960px]:grid min-[960px]:grid-cols-[minmax(10rem,1fr)_minmax(0,72rem)_minmax(0,1fr)] min-[960px]:pl-8";
+const inBand = "min-[960px]:col-start-2";
+const tocItems = [
+  { href: "#team", label: c.team.title },
+  { href: "#kooperation", label: c.partners.title },
+  { href: "#mitmachen", label: c.about.joinTeam.title },
+];
 ---
 
 <BaseLayout
@@ -67,8 +81,14 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
   alternates={alternatesOf("about")}
   current="about"
 >
-  <section class="pb-16 pt-32 md:pb-24 md:pt-40">
-    <div class="container mx-auto max-w-6xl px-4 sm:px-6">
+  <div class="relative">
+  <div class:list={["pointer-events-none absolute inset-0 hidden pt-32 md:pt-40 min-[960px]:grid", band]}>
+    <div class="pointer-events-auto">
+      <SectionToc items={tocItems} label={c.nav.tocLabel} title={c.lab.nav.about} />
+    </div>
+  </div>
+  <section class:list={["pb-16 pt-32 md:pb-24 md:pt-40", band]}>
+    <div class:list={["container mx-auto max-w-6xl px-4 sm:px-6", inBand]}>
       <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16" data-reveal>
         <div>
           <h1 class="font-heading text-4xl font-bold leading-[1.1] text-foreground md:text-5xl">{c.about.title}</h1>
@@ -104,8 +124,8 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
     </div>
   </section>
 
-  <section id="team" class="bg-primary/5 py-16 md:py-24">
-    <div class="container mx-auto max-w-6xl px-4 sm:px-6">
+  <section id="team" class:list={["bg-primary/5 py-16 md:py-24", band]}>
+    <div class:list={["container mx-auto max-w-6xl px-4 sm:px-6", inBand]}>
       {/* Das Teamfoto ist hochkant: groß neben dem Text, auf dem Handy über die volle Breite. */}
       <div class="mb-16 grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16" data-reveal>
         <div class="lg:sticky lg:top-28">
@@ -165,8 +185,8 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
     </div>
   </section>
 
-  <section id="kooperation" class="py-16 md:py-24">
-    <div class="container mx-auto max-w-6xl px-4 sm:px-6">
+  <section id="kooperation" class:list={["py-16 md:py-24", band]}>
+    <div class:list={["container mx-auto max-w-6xl px-4 sm:px-6", inBand]}>
       <div class="mb-12" data-reveal>
         <h2 class={h2}>{c.partners.title}</h2>
         <p class="max-w-[65ch] text-lg leading-relaxed text-muted-foreground">{c.partners.intro}</p>
@@ -236,8 +256,8 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
       </div>
     </div>
   </section>
-  <section id="mitmachen" aria-labelledby="mitmachen-titel" class="bg-primary/5 py-16 md:py-24">
-    <div class="container mx-auto grid max-w-6xl grid-cols-1 items-start gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+  <section id="mitmachen" aria-labelledby="mitmachen-titel" class:list={["bg-primary/5 py-16 md:py-24", band]}>
+    <div class:list={["container mx-auto grid max-w-6xl grid-cols-1 items-start gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16", inBand]}>
       <div class="lg:sticky lg:top-28" data-reveal>
         <h2 id="mitmachen-titel" class={h2}>{c.about.joinTeam.title}</h2>
         <p class="text-reading text-lg">{c.about.joinTeam.text}</p>
@@ -254,4 +274,5 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
       <ContactSection client:visible locale={locale} defaultSubject="team" embedded />
     </div>
   </section>
+  </div>
 </BaseLayout>

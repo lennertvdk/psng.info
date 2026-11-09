@@ -20,6 +20,7 @@ function setup(nav: HTMLElement): void {
   const bar = nav.querySelector<HTMLElement>("[data-toc-bar]");
   const intro = nav.querySelector<HTMLElement>("[data-toc-intro]");
   const list = nav.querySelector<HTMLElement>("[data-toc-list]");
+  const title = nav.querySelector<HTMLAnchorElement>("[data-toc-title]");
   const main = document.querySelector<HTMLElement>("main");
   if (!line || !bar || !intro || !list || !main) return;
 
@@ -77,7 +78,9 @@ function setup(nav: HTMLElement): void {
     const atBottom = scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
     const active = atBottom ? visible.length - 1 : activeSection(reach, scrollY);
     for (const entry of entries) entry.link.removeAttribute("aria-current");
+    title?.removeAttribute("aria-current");
     if (active >= 0) visible[active].link.setAttribute("aria-current", "location");
+    else title?.setAttribute("aria-current", "location");
   };
 
   let frame = 0;

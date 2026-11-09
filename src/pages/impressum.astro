@@ -5,16 +5,27 @@ import { alternatesOf } from "@/lib/seo/alternates";
 
 const locale = "de";
 const meta = copy[locale].meta.imprint;
+// Abschnitte für das Inhaltsverzeichnis am Rand.
+const toc = [
+  { label: "Angaben nach § 5 DDG", href: "#angaben" },
+  { label: "Verantwortlich (MStV)", href: "#verantwortlich" },
+  { label: "Kontakt", href: "#kontakt" },
+  { label: "Haftung für Inhalte", href: "#haftung-inhalte" },
+  { label: "Haftung für Links", href: "#haftung-links" },
+  { label: "Urheberrecht", href: "#urheberrecht" },
+  { label: "Datenschutz", href: "#datenschutz" },
+];
 ---
 
 <ProseLayout
   locale={locale}
   title={meta.title}
   description={meta.description}
+  toc={toc}
   alternates={alternatesOf("imprint")}
   heading="Impressum"
 >
-  <h2>Angaben gemäß § 5 DDG (vormals § 5 TMG)</h2>
+  <h2 id="angaben">Angaben gemäß § 5 DDG (vormals § 5 TMG)</h2>
   <p>
     Psychedelic Student Network Germany (PSNG)
     <br />
@@ -22,7 +33,7 @@ const meta = copy[locale].meta.imprint;
     psychedelische Forschung
   </p>
 
-  <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+  <h2 id="verantwortlich">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
   <p>
     Lennert van de Kreeke
     <br />
@@ -33,7 +44,7 @@ const meta = copy[locale].meta.imprint;
     Deutschland
   </p>
 
-  <h2>Kontakt</h2>
+  <h2 id="kontakt">Kontakt</h2>
   <p>
     E-Mail: <a href="mailto:kontakt@psng.info">kontakt@psng.info</a>
     <br />
@@ -45,7 +56,7 @@ const meta = copy[locale].meta.imprint;
     </em>
   </p>
 
-  <h2>Haftung für Inhalte</h2>
+  <h2 id="haftung-inhalte">Haftung für Inhalte</h2>
   <p>
     Die Inhalte dieser Website dienen ausschließlich wissenschaftlichen,
     akademischen und informativen Zwecken. Sie stellen keine Anleitung
@@ -56,7 +67,7 @@ const meta = copy[locale].meta.imprint;
     deren Betreiber verantwortlich.
   </p>
 
-  <h2>Haftung für Links</h2>
+  <h2 id="haftung-links">Haftung für Links</h2>
   <p>
     Unser Angebot enthält Links zu externen Websites Dritter, auf deren
     Inhalte wir keinen Einfluss haben. Deshalb können wir für diese
@@ -66,7 +77,7 @@ const meta = copy[locale].meta.imprint;
     umgehend entfernen.
   </p>
 
-  <h2>Urheberrecht</h2>
+  <h2 id="urheberrecht">Urheberrecht</h2>
   <p>
     Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen
     Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung,
@@ -75,7 +86,7 @@ const meta = copy[locale].meta.imprint;
     des jeweiligen Autors bzw. Erstellers.
   </p>
 
-  <h2>Datenschutz</h2>
+  <h2 id="datenschutz">Datenschutz</h2>
   <p>
     Informationen zur Verarbeitung personenbezogener Daten findest du in
     unserer{" "}

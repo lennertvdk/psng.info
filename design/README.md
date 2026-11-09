@@ -1,7 +1,7 @@
 # Design-Quellen
 
 Grafiken für Social Media und Print, die **nicht** auf der Website landen –
-Flyer, Ankündigungsbilder, Vorlagen. Bewusst außerhalb von `src/`, damit Vite
+Flyer, Ankündigungsbilder, Vorlagen. Bewusst außerhalb von `src/`, damit Astro
 sie nicht in den Build zieht: Es sind mehrere Megabyte, die niemand ausliefert.
 
 Bildquellen, aus denen `scripts/optimize-images.mjs` Website-Assets erzeugt

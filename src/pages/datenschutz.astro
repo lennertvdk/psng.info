@@ -5,16 +5,28 @@ import { alternatesOf } from "@/lib/seo/alternates";
 
 const locale = "de";
 const meta = copy[locale].meta.privacy;
+// Abschnitte für das Inhaltsverzeichnis am Rand.
+const toc = [
+  { label: "1 · Verantwortlicher", href: "#abschnitt-1" },
+  { label: "2 · Hosting", href: "#abschnitt-2" },
+  { label: "3 · Kontaktformular", href: "#abschnitt-3" },
+  { label: "4 · Schriftarten", href: "#abschnitt-4" },
+  { label: "5 · Eingebettete Inhalte", href: "#abschnitt-5" },
+  { label: "6 · Cookies & Tracking", href: "#abschnitt-6" },
+  { label: "7 · Deine Rechte", href: "#abschnitt-7" },
+  { label: "8 · Aktualität", href: "#abschnitt-8" },
+];
 ---
 
 <ProseLayout
   locale={locale}
   title={meta.title}
   description={meta.description}
+  toc={toc}
   alternates={alternatesOf("privacy")}
   heading="Datenschutzerklärung"
 >
-  <h2>1. Verantwortlicher</h2>
+  <h2 id="abschnitt-1">1. Verantwortlicher</h2>
   <p>
     Verantwortlich für die Datenverarbeitung auf dieser Website ist:
     <br />
@@ -29,7 +41,7 @@ const meta = copy[locale].meta.privacy;
     E-Mail: <a href="mailto:kontakt@psng.info">kontakt@psng.info</a>
   </p>
 
-  <h2>2. Hosting</h2>
+  <h2 id="abschnitt-2">2. Hosting</h2>
   <p>
     Diese Website wird bei Vercel Inc., 440 N Barranca Ave #4133,
     Covina, CA 91723, USA gehostet. Beim Aufruf der Website
@@ -49,7 +61,7 @@ const meta = copy[locale].meta.privacy;
     .
   </p>
 
-  <h2>3. Kontaktformular</h2>
+  <h2 id="abschnitt-3">3. Kontaktformular</h2>
   <p>
     Wenn du unser Kontaktformular nutzt, werden die von dir angegebenen
     Daten (z. B. Name, E-Mail-Adresse, Betreff/Anliegen und
@@ -65,7 +77,7 @@ const meta = copy[locale].meta.privacy;
     erforderlich sind.
   </p>
 
-  <h2>4. Schriftarten</h2>
+  <h2 id="abschnitt-4">4. Schriftarten</h2>
   <p>
     Die auf dieser Website verwendeten Schriftarten werden lokal von
     unserem Server ausgeliefert. Es wird dabei keine Verbindung zu
@@ -73,7 +85,7 @@ const meta = copy[locale].meta.privacy;
     Daten an Dritte übermittelt.
   </p>
 
-  <h2>5. Eingebettete Inhalte und externe Links</h2>
+  <h2 id="abschnitt-5">5. Eingebettete Inhalte und externe Links</h2>
   <p>
     Auf unserer Website verlinken wir auf externe Plattformen und
     Communitys, u. a. WhatsApp, Instagram, YouTube und LinkedIn. Beim
@@ -93,7 +105,7 @@ const meta = copy[locale].meta.privacy;
     (Art. 6 Abs. 1 lit. a DSGVO).
   </p>
 
-  <h2>6. Cookies und Tracking</h2>
+  <h2 id="abschnitt-6">6. Cookies und Tracking</h2>
   <p>
     Diese Website verwendet GoatCounter zur datenschutzfreundlichen
     Auswertung von Seitenaufrufen. GoatCounter setzt keine Cookies und
@@ -118,7 +130,7 @@ const meta = copy[locale].meta.privacy;
     Einstellungen deines Browsers löschen.
   </p>
 
-  <h2>7. Deine Rechte</h2>
+  <h2 id="abschnitt-7">7. Deine Rechte</h2>
   <p>
     Du hast jederzeit das Recht auf Auskunft über die zu deiner Person
     gespeicherten Daten, deren Berichtigung, Löschung oder Einschränkung
@@ -129,7 +141,7 @@ const meta = copy[locale].meta.privacy;
     zu.
   </p>
 
-  <h2>8. Aktualität dieser Datenschutzerklärung</h2>
+  <h2 id="abschnitt-8">8. Aktualität dieser Datenschutzerklärung</h2>
   <p>
     Diese Datenschutzerklärung wird bei Bedarf angepasst, um sie an
     geänderte Rechtslagen oder Änderungen des Angebots anzupassen.
