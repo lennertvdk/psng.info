@@ -11,6 +11,11 @@ date: "2026-12-03"
 showWeekday: true
 startTime: "18:30"
 attendance: hybrid
+# Saal steht noch aus; Google verlangt bei hybrid einen physischen Ort.
+venue:
+  name: Berlin
+  city: Berlin
+  country: DE
 location:
   de: "Zoom und vor Ort in Berlin, Ort folgt"
   en: "Zoom and in person in Berlin, venue to be announced"

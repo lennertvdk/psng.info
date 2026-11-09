@@ -47,10 +47,13 @@ describe("eventNode", () => {
     expect(graph(organizationNode("x"), undefined)["@graph"]).toHaveLength(1);
   });
 
-  it("zeigt hybrid ohne bekannten Saal nur den Online-Zugang", () => {
+  it("gibt bei hybrid Ort und Online-Zugang aus, auch wenn nur die Stadt feststeht", () => {
     const node = eventNode(bySlug("lecture-jelena-brasanac"), "de")!;
     expect(node.eventAttendanceMode).toBe("https://schema.org/MixedEventAttendanceMode");
-    expect(node.location).toEqual({ "@type": "VirtualLocation", url: "https://psng.info/events/lecture-jelena-brasanac" });
+    const [place, virtual] = node.location as { "@type": string; address?: { addressLocality: string } }[];
+    expect(place["@type"]).toBe("Place");
+    expect(place.address?.addressLocality).toBe("Berlin");
+    expect(virtual["@type"]).toBe("VirtualLocation");
   });
 
   it("gibt jedem ausgegebenen Event einen Ort, ein Bild und eine Beschreibung", () => {
