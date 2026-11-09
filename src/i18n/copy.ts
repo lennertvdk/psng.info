@@ -70,7 +70,7 @@ const de = {
         key: "education",
         title: "Bildung",
         description:
-          "Regelmäßige Lectures, Community Calls und Journal Clubs zu psychedelischer Wissenschaft und Therapie.",
+          "Regelmäßige Lectures und Journal Clubs zu psychedelischer Wissenschaft und Therapie.",
       },
       {
         key: "research",
@@ -99,8 +99,8 @@ const de = {
       },
       {
         key: "events",
-        title: "Events & Calls besuchen",
-        desc: "Nimm an monatlichen Lectures und Community Calls teil – in Berlin und online, kostenlos, offen für alle.",
+        title: "Lectures besuchen",
+        desc: "Nimm an den monatlichen Lectures teil – in Berlin und online, kostenlos, offen für alle.",
         cta: "Termine ansehen",
       },
       {
@@ -246,7 +246,7 @@ const de = {
       {
         key: "meeting",
         title: "3. Erstes Treffen planen",
-        desc: "Lehnt euch an unsere monatlichen Lectures und Community Calls an oder entwickelt eigene Formate.",
+        desc: "Lehnt euch an unsere monatlichen Lectures an oder entwickelt eigene Formate.",
         link: "Events & Termine",
       },
       {
@@ -291,7 +291,7 @@ const de = {
         key: "offers",
         question: "Welche Angebote bietet das PSNG selbst?",
         answer:
-          "Wir bieten regelmäßige Calls für Fragen an sowie Unterstützung und Impulse zur Vernetzung. Außerdem teilen wir Journal-Clubs, Keynote-Lectures und weitere Formate der Lokalgruppen im PSNG-Netzwerk. Dadurch möchten wir den Lokalgruppen auch eine Plattform anbieten, auf der sie eine größere Reichweite erreichen.",
+          "Wir bieten Unterstützung und Impulse zur Vernetzung, bei Fragen erreichst du uns über das Kontaktformular. Außerdem teilen wir Journal-Clubs, Keynote-Lectures und weitere Formate der Lokalgruppen im PSNG-Netzwerk. Dadurch möchten wir den Lokalgruppen auch eine Plattform anbieten, auf der sie eine größere Reichweite erreichen.",
       },
     ],
   },
@@ -408,7 +408,7 @@ const de = {
       headlineBefore: "Deutschlands studentisches Netzwerk für ",
       headlineAccent: "psychedelische Wissenschaft",
       headlineAfter: ".",
-      text: "Wir bringen Studierende zusammen, die sich für psychedelische Forschung interessieren: mit Lectures, Community Calls und Unterstützung beim Gründen einer Hochschulgruppe.",
+      text: "Wir bringen Studierende zusammen, die sich für psychedelische Forschung interessieren: mit monatlichen Lectures, einer WhatsApp-Community und Unterstützung beim Gründen einer Hochschulgruppe.",
       whatsappNote: "Deine Nummer sehen nur Mitglieder der Community. WhatsApp ist für den Austausch da, alle Infos stehen auf der Website.",
     },
     upNext: "Als Nächstes",
@@ -555,7 +555,7 @@ const de = {
     events: {
       title: "Events – PSNG",
       description:
-        "Lectures, Community Calls und Treffen des PSNG: kommende Termine und Rückblicke mit Aufzeichnungen und Fotos.",
+        "Lectures und Treffen des PSNG: kommende Termine und Rückblicke mit Aufzeichnungen und Fotos.",
     },
     imprint: {
       title: "Impressum – PSNG",
@@ -626,7 +626,7 @@ const en: Copy = {
         key: "education",
         title: "Education",
         description:
-          "Regular lectures, community calls and journal clubs on psychedelic science and therapy.",
+          "Regular lectures and journal clubs on psychedelic science and therapy.",
       },
       {
         key: "research",
@@ -655,8 +655,8 @@ const en: Copy = {
       },
       {
         key: "events",
-        title: "Come to events & calls",
-        desc: "Take part in monthly lectures and community calls – in Berlin and online, free, open to everyone.",
+        title: "Come to lectures",
+        desc: "Take part in the monthly lectures – in Berlin and online, free, open to everyone.",
         cta: "See upcoming dates",
       },
       {
@@ -801,7 +801,7 @@ const en: Copy = {
       {
         key: "meeting",
         title: "3. Plan a first meeting",
-        desc: "Build on our monthly lectures and community calls, or develop formats of your own.",
+        desc: "Build on our monthly lectures, or develop formats of your own.",
         link: "Events & dates",
       },
       {
@@ -846,7 +846,7 @@ const en: Copy = {
         key: "offers",
         question: "What does the PSNG itself offer?",
         answer:
-          "We hold regular calls for questions and offer support and ideas for connecting with others. We also share journal clubs, keynote lectures and other formats from local groups across the PSNG network, giving those groups a platform and a wider reach.",
+          "We offer support and ideas for connecting with others, and you can reach us with questions through the contact form. We also share journal clubs, keynote lectures and other formats from local groups across the PSNG network, giving those groups a platform and a wider reach.",
       },
     ],
   },
@@ -956,7 +956,7 @@ const en: Copy = {
       headlineBefore: "Germany's student network for ",
       headlineAccent: "psychedelic science",
       headlineAfter: ".",
-      text: "We bring together students interested in psychedelic research: with lectures, community calls and support for starting a university group.",
+      text: "We bring together students interested in psychedelic research: with monthly lectures, a WhatsApp community and support for starting a university group.",
       whatsappNote: "Only community members see your number. WhatsApp is for conversation; all information is on this website.",
     },
     upNext: "Up next",
@@ -1103,7 +1103,7 @@ const en: Copy = {
     events: {
       title: "Events – PSNG",
       description:
-        "PSNG lectures, community calls and meet-ups: upcoming dates and recaps with recordings and photos.",
+        "PSNG lectures and meet-ups: upcoming dates and recaps with recordings and photos.",
     },
     imprint: {
       title: "Imprint – PSNG",
