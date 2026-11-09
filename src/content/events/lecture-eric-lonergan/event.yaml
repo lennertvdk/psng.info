@@ -5,6 +5,7 @@ column: vortraege
 date: "2026-06-09"
 startTime: "19:00"
 endTime: "20:00"
+attendance: online
 language: en
 speaker: Eric Lonergan, PhD cand.
 speakerType: student
