@@ -33,7 +33,7 @@ const frame = {
 const fit = variant === "contain" ? "h-full w-full object-contain" : "h-full w-full object-cover";
 const sizes = variant === "side" ? "(min-width: 768px) 420px, 100vw" : "(min-width: 1024px) 860px, 100vw";
 const arrow =
-  "absolute top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/90 text-foreground shadow-sm transition-colors hover:bg-background";
+  "absolute top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/90 text-foreground shadow-sm transition-colors hover:bg-background";
 ---
 
 <div class:list={["space-y-2", variant === "side" && "md:self-start"]}>

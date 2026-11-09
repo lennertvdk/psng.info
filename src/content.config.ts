@@ -196,6 +196,8 @@ const partners = defineCollection({
       tone: z.enum(["bpsa", "parab"]).optional(),
       /** Reihenfolge auf der Seite – wer am engsten mit uns arbeitet, steht vorn. */
       order: z.number().int(),
+      /** Gruppe auf „Über uns“: Netzwerke zuerst, dann Hochschulgruppen, Stiftungen, Community und Medien. */
+      category: z.enum(["network", "student-group", "foundation", "community"]),
       logo: image(),
       url: z.url(),
       instagramUrl: z.url().optional(),

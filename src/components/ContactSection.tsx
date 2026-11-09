@@ -1,4 +1,4 @@
-import { useState, useEffect, type FormEvent } from "react";
+import { useState, useEffect, useRef, type FormEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import { primaryButton } from "@/components/astro/home/styles";
 import { CONTACT_EMAIL } from "@/lib/links";
 import { track } from "@/scripts/track";
 import { useCopy } from "@/i18n/copy";
@@ -42,10 +42,24 @@ const subjectParamMap: Record<string, string> = {
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-const ContactSection = () => {
+interface Props {
+  /** Vorgewähltes Anliegen als Schlüssel wie in `?subject=`, z. B. „team“. */
+  defaultSubject?: keyof typeof subjectParamMap;
+  /** Nur das Formular, ohne eigene Sektion und Überschrift – für „Mach mit“ auf /ueber-uns. */
+  embedded?: boolean;
+}
+
+const ContactSection = ({ defaultSubject, embedded = false }: Props) => {
   const c = useCopy();
+  const initialSubject = defaultSubject ? subjectParamMap[defaultSubject] : "";
   const [status, setStatus] = useState<Status>("idle");
-  const [subject, setSubject] = useState("");
+  const [subject, setSubject] = useState(initialSubject);
+  // Nach dem Absenden verschwindet das Formular; der Fokus geht auf die
+  // Bestätigung, statt ins Leere zu fallen.
+  const successRef = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    if (status === "success") successRef.current?.focus();
+  }, [status]);
   // ?subject=… aus den Knöpfen anderer Seiten wählt das Anliegen vor.
   useEffect(() => {
     const param = new URLSearchParams(window.location.search).get("subject");
@@ -76,7 +90,7 @@ const ContactSection = () => {
       setStatus("success");
       track(`kontakt/${subject || "ohne-anliegen"}`);
       form.reset();
-      setSubject("");
+      setSubject(initialSubject);
     } catch {
       setStatus("error");
     }
@@ -84,34 +98,16 @@ const ContactSection = () => {
 
   const resetForm = () => {
     setStatus("idle");
-    setSubject("");
+    setSubject(initialSubject);
   };
 
-  return (
-    <section id="kontakt" className="py-24 md:py-32">
-      <div className="container mx-auto px-6">
-        <div className="max-w-3xl mx-auto text-center mb-12"
-        >
-          <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary mb-4">
-            {c.contact.eyebrow}
-          </p>
-          <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
-            {c.contact.title}
-          </h2>
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            {c.contact.intro}
-          </p>
-        </div>
-
-        <div className="max-w-xl mx-auto"
-        >
-          {status === "success" ? (
+  const body = status === "success" ? (
             <div
               role="status"
               aria-live="polite"
-              className="bg-card rounded-2xl border border-border p-8 text-center hover:shadow-lg transition-shadow"
+              className="bg-card rounded-2xl border border-border p-8 text-center"
             >
-              <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
+              <h3 ref={successRef} tabIndex={-1} className="font-heading text-lg font-semibold text-foreground mb-2 focus:outline-none">
                 {c.contact.successTitle}
               </h3>
               <p className="text-muted-foreground text-sm mb-5">
@@ -129,7 +125,7 @@ const ContactSection = () => {
             <form
               name="kontakt"
               onSubmit={handleSubmit}
-              className="bg-card rounded-2xl border border-border p-6 md:p-8 space-y-5 hover:shadow-lg transition-shadow"
+              className="bg-card rounded-2xl border border-border p-6 md:p-8 space-y-5"
             >
               <p className="hidden">
                 <label>
@@ -137,10 +133,12 @@ const ContactSection = () => {
                 </label>
               </p>
 
+              <p className="text-sm text-muted-foreground">{c.contact.allRequired}</p>
+
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
                   <Label htmlFor="name">{c.contact.name}</Label>
-                  <Input id="name" name="name" required className="mt-1.5" />
+                  <Input id="name" name="name" autoComplete="name" required className="mt-1.5" />
                 </div>
                 <div>
                   <Label htmlFor="email">{c.contact.email}</Label>
@@ -148,6 +146,7 @@ const ContactSection = () => {
                     id="email"
                     name="email"
                     type="email"
+                    autoComplete="email"
                     required
                     className="mt-1.5"
                   />
@@ -198,22 +197,37 @@ const ContactSection = () => {
               </div>
 
               <div>
-                <Button
+                <button
                   type="submit"
                   disabled={status === "submitting" || !subject}
-                  className="w-full gradient-psychedelic text-primary-foreground font-heading"
+                  aria-describedby={!subject ? "kontakt-anliegen-hinweis" : undefined}
+                  className={`${primaryButton} w-full disabled:pointer-events-none disabled:opacity-50`}
                 >
                   {status === "submitting" ? c.contact.submitting : c.contact.submit}
-                </Button>
+                </button>
                 {!subject && (
-                  <p className="text-muted-foreground text-xs mt-2 text-center">
+                  <p id="kontakt-anliegen-hinweis" className="text-muted-foreground text-xs mt-2 text-center">
                     {c.contact.subjectRequired}
                   </p>
                 )}
               </div>
             </form>
-          )}
+          );
+
+  if (embedded) return body;
+
+  return (
+    <section id="kontakt" className="py-24 md:py-32">
+      <div className="container mx-auto px-6">
+        <div className="max-w-2xl mx-auto mb-12">
+          <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
+            {c.contact.title}
+          </h2>
+          <p className="text-foreground/80 text-lg leading-relaxed max-w-[68ch]">
+            {c.contact.intro}
+          </p>
         </div>
+        <div className="max-w-2xl mx-auto">{body}</div>
       </div>
     </section>
   );

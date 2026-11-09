@@ -1,0 +1,491 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-09T00:00:00Z",
+  "title": "Design System: PSNG – Psychedelic Student Network Germany",
+  "extensions": {
+    "colorMeta": {
+      "himbeer-pink": {
+        "role": "primary",
+        "displayName": "Himbeer-Pink",
+        "canonical": "hsl(339 63% 48%)",
+        "tonalRamp": [
+          "hsl(339 26% 15%)",
+          "hsl(339 37% 25%)",
+          "hsl(339 47% 35%)",
+          "hsl(339 58% 45%)",
+          "hsl(339 58% 55%)",
+          "hsl(339 42% 70%)",
+          "hsl(339 26% 85%)",
+          "hsl(339 22% 95%)"
+        ]
+      },
+      "brand-pink": {
+        "role": "primary",
+        "displayName": "Marken-Pink",
+        "canonical": "hsl(339 68% 54%)",
+        "tonalRamp": [
+          "hsl(339 28% 15%)",
+          "hsl(339 40% 25%)",
+          "hsl(339 51% 35%)",
+          "hsl(339 62% 45%)",
+          "hsl(339 62% 55%)",
+          "hsl(339 45% 70%)",
+          "hsl(339 28% 85%)",
+          "hsl(339 24% 95%)"
+        ]
+      },
+      "koralle": {
+        "role": "secondary",
+        "displayName": "Koralle",
+        "canonical": "hsl(5 78% 65%)",
+        "tonalRamp": [
+          "hsl(5 32% 15%)",
+          "hsl(5 45% 25%)",
+          "hsl(5 58% 35%)",
+          "hsl(5 72% 45%)",
+          "hsl(5 72% 55%)",
+          "hsl(5 52% 70%)",
+          "hsl(5 32% 85%)",
+          "hsl(5 27% 95%)"
+        ]
+      },
+      "gebrannte-koralle": {
+        "role": "secondary",
+        "displayName": "Gebrannte Koralle",
+        "canonical": "hsl(15 80% 44%)",
+        "tonalRamp": [
+          "hsl(15 33% 15%)",
+          "hsl(15 47% 25%)",
+          "hsl(15 60% 35%)",
+          "hsl(15 73% 45%)",
+          "hsl(15 73% 55%)",
+          "hsl(15 53% 70%)",
+          "hsl(15 33% 85%)",
+          "hsl(15 28% 95%)"
+        ]
+      },
+      "verlauf-himbeer": {
+        "role": "tertiary",
+        "displayName": "Verlauf Himbeer",
+        "canonical": "hsl(339 68% 48%)",
+        "tonalRamp": [
+          "hsl(339 28% 15%)",
+          "hsl(339 40% 25%)",
+          "hsl(339 51% 35%)",
+          "hsl(339 62% 45%)",
+          "hsl(339 62% 55%)",
+          "hsl(339 45% 70%)",
+          "hsl(339 28% 85%)",
+          "hsl(339 24% 95%)"
+        ]
+      },
+      "verlauf-koralle": {
+        "role": "tertiary",
+        "displayName": "Verlauf Koralle",
+        "canonical": "hsl(5 78% 46%)",
+        "tonalRamp": [
+          "hsl(5 32% 15%)",
+          "hsl(5 45% 25%)",
+          "hsl(5 58% 35%)",
+          "hsl(5 72% 45%)",
+          "hsl(5 72% 55%)",
+          "hsl(5 52% 70%)",
+          "hsl(5 32% 85%)",
+          "hsl(5 27% 95%)"
+        ]
+      },
+      "verlauf-rose": {
+        "role": "tertiary",
+        "displayName": "Verlauf Rosé",
+        "canonical": "hsl(350 70% 48%)",
+        "tonalRamp": [
+          "hsl(350 29% 15%)",
+          "hsl(350 41% 25%)",
+          "hsl(350 52% 35%)",
+          "hsl(350 64% 45%)",
+          "hsl(350 64% 55%)",
+          "hsl(350 47% 70%)",
+          "hsl(350 29% 85%)",
+          "hsl(350 24% 95%)"
+        ]
+      },
+      "papierweiss": {
+        "role": "neutral",
+        "displayName": "Papierweiß",
+        "canonical": "hsl(0 0% 100%)",
+        "tonalRamp": [
+          "hsl(340 4% 15%)",
+          "hsl(340 6% 25%)",
+          "hsl(340 8% 35%)",
+          "hsl(340 9% 45%)",
+          "hsl(340 9% 55%)",
+          "hsl(340 7% 70%)",
+          "hsl(340 4% 85%)",
+          "hsl(340 4% 95%)"
+        ]
+      },
+      "tiefe-tinte": {
+        "role": "neutral",
+        "displayName": "Tiefe Tinte",
+        "canonical": "hsl(340 20% 15%)",
+        "tonalRamp": [
+          "hsl(340 8% 15%)",
+          "hsl(340 12% 25%)",
+          "hsl(340 15% 35%)",
+          "hsl(340 18% 45%)",
+          "hsl(340 18% 55%)",
+          "hsl(340 13% 70%)",
+          "hsl(340 8% 85%)",
+          "hsl(340 7% 95%)"
+        ]
+      },
+      "gedaempfte-tinte": {
+        "role": "neutral",
+        "displayName": "Gedämpfte Tinte",
+        "canonical": "hsl(340 10% 45%)",
+        "tonalRamp": [
+          "hsl(340 4% 15%)",
+          "hsl(340 6% 25%)",
+          "hsl(340 8% 35%)",
+          "hsl(340 9% 45%)",
+          "hsl(340 9% 55%)",
+          "hsl(340 7% 70%)",
+          "hsl(340 4% 85%)",
+          "hsl(340 4% 95%)"
+        ]
+      },
+      "rose-nebel": {
+        "role": "neutral",
+        "displayName": "Rosé-Nebel",
+        "canonical": "hsl(340 20% 96%)",
+        "tonalRamp": [
+          "hsl(340 8% 15%)",
+          "hsl(340 12% 25%)",
+          "hsl(340 15% 35%)",
+          "hsl(340 18% 45%)",
+          "hsl(340 18% 55%)",
+          "hsl(340 13% 70%)",
+          "hsl(340 8% 85%)",
+          "hsl(340 7% 95%)"
+        ]
+      },
+      "rose-linie": {
+        "role": "neutral",
+        "displayName": "Rosé-Linie",
+        "canonical": "hsl(340 15% 90%)",
+        "tonalRamp": [
+          "hsl(340 6% 15%)",
+          "hsl(340 9% 25%)",
+          "hsl(340 11% 35%)",
+          "hsl(340 14% 45%)",
+          "hsl(340 14% 55%)",
+          "hsl(340 10% 70%)",
+          "hsl(340 6% 85%)",
+          "hsl(340 5% 95%)"
+        ]
+      },
+      "warnrot": {
+        "role": "neutral",
+        "displayName": "Warnrot",
+        "canonical": "hsl(0 84.2% 60.2%)",
+        "tonalRamp": [
+          "hsl(0 35% 15%)",
+          "hsl(0 49% 25%)",
+          "hsl(0 63% 35%)",
+          "hsl(0 77% 45%)",
+          "hsl(0 77% 55%)",
+          "hsl(0 56% 70%)",
+          "hsl(0 35% 85%)",
+          "hsl(0 29% 95%)"
+        ]
+      },
+      "bpsa-navy": {
+        "role": "tertiary",
+        "displayName": "BPSA-Navy",
+        "canonical": "#071030",
+        "tonalRamp": [
+          "#040818",
+          "#071030",
+          "#0f1f55",
+          "#1b2c6b",
+          "#33478f",
+          "#6676b3",
+          "#a9b3d9",
+          "#e6e9f5"
+        ]
+      },
+      "bpsa-navy-chip": {
+        "role": "tertiary",
+        "displayName": "BPSA Chip-Navy",
+        "canonical": "#1b2c6b",
+        "tonalRamp": [
+          "#040818",
+          "#071030",
+          "#0f1f55",
+          "#1b2c6b",
+          "#33478f",
+          "#6676b3",
+          "#a9b3d9",
+          "#e6e9f5"
+        ]
+      },
+      "bpsa-cyan": {
+        "role": "tertiary",
+        "displayName": "BPSA-Cyan",
+        "canonical": "#47cddb",
+        "tonalRamp": [
+          "#0b3236",
+          "#12525a",
+          "#1b7c87",
+          "#2aa8b5",
+          "#47cddb",
+          "#7fdde7",
+          "#b8edf2",
+          "#e8f9fb"
+        ]
+      },
+      "bpsa-violet": {
+        "role": "tertiary",
+        "displayName": "BPSA-Violett",
+        "canonical": "#8f49b9",
+        "tonalRamp": [
+          "#25122f",
+          "#3d1e4e",
+          "#5a2c74",
+          "#77399a",
+          "#8f49b9",
+          "#ae7fcc",
+          "#d2b8e3",
+          "#f2eaf7"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Nur die H1 im Hero der Startseite."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Abschnittsüberschriften der Startseite (1,875rem, ab md 2,25rem)."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Karten-, Schritt- und Detailseiten-Überschriften."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Lesetext und Einleitungen, maximal 70ch."
+      },
+      "body-small": {
+        "displayName": "Body klein",
+        "purpose": "Lesetext in Karten und Listen."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Knöpfe, Navigation, Filter, Textlinks."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "Chips, Datumsangaben, Kleingedrucktes."
+      }
+    },
+    "shadows": [
+      {
+        "name": "hover-anhebung",
+        "value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+        "purpose": "Karten und FAQ-Einträge beim Hover."
+      },
+      {
+        "name": "ruhekante",
+        "value": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        "purpose": "Aktiver Sprachknopf, geöffneter FAQ-Eintrag."
+      },
+      {
+        "name": "naechster-termin-leuchten",
+        "value": "filter: drop-shadow(0 6px 14px hsl(339 68% 54% / 0.3))",
+        "purpose": "Nur die Karte des nächsten Termins."
+      },
+      {
+        "name": "glasleiste",
+        "value": "background: hsl(0 0% 100% / 0.85); backdrop-filter: blur(20px)",
+        "purpose": "Ausschließlich die fixierte Navigation."
+      }
+    ],
+    "motion": [
+      {
+        "name": "rise-in",
+        "value": "transform translateY(20px) -> none, 0.5s ease-out",
+        "purpose": "Einblenden des Hero, nur transform."
+      },
+      {
+        "name": "reveal",
+        "value": "opacity + transform translateY(24px), 0.6s ease-out, Verzögerung über --reveal-delay",
+        "purpose": "Abschnitte beim Hereinscrollen, nur für vom Skript markierte Elemente."
+      },
+      {
+        "name": "state",
+        "value": "150ms cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Farb-, Deckkraft- und Schattenwechsel bei Hover."
+      },
+      {
+        "name": "image-zoom",
+        "value": "transform scale(1.03), 500ms",
+        "purpose": "Archivbild beim Hover über die Karte."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "2xl",
+        "value": "1400px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primärknopf",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Handlungsaufforderung (Beitreten, Anmelden, Absenden) mit dem Himbeer-Koralle-Verlauf.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Der WhatsApp-Community beitreten</a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; border-radius: 12px; background: linear-gradient(135deg, hsl(339 68% 48%), hsl(5 78% 46%), hsl(350 70% 48%)); padding: 12px 24px; font-family: 'Schibsted Grotesk', sans-serif; font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; color: #fff; text-decoration: none; transition: opacity 150ms cubic-bezier(0.4,0,0.2,1); } .ds-btn-primary:hover { opacity: 0.9; } .ds-btn-primary:focus-visible { outline: 2px solid hsl(339 63% 48%); outline-offset: 2px; }"
+    },
+    {
+      "name": "Sekundärknopf",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Zweite Option neben dem Primärknopf, Umriss in Himbeer-Pink.",
+      "html": "<a class=\"ds-btn-secondary\" href=\"#\">Gruppe gründen</a>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; border-radius: 12px; border: 1px solid hsl(339 63% 48% / 0.3); background: hsl(0 0% 100% / 0.6); padding: 12px 24px; font-family: 'Schibsted Grotesk', sans-serif; font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; color: hsl(339 63% 48%); text-decoration: none; transition: background-color 150ms cubic-bezier(0.4,0,0.2,1); } .ds-btn-secondary:hover { background: hsl(339 63% 48% / 0.05); } .ds-btn-secondary:focus-visible { outline: 2px solid hsl(339 63% 48%); outline-offset: 2px; }"
+    },
+    {
+      "name": "Textlink",
+      "kind": "custom",
+      "refersTo": "nav-link-active",
+      "description": "Inline-Weiterleitung in Himbeer-Pink, Unterstreichung erst beim Hover.",
+      "html": "<a class=\"ds-text-link\" href=\"#\">Alle Termine &amp; Aufzeichnungen</a>",
+      "css": ".ds-text-link { font-family: 'Schibsted Grotesk', sans-serif; font-size: 0.875rem; font-weight: 500; color: hsl(339 63% 48%); text-decoration: none; } .ds-text-link:hover { text-decoration: underline; } .ds-text-link:focus-visible { outline: 2px solid hsl(339 63% 48%); outline-offset: 2px; }"
+    },
+    {
+      "name": "Spalten-Chip",
+      "kind": "chip",
+      "refersTo": "chip-spalte",
+      "description": "Kennzeichnet die Spalte eines Termins (Vortrag, Community).",
+      "html": "<span class=\"ds-chip\">Vortrag</span> <span class=\"ds-chip ds-chip-status\">Aufzeichnung</span> <span class=\"ds-chip ds-chip-bpsa\">mit BPSA</span>",
+      "css": ".ds-chip { display: inline-block; border-radius: 9999px; background: hsl(15 80% 44%); padding: 2px 10px; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; line-height: 1rem; font-weight: 500; color: #fff; } .ds-chip-status { background: hsl(339 63% 48% / 0.1); color: hsl(339 63% 48%); } .ds-chip-bpsa { border: 1px solid transparent; background: linear-gradient(#1b2c6b, #1b2c6b) padding-box, linear-gradient(90deg, #47cddb, #8f49b9, #47cddb) border-box; color: #fff; }"
+    },
+    {
+      "name": "Eventkarte",
+      "kind": "card",
+      "refersTo": "card-event",
+      "description": "Flache Karte mit Bild 40:21, Haarlinie und Hover-Anhebung.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-img\"></div><div class=\"ds-card-body\"><span class=\"ds-card-chip\">Vortrag</span><h3 class=\"ds-card-title\">Psilocybin und Depression: Was die Studien zeigen</h3><p class=\"ds-card-speaker\">Dr. Beispiel</p><p class=\"ds-card-text\">Abstract und Beschreibung stehen vollständig, maximal 70 Zeichen breit.</p></div></article>",
+      "css": ".ds-card { max-width: 420px; overflow: hidden; border-radius: 16px; border: 1px solid hsl(340 15% 90%); background: #fff; transition: box-shadow 150ms cubic-bezier(0.4,0,0.2,1); } .ds-card:hover { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); } .ds-card-img { aspect-ratio: 40/21; background: hsl(340 20% 96%); } .ds-card-body { padding: 24px; } .ds-card-chip { display: inline-block; border-radius: 9999px; background: hsl(15 80% 44%); padding: 2px 10px; font: 500 0.75rem/1rem 'DM Sans', sans-serif; color: #fff; } .ds-card-title { margin: 12px 0 8px; font: 600 1.125rem/1.4 'Schibsted Grotesk', sans-serif; color: hsl(340 20% 15%); } .ds-card-speaker { margin: 0 0 8px; font: 500 0.875rem 'DM Sans', sans-serif; color: hsl(339 63% 48%); } .ds-card-text { margin: 0; max-width: 70ch; font: 400 0.875rem/1.625 'DM Sans', sans-serif; color: hsl(340 10% 45%); }"
+    },
+    {
+      "name": "Eingabefeld",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Textfeld im Kontaktformular.",
+      "html": "<label class=\"ds-label\">Name<input class=\"ds-input\" placeholder=\"Dein Name\"></label>",
+      "css": ".ds-label { display: block; max-width: 360px; font: 500 0.875rem 'DM Sans', sans-serif; color: hsl(340 20% 15%); } .ds-input { display: flex; box-sizing: border-box; margin-top: 6px; height: 40px; width: 100%; border-radius: 10px; border: 1px solid hsl(340 15% 90%); background: #fff; padding: 8px 12px; font: 400 0.875rem 'DM Sans', sans-serif; color: hsl(340 20% 15%); } .ds-input::placeholder { color: hsl(340 10% 45%); } .ds-input:focus-visible { outline: 2px solid hsl(339 63% 48%); outline-offset: 2px; }"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Fixierte Glasleiste mit Logo, Links, Sprachumschalter und WhatsApp-Knopf.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-brand\"><span class=\"ds-nav-logo\"></span>PSNG</span><span class=\"ds-nav-links\"><a href=\"#\" class=\"ds-nav-link ds-nav-active\">Events</a><a href=\"#\" class=\"ds-nav-link\">Gruppen</a><a href=\"#\" class=\"ds-nav-link\">Leitfaden</a><a href=\"#\" class=\"ds-nav-link\">Über uns</a><span class=\"ds-lang\"><a class=\"ds-lang-on\">DE</a><a>EN</a></span><a href=\"#\" class=\"ds-nav-cta\">Beitreten</a></span></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 24px; background: hsl(0 0% 100% / 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid hsl(340 15% 90%); } .ds-nav-brand { display: flex; align-items: center; gap: 12px; font: 700 1.25rem 'Schibsted Grotesk', sans-serif; letter-spacing: -0.025em; color: hsl(339 63% 48%); } .ds-nav-logo { width: 36px; height: 36px; border-radius: 9999px; border: 1px solid hsl(340 15% 90%); background: hsl(340 20% 96%); } .ds-nav-links { display: flex; align-items: center; gap: 24px; } .ds-nav-link { font: 500 0.875rem 'Schibsted Grotesk', sans-serif; color: hsl(340 10% 45%); text-decoration: none; transition: color 150ms; } .ds-nav-link:hover, .ds-nav-active { color: hsl(339 63% 48%); } .ds-lang { display: inline-flex; gap: 2px; border-radius: 9999px; background: hsl(340 20% 96%); padding: 2px; font: 500 0.75rem 'Schibsted Grotesk', sans-serif; } .ds-lang a { border-radius: 9999px; padding: 4px 10px; color: hsl(340 10% 45%); } .ds-lang .ds-lang-on { background: #fff; color: hsl(339 63% 48%); box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); } .ds-nav-cta { border-radius: 12px; background: linear-gradient(135deg, hsl(339 68% 48%), hsl(5 78% 46%), hsl(350 70% 48%)); padding: 8px 16px; font: 500 0.875rem 'Schibsted Grotesk', sans-serif; color: #fff; text-decoration: none; } .ds-nav-cta:hover { opacity: 0.9; }"
+    },
+    {
+      "name": "Datumsschiene",
+      "kind": "custom",
+      "description": "Gestapelte Datumsmarke links neben einem Termin.",
+      "html": "<div class=\"ds-date-row\"><div class=\"ds-date\"><p class=\"ds-date-wd\">Mi</p><p class=\"ds-date-day\">12</p><p class=\"ds-date-mo\">Nov</p></div><div><h3 class=\"ds-date-title\">PSNG-Lecture: Ketamin in der Notfallmedizin</h3><p class=\"ds-date-meta\">19:00 Uhr, online und HU Berlin</p></div></div>",
+      "css": ".ds-date-row { display: flex; gap: 20px; padding: 24px 0; border-top: 1px solid hsl(340 15% 90%); border-bottom: 1px solid hsl(340 15% 90%); } .ds-date { width: 56px; flex-shrink: 0; text-align: center; font-family: 'Schibsted Grotesk', sans-serif; } .ds-date p { margin: 0; } .ds-date-wd { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; color: hsl(340 10% 45%); } .ds-date-day { font-size: 1.875rem; font-weight: 700; line-height: 1; color: hsl(340 20% 15%); } .ds-date-mo { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; color: hsl(339 63% 48%); } .ds-date-title { margin: 0; font: 600 1.125rem/1.375 'Schibsted Grotesk', sans-serif; color: hsl(340 20% 15%); } .ds-date-meta { margin: 4px 0 0; font: 400 0.875rem 'DM Sans', sans-serif; color: hsl(340 10% 45%); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Das Netz der Hörsäle",
+    "overview": "Das Leitbild hat zwei Seiten. Zum einen ist das PSNG ein Netz von Studierenden quer durch Deutschland, also etwas, das man kartografisch zeigen kann (eine Deutschlandkarte der PSNG-Gruppen ist als Idee vorgemerkt). Zum anderen findet es im Hörsaal statt: seriöse Forschung, Lectures, eine Community, die zuhört und diskutiert. Beides soll man der Gestaltung ansehen. Das Netz zeigt sich in Verbindungen, Orten und Städten, der Hörsaal in ruhiger, lesbarer, wissenschaftlicher Ordnung. Dekoration für sich allein gehört nicht dazu.\n\nIm Ist-Zustand ist davon erst die Hälfte da. Die Seite wirkt wie die Aushangwand eines gut geführten Instituts, das seine Türen aufgemacht hat: weißes Papier, eine dunkle, leicht ins Rosé gezogene Tinte, ein klares Himbeer-Pink als einzige Signalfarbe und ein warmer Verlauf von Himbeer über Koralle, der nur dort auftaucht, wo die Seite etwas von einem will (Beitritt, Anmeldung, Footer). Die Gestaltungsklassen der Startseite stammen tatsächlich aus einem Prototyp unter `/lab`; der Name beschreibt, was im Code schon steht. Die Atmosphäre lebt von einem einzigen Bild, dem Hero-Hintergrund mit weißen, verzweigten Silhouetten (Myzel, Neuronen, Korallen) auf einem Nebel aus Pink und Koralle.\n\nDie Dichte ist mittel bis luftig. Inhalte stehen in einem zentrierten Container auf Weiß, Abschnitte trennen sich über einen hauchzarten Pink-Schleier (Himbeer-Pink bei 5 % Deckkraft) statt über Linien oder Schatten. Typografisch trägt Schibsted Grotesk mit ihren technisch-geometrischen Formen die Überschriften, Knöpfe und Daten, DM Sans den Lesetext. Lange Texte (Abstracts, Bios, Beschreibungen) werden vollständig gezeigt, nicht gekürzt.\n\nDer Bestand trägt noch sichtbar die Herkunft aus einem shadcn-Grundgerüst: Die Farbrollen (`primary`, `muted`, `accent`, `sidebar-*`) und die Formular-Bausteine in `src/components/ui/` sind dessen Standard, nur pink eingefärbt. Das ist Ist-Zustand, kein Leitbild; siehe „Im Bestand, nicht kanonisch“ am Ende.",
+    "keyCharacteristics": [
+      "Weißes Papier, rosé getönte Tinte, Himbeer-Pink als einzige Akzentfarbe für Text und Zustände.",
+      "Der Himbeer-Koralle-Verlauf ist für Handlungsaufforderungen und den Footer reserviert.",
+      "Schibsted Grotesk für alles, was strukturiert (Überschriften, Knöpfe, Daten, Navigation); DM Sans für alles, was gelesen wird.",
+      "Flach im Ruhezustand, Schatten nur als Antwort auf Hover oder für den nächsten Termin.",
+      "Großzügig gerundete Flächen (12 bis 16px), Chips als Pillen.",
+      "Partnerinhalte (BPSA, PARAB) tragen eine eigene, fremde Farbachse und werden nicht in die PSNG-Töne übersetzt."
+    ],
+    "rules": [
+      {
+        "name": "The Eine-Stimme Rule",
+        "body": "Himbeer-Pink ist die einzige Farbe, in der Text hervorgehoben wird. Koralle spricht nie allein, sie erscheint als Chip-Fläche oder im Verlauf.",
+        "section": "colors"
+      },
+      {
+        "name": "The Verlauf-heißt-Handeln Rule",
+        "body": "Der Himbeer-Koralle-Verlauf markiert eine Handlung (Beitreten, Anmelden, Absenden) oder den Footer. Eine Fläche mit Verlauf, die nichts auslöst, gibt es nicht.",
+        "section": "colors"
+      },
+      {
+        "name": "The Fremde-Marke-bleibt-fremd Rule",
+        "body": "Partnerfarben werden exakt (Hex) übernommen und nur zur Kennzeichnung von Partnerinhalten eingesetzt, nie in PSNG-Flächen gemischt.",
+        "section": "colors"
+      },
+      {
+        "name": "The Struktur-gegen-Lesen Rule",
+        "body": "Schibsted Grotesk für alles, was gliedert oder bedient (Überschriften, Knöpfe, Daten, Navigation); DM Sans für alles, was gelesen wird. Die Grenze verläuft nach Funktion, nicht nach Größe.",
+        "section": "typography"
+      },
+      {
+        "name": "The Kein-Hurenkind Rule",
+        "body": "Überschriften (h1 bis h3) setzen `text-wrap: balance`, Absätze, Listen und Definitionen `text-wrap: pretty`. Global, nicht pro Komponente.",
+        "section": "typography"
+      },
+      {
+        "name": "The Lesbar-ohne-Animation Rule",
+        "body": "Keine Animation darf Inhalt unsichtbar zurücklassen, wenn sie nicht läuft. Startzustände sind sichtbar, eingeblendet wird nur, was ein Skript selbst versteckt hat.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flach-bis-berührt Rule",
+        "body": "Flächen liegen flach. Ein Schatten antwortet auf den Zeiger; das Pink-Leuchten des nächsten Termins ist die einzige Ausnahme und bleibt einzig.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** Himbeer-Pink (hsl(339 63% 48%)) für jede Texthervorhebung, jeden Link und den Fokusring verwenden.",
+      "**Do** den Verlauf nur auf Handlungen und den Footer legen und darunter ausschließlich weiße Schrift setzen.",
+      "**Do** für weiße Schrift auf farbiger Fläche die abgesenkten Töne nehmen (Gebrannte Koralle, Verlaufsstopps), nie Marken-Pink, Koralle, Rosé oder Lachs.",
+      "**Do** Partnerfarben exakt in Hex übernehmen und nur für Partnerinhalte einsetzen.",
+      "**Do** Karten flach mit 1px Rosé-Linie bauen und Schatten erst beim Hover zeigen.",
+      "**Do** Fotos groß und unverändert zeigen; Code darf nur Ausschnitt und Format bestimmen.",
+      "**Do** lange Texte vollständig setzen, maximal 70ch breit.",
+      "**Do** Animationen nur über `transform` laufen lassen und bei reduzierter Bewegung abschalten."
+    ],
+    "donts": [
+      "**Don't** das Logo (`public/psng-logo.png`) verändern, umfärben oder neu zeichnen.",
+      "**Don't** Himbeer-Pink und Koralle durch eine andere Hauptfarbe ersetzen; sie sind die Identität.",
+      "**Don't** Koralle (hsl(5 78% 65%)) oder Marken-Pink (hsl(339 68% 54%)) als Fläche unter Text einsetzen.",
+      "**Don't** BPSA-Farben in PSNG-Flächen mischen oder in HSL umrechnen.",
+      "**Don't** Zeitleiste und Datumsschiene durch Karten ohne Datum ersetzen."
+    ]
+  }
+}

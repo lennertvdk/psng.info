@@ -6,24 +6,31 @@ import type { SeriesDate, SiteEvent } from "./types";
 export function formatEventDate(iso: string, locale: Locale, withWeekday = false): string {
   return parseEventDate(iso).toLocaleDateString(intlLocale(locale), {
     ...(withWeekday ? { weekday: "long" as const } : {}),
-    day: "2-digit",
+    day: "numeric",
     month: "long",
     year: "numeric",
   });
 }
 
+/** „8. Aug.“ – für die Datumsspalte des Zeitstrahls, dessen Jahresmarken das Jahr tragen. */
 export function formatEventDateShort(iso: string, locale: Locale): string {
   return parseEventDate(iso).toLocaleDateString(intlLocale(locale), {
-    day: "2-digit",
+    day: "numeric",
     month: "short",
-    year: "numeric",
   });
 }
 
 /** Datum, bei mehrtägigen Events bis zum letzten Tag. */
 export function formatEventDateRange(e: SiteEvent, locale: Locale): string {
-  const start = formatEventDate(e.date, locale, e.showWeekday);
-  return e.endDate && e.endDate !== e.date ? `${start} – ${formatEventDate(e.endDate, locale)}` : start;
+  if (!e.endDate || e.endDate === e.date) return formatEventDate(e.date, locale, e.showWeekday);
+  // Ohne Wochentag fasst Intl gleiche Monate und Jahre zusammen: „9.–10. Oktober 2026“.
+  if (!e.showWeekday) {
+    return new Intl.DateTimeFormat(intlLocale(locale), { day: "numeric", month: "long", year: "numeric" }).formatRange(
+      parseEventDate(e.date),
+      parseEventDate(e.endDate),
+    );
+  }
+  return `${formatEventDate(e.date, locale, true)} – ${formatEventDate(e.endDate, locale)}`;
 }
 
 const TIME_LABELS = {
@@ -69,4 +76,15 @@ export function formatRelativeToToday(iso: string, locale: Locale, ref: Date): s
   const weeks = Math.round(days / 7);
   if (weeks < 9) return rtf.format(weeks, "week");
   return rtf.format(Math.round(days / 30.44), "month");
+}
+
+/**
+ * Marke im Zeitstrahl, „2026“ oder „2026-11“: Anker und Beschriftung, wie sie
+ * an der Schiene und im Inhaltsverzeichnis von /events stehen.
+ */
+export function timelineMark(mark: string, locale: Locale): { id: string; label: string; year: boolean } {
+  const [year, month] = mark.split("-");
+  if (!month) return { id: `jahr-${year}`, label: year, year: true };
+  const label = new Date(Number(year), Number(month) - 1, 1).toLocaleDateString(intlLocale(locale), { month: "long" });
+  return { id: `monat-${mark}`, label, year: false };
 }

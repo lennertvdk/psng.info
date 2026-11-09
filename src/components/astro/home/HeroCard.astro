@@ -9,7 +9,6 @@ import { pick } from "@/i18n/localized";
 import { pathFor } from "@/i18n/routes";
 import { calendarEntry, seriesCalendarEntry } from "@/lib/events/calendarEntry";
 import { formatEventDate, formatEventDateRange, formatEventTime, formatRelativeToToday, formatSeriesTime } from "@/lib/events/format";
-import { eventPath } from "@/lib/events/paths";
 import type { HeroSlot } from "@/lib/events/schedule";
 import { canRegister } from "@/lib/events/schedule";
 import { cardAction, columnLabel, registerHref } from "@/lib/events/view";
@@ -52,10 +51,10 @@ const link = "inline-flex items-center gap-1 text-sm font-medium text-primary ho
 ---
 
 <article aria-labelledby="hero-card" class="next-event-glow relative" data-expires={expires}>
-  <div class="overflow-hidden rounded-2xl border border-border bg-card">
+  <div class="overflow-hidden rounded-2xl border border-border border-t-coral bg-card [border-top-width:3px]">
     <div class="flex items-center justify-between gap-3 border-b border-border bg-primary/5 px-5 py-3 md:px-6">
-      <h2 id="hero-card" class="flex items-center gap-2 font-heading text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-        <span class="h-2 w-2 rounded-full bg-primary" aria-hidden="true"></span>
+      <h2 id="hero-card" class="flex items-center gap-2 font-heading text-sm font-semibold text-primary">
+        <span class="h-2 w-2 rounded-full bg-coral" aria-hidden="true"></span>
         {label}
       </h2>
       {
@@ -68,15 +67,13 @@ const link = "inline-flex items-center gap-1 text-sm font-medium text-primary ho
     </div>
 
     {
-      // Auf dem Handy ohne Bild: Dort soll der Termin selbst im ersten
-      // Bildschirm stehen, nicht sein Plakat.
       image && (
         <Image
           src={image.src as ImageMetadata}
           alt={image.alt}
           widths={[560, 1120]}
           sizes="(min-width: 1024px) 560px, 100vw"
-          class="hidden aspect-[40/21] w-full bg-muted object-cover sm:block"
+          class="aspect-[40/21] w-full bg-muted object-cover"
         />
       )
     }

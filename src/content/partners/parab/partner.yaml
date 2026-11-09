@@ -3,6 +3,7 @@ name: Psychedelic Awareness & Research Association Basel
 displayName: "PARAB – Psychedelic Awareness & Research Association Basel"
 tone: parab
 order: 2
+category: student-group
 logo: ./logo.webp
 url: https://parab.ch
 instagramUrl: https://www.instagram.com/psychedelicassociationbasel/

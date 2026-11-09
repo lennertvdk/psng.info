@@ -133,7 +133,7 @@ export default function AddToCalendar({
   return (
     <div
       ref={wrapper}
-      className="inline-block"
+      className="inline-block max-w-full"
       onKeyDown={(e) => {
         if (e.key === "Escape" && open) {
           e.stopPropagation();
@@ -163,7 +163,7 @@ export default function AddToCalendar({
         className={
           subtle
             ? "inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:underline"
-            : "inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-heading font-medium text-foreground transition-colors hover:bg-muted"
+            : "inline-flex max-w-full items-center gap-2 rounded-lg border border-border px-4 py-2 text-left text-sm font-heading font-medium text-foreground transition-colors hover:bg-muted"
         }
       >
         <CalendarPlus className="h-4 w-4" aria-hidden="true" />

@@ -1,0 +1,44 @@
+---
+import type { Locale } from "@/i18n/locale";
+import { timelineMark } from "@/lib/events/format";
+
+/*
+ * Marken im Zeitstrahl: das Jahr groß als Überschrift, der Monat in der
+ * Schrift der Datumsspalte. Beide stehen links der Schiene (auf dem Handy
+ * rechts daneben). scripts/timeline.ts blendet eine Marke aus, wenn der
+ * Filter alle Einträge darunter verbirgt; das Inhaltsverzeichnis am Rand
+ * springt zu ihnen.
+ */
+interface Props {
+  /** „2026“ oder „2026-11“. */
+  mark: string;
+  locale: Locale;
+}
+
+const { mark, locale } = Astro.props;
+const { id, label, year } = timelineMark(mark, locale);
+const month = !year;
+const row = "timeline-mark grid scroll-mt-28 grid-cols-[1.5rem_minmax(0,1fr)] items-center md:grid-cols-[6.5rem_1.5rem_minmax(0,1fr)]";
+---
+
+{
+  month ? (
+    <li id={id} class={`${row} pb-4`} data-mark={mark} data-level="month">
+      <p class="order-2 pl-3 font-heading text-sm font-medium text-muted-foreground md:order-none md:pl-0 md:pr-4 md:text-right">
+        {label}
+      </p>
+      <div class="order-1 flex justify-center md:order-none" aria-hidden="true">
+        <span class="relative z-[1] h-px w-2.5 bg-foreground/30" />
+      </div>
+    </li>
+  ) : (
+    <li id={id} class={`${row} pb-4 pt-2`} data-mark={mark} data-level="year">
+      <h2 class="order-2 pl-3 font-heading text-2xl font-bold tabular-nums text-foreground md:order-none md:pl-0 md:pr-4 md:text-right">
+        {label}
+      </h2>
+      <div class="order-1 flex justify-center md:order-none" aria-hidden="true">
+        <span class="relative z-[1] h-0.5 w-4 rounded-full bg-foreground/40" />
+      </div>
+    </li>
+  )
+}

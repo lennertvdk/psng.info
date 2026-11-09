@@ -1,0 +1,58 @@
+---
+/*
+ * Inhaltsverzeichnis am linken Rand, nach dem Vorbild von LessWrong
+ * (Referenz: Commit a594f84, damals als React-Insel auf der Startseite).
+ *
+ * Ein schmaler Streifen: eine Linie, ein Punkt je Abschnitt, die Abstände
+ * maßstäblich zur Länge der Abschnitte, dazu ein Balken für den Teil der
+ * Seite, der gerade im Bild ist. Die Namen stehen immer da; der erreichte
+ * Abschnitt bekommt einen größeren Punkt in Himbeer. Der Streifen sitzt am
+ * linken Fensterrand, der Text daneben bleibt mittig, solange Platz ist (siehe
+ * ProseLayout und EventsPage). Unter 960 px oder auf sehr niedrigen Fenstern
+ * gibt es ihn nicht; reicht die Höhe nicht für alle Punkte, scrollt er.
+ *
+ * Ohne JavaScript bleibt es eine gewöhnliche Liste von Sprunglinks mit
+ * gleichmäßigen Abständen; scripts/toc.ts setzt Abstände, Balken und
+ * `aria-current`.
+ */
+interface Props {
+  items: { href: string; label: string; strong?: boolean }[];
+  label: string;
+}
+
+const { items, label } = Astro.props;
+---
+
+<nav aria-label={label} data-toc class="sticky top-28 h-[calc(100svh-9rem)] max-w-[15rem] overflow-y-auto overscroll-contain pl-1 print:hidden [@media(max-height:520px)]:hidden">
+  <div class="flex h-full">
+    <div data-toc-line class="relative w-px shrink-0 bg-foreground/20">
+      <div data-toc-bar class="absolute -left-[0.5px] top-0 h-0 w-[2px] rounded-full bg-primary"></div>
+    </div>
+    <div class="flex min-w-0 flex-1 flex-col">
+      <div data-toc-intro class="flex-[0_1_0%]"></div>
+      <ol data-toc-list class="flex flex-1 flex-col">
+        {
+          items.map((item) => (
+            <li data-toc-item class="flex flex-1 flex-col">
+              <a href={item.href} class="-ml-[3.5px] flex items-center gap-2.5 py-1 text-muted-foreground transition-colors hover:text-foreground aria-[current]:text-foreground">
+                <span
+                  data-toc-dot
+                  class="h-[7px] w-[7px] shrink-0 rounded-full bg-foreground/60 transition-transform motion-reduce:transition-none [[aria-current]>&]:scale-[1.45] [[aria-current]>&]:bg-primary"
+                  aria-hidden="true"
+                />
+                <span class:list={["font-heading text-[0.8125rem] leading-tight", item.strong && "font-semibold"]}>
+                  {item.label}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</nav>
+
+<script>
+  import { initToc } from "@/scripts/toc";
+  initToc();
+</script>

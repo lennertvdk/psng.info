@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ExternalLink, Languages, Menu, X } from "lucide-react";
 import psngLogo from "@/assets/PSNG-Logo-centered.webp";
 import { whatsappHref } from "@/lib/links";
@@ -20,7 +20,8 @@ interface Props {
 }
 
 /**
- * Beide Sprachen nebeneinander, die aktive hervorgehoben. Bewusst keine
+ * Beide Sprachen nebeneinander, die aktive hervorgehoben. Auf dem Handy
+ * reicht die Tippfläche über die schmale Pille hinaus auf 44 px Höhe. Bewusst keine
  * Flaggen: Eine Flagge steht für ein Land, nicht für eine Sprache.
  *
  * Die Links führen auf dieselbe Seite in der Zielsprache, nicht pauschal auf
@@ -45,7 +46,7 @@ function LanguageSwitch({ switchTo }: { switchTo: Record<Locale, string> }) {
               aria-label={localeNames[l]}
               aria-current={active ? "true" : undefined}
               onClick={rememberScrollForLocaleSwitch}
-              className={`rounded-full px-2.5 py-1 font-heading text-xs font-medium transition-colors ${
+              className={`relative rounded-full px-2.5 py-1 font-heading text-xs font-medium transition-colors before:absolute before:inset-x-0 before:-inset-y-2.5 before:content-[""] md:before:hidden ${
                 active ? "bg-card text-primary shadow-sm" : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -64,6 +65,19 @@ function LanguageSwitch({ switchTo }: { switchTo: Record<Locale, string> }) {
  */
 function SiteNav({ switchTo, current }: Props) {
   const [open, setOpen] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+
+  // Escape schließt das Menü und gibt den Fokus an den Knopf zurück.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
   const c = useCopy();
   const locale = useLocale();
   const home = pathFor("home", locale);
@@ -98,7 +112,7 @@ function SiteNav({ switchTo, current }: Props) {
         aria-current={active ? "page" : undefined}
         onClick={mobile ? () => setOpen(false) : undefined}
         {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-        className={`${linkClass} ${active ? "text-primary" : "text-muted-foreground"} ${mobile ? "py-1.5" : ""} ${link.external ? "inline-flex items-center gap-1" : ""}`}
+        className={`${linkClass} ${active ? "text-primary" : "text-muted-foreground"} ${mobile ? "flex min-h-11 items-center" : ""} ${link.external ? "inline-flex items-center gap-1" : ""}`}
       >
         {link.label}
         {link.external && <ExternalLink size={13} aria-hidden="true" />}
@@ -108,7 +122,7 @@ function SiteNav({ switchTo, current }: Props) {
 
   return (
     <nav data-site-nav className="glass fixed inset-x-0 top-0 z-50">
-      <div className="container mx-auto flex items-center justify-between gap-3 px-4 py-3 sm:px-6">
+      <div className="container mx-auto flex flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <a
           href={home}
           className="flex shrink-0 items-center gap-3 font-heading text-xl font-bold tracking-tight text-primary"
@@ -131,7 +145,7 @@ function SiteNav({ switchTo, current }: Props) {
             href={whatsappHref("nav")}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-lg gradient-psychedelic px-4 py-2 font-heading text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-lg bg-primary px-4 py-2 font-heading text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
           >
             {c.hero.joinWhatsapp}
           </a>
@@ -141,20 +155,22 @@ function SiteNav({ switchTo, current }: Props) {
             zu verschwinden – er ist der eine Schritt, den die Seite auslösen
             will. „WhatsApp" allein, weil der volle Text die Leiste sprengt;
             das ausgeschriebene Ziel steht im aria-label. */}
-        <div className="flex items-center gap-2 md:hidden">
+        {/* Bei großer Schrift bricht die Gruppe um, statt den Menü-Knopf aus dem Bild zu schieben. */}
+        <div className="flex flex-wrap items-center justify-end gap-2 md:hidden">
           <LanguageSwitch switchTo={switchTo} />
           <a
             href={whatsappHref("nav-mobil")}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={c.hero.joinWhatsapp}
-            className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-lg gradient-psychedelic px-3 font-heading text-xs font-medium text-primary-foreground"
+            className="inline-flex h-11 items-center justify-center whitespace-nowrap rounded-lg bg-primary px-3 font-heading text-xs font-medium text-primary-foreground"
           >
             WhatsApp
           </a>
           <button
+            ref={toggleRef}
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center text-primary"
+            className="inline-flex h-11 w-11 items-center justify-center text-primary"
             onClick={() => setOpen(!open)}
             aria-label={c.nav.menuToggle}
             aria-expanded={open}
@@ -169,7 +185,7 @@ function SiteNav({ switchTo, current }: Props) {
           darf nicht davon abhängen, dass eine Animation tatsächlich läuft. */}
       {open && (
         <div id={MOBILE_MENU_ID} className="glass md:hidden">
-          <div className="flex flex-col gap-2 px-6 py-4">{links.map((link) => renderLink(link, true))}</div>
+          <div className="flex flex-col px-6 py-2">{links.map((link) => renderLink(link, true))}</div>
         </div>
       )}
     </nav>

@@ -5,13 +5,14 @@ import { ArrowRight } from "lucide-react";
 import { copy } from "@/i18n/copy";
 import type { Locale } from "@/i18n/locale";
 import { pick } from "@/i18n/localized";
-import { formatEventDate } from "@/lib/events/format";
+import { formatEventDateRange } from "@/lib/events/format";
 import { eventPath } from "@/lib/events/paths";
 import { hasPage } from "@/lib/events/schedule";
 import type { SiteEvent } from "@/lib/events/types";
 import { columnLabel } from "@/lib/events/view";
 import { getYouTubeEmbedUrl } from "@/lib/youtube";
 import PartnerChip from "../PartnerChip.astro";
+import CardHead from "./CardHead.astro";
 import LanguageNote from "./LanguageNote.astro";
 import PartnerStrip from "./PartnerStrip.astro";
 import PhotoCarousel from "./PhotoCarousel.astro";
@@ -38,10 +39,12 @@ const sidePhotos = embed && photos.length ? photos : undefined;
 const parent = e.partOf ? events.find((x) => x.slug === e.partOf) : undefined;
 const luma = Boolean(e.registrationUrl?.includes("luma.com"));
 const external = { target: "_blank", rel: "noopener noreferrer" };
-const link = "font-medium text-primary hover:underline";
+const page = hasPage(e) ? eventPath(e.slug, locale) : undefined;
+// Die eigene Seite ist der eine hervorgehobene Link; alles Weitere tritt zurück.
+const link = page ? "font-medium text-muted-foreground hover:text-primary" : "font-medium text-primary hover:underline";
 ---
 
-<article class="overflow-hidden rounded-xl border border-border/60 bg-card transition-shadow hover:shadow-lg">
+<article class="overflow-hidden rounded-xl border border-border/60 bg-card">
   {
     embed ? (
       <div class="relative aspect-video w-full bg-muted">
@@ -64,22 +67,23 @@ const link = "font-medium text-primary hover:underline";
 
   <div class:list={[sidePhotos ? "grid gap-5 p-5 md:grid-cols-2 md:gap-6" : "p-5"]}>
     <div class="space-y-3">
-      <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-        <span class="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">{columnLabel(e.column, c)}</span>
+      <CardHead date={formatEventDateRange(e, locale)}>
+        <span class="chip">{columnLabel(e.column, c)}</span>
         {
           e.speakerType && (
-            <span class="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+            <span class="chip-accent">
               {e.speakerType === "student" ? c.events.speakerTypes.student : c.events.speakerTypes.guest}
             </span>
           )
         }
         {e.partner?.tone && <PartnerChip partner={e.partner} />}
-        {e.featured && <span class="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">{c.events.firstEvent}</span>}
-        <span>{formatEventDate(e.date, locale)}</span>
-      </div>
+        {e.featured && <span class="chip-accent">{c.events.firstEvent}</span>}
+      </CardHead>
 
       <div class="space-y-2">
-        <h2 class="font-heading text-lg font-semibold leading-snug text-foreground">{title}</h2>
+        <h3 class="font-heading text-lg font-semibold leading-snug text-foreground">
+          {page ? <a href={page} class="hover:text-primary">{title}</a> : title}
+        </h3>
         {e.subtitle && <p class="text-sm font-medium leading-relaxed text-foreground/80">{pick(e.subtitle, locale)}</p>}
         {e.speaker && <p class="text-sm text-muted-foreground">{c.events.with} {e.speaker}</p>}
         {e.location && <p class="text-sm text-muted-foreground">{pick(e.location, locale)}</p>}
@@ -87,7 +91,7 @@ const link = "font-medium text-primary hover:underline";
           parent && (
             <p class="text-sm text-muted-foreground">
               {c.events.partOf}{" "}
-              <a href={`#${parent.slug}`} class={link}>
+              <a href={`#${parent.slug}`} class="font-medium text-primary hover:underline">
                 {pick(parent.title, locale)}
               </a>
             </p>
@@ -95,30 +99,43 @@ const link = "font-medium text-primary hover:underline";
         }
         <LanguageNote event={e} locale={locale} />
       </div>
-      {e.description && <p class="whitespace-pre-line text-sm text-muted-foreground">{pick(e.description, locale)}</p>}
+      {e.description && <p class="whitespace-pre-line text-reading">{pick(e.description, locale)}</p>}
       {
         // Die Kurzvita gehört auch in den Rückblick: Wer den Vortrag Monate
         // später findet, kennt den Namen darüber in der Regel nicht.
-        e.speakerBio && <p class="text-sm text-muted-foreground">{pick(e.speakerBio, locale)}</p>
+        e.speakerBio && (
+          <div>
+            <p class="font-heading text-xs font-medium text-foreground">{c.eventPage.speaker}</p>
+            <p class="mt-1 text-reading">{pick(e.speakerBio, locale)}</p>
+          </div>
+        )
       }
       {
         e.furtherReading?.length && (
           <div>
             <p class="font-heading text-xs font-medium text-foreground">{c.events.furtherReading}</p>
-            <ul class="mt-1.5 space-y-1.5">
+            <ol class="mt-1.5 max-w-[68ch] list-decimal space-y-1.5 pl-5 marker:text-muted-foreground">
               {e.furtherReading.map((r) => (
-                <li class="text-xs leading-relaxed">
-                  <a href={r.url} {...external} class="text-muted-foreground underline decoration-border underline-offset-2 transition-colors hover:text-primary hover:decoration-primary">
+                <li class="pl-1 text-sm leading-relaxed">
+                  <a href={r.url} {...external} class="text-foreground/80 underline decoration-border underline-offset-2 transition-colors hover:text-primary hover:decoration-primary">
                     {pick(r.text, locale)}
                   </a>
                 </li>
               ))}
-            </ul>
+            </ol>
           </div>
         )
       }
 
       <div class="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-sm">
+        {
+          page && (
+            <a href={page} class="inline-flex items-center gap-1 font-medium text-primary hover:underline">
+              {c.eventPage.eventPage}
+              <ArrowRight size={14} aria-hidden="true" />
+            </a>
+          )
+        }
         {
           e.attendees && (
             <span class="text-muted-foreground">
@@ -145,14 +162,6 @@ const link = "font-medium text-primary hover:underline";
           )
         }
         {luma && <a href={e.registrationUrl} {...external} class={link}>{c.events.lumaLink}</a>}
-        {
-          hasPage(e) && (
-            <a href={eventPath(e.slug, locale)} class="inline-flex items-center gap-1 font-medium text-muted-foreground hover:text-primary">
-              {c.eventPage.eventPage}
-              <ArrowRight size={14} aria-hidden="true" />
-            </a>
-          )
-        }
       </div>
 
       {e.disclaimer && <p class="text-xs italic text-muted-foreground">{pick(e.disclaimer, locale)}</p>}

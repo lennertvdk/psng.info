@@ -1,5 +1,6 @@
 name: "Psychedelia Stiftung"
 order: 10
+category: foundation
 logo: ./logo.webp
 url: https://psychedelia-stiftung.de/
 opportunity:

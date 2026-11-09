@@ -3,6 +3,7 @@ name: Berlin Psychedelic Science Association
 displayName: "Berlin Psychedelic Science Association (BPSA)"
 tone: bpsa
 order: 1
+category: student-group
 logo: ./logo.webp
 url: https://bpsa.psng.info
 instagramUrl: https://www.instagram.com/bpsa.berlin/
