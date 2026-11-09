@@ -2,8 +2,8 @@ import { activeSection, barSpan, sectionWeights, stripPosition } from "@/lib/toc
 
 /** Mindestlänge des Balkens als Anteil der Linie, siehe barSpan(). */
 const MIN_BAR = 0.12;
-/** Ab dieser Höhe unter der Oberkante gilt ein Abschnitt als erreicht (feste Navigation). */
-const READ_LINE = 140;
+/** Spielraum, damit ein angesprungener Abschnitt sicher als erreicht gilt. */
+const SLACK = 4;
 
 /**
  * Führt das Inhaltsverzeichnis am linken Rand nach (SectionToc.astro): Abstände
@@ -65,7 +65,17 @@ function setup(nav: HTMLElement): void {
     bar.style.top = `${span.top}px`;
     bar.style.height = `${span.height}px`;
 
-    const active = activeSection(tops, scrollY + READ_LINE);
+    // Erreicht ist ein Abschnitt, sobald seine Oberkante dort steht, wo ein
+    // Sprunglink ihn hinsetzt: unter der festen Navigation (scroll-padding)
+    // plus seinem eigenen scroll-margin. Ganz unten zählt der letzte, auch
+    // wenn er zu kurz ist, um so weit nach oben zu kommen.
+    const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+    const reach = visible.map((entry, i) => {
+      const margin = parseFloat(getComputedStyle(document.getElementById(entry.id)!).scrollMarginTop) || 0;
+      return tops[i] - padding - margin - SLACK;
+    });
+    const atBottom = scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+    const active = atBottom ? visible.length - 1 : activeSection(reach, scrollY);
     for (const entry of entries) entry.link.removeAttribute("aria-current");
     if (active >= 0) visible[active].link.setAttribute("aria-current", "location");
   };

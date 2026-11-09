@@ -62,11 +62,21 @@ const marksBefore = (iso: string) => {
 const upcomingRows = upcoming.map((entry) => ({ entry, marks: marksBefore(entry.date) }));
 const todayMarks = marksBefore(toIsoDate(ref));
 const pastRows = past.map((entry) => ({ entry, marks: marksBefore(entry.date) }));
-// Dieselben Marken als Punkte im Inhaltsverzeichnis am Rand (ab 960 px).
-const tocItems = [...upcomingRows.flatMap((r) => r.marks), ...todayMarks, ...pastRows.flatMap((r) => r.marks)].map((mark) => {
+// Dieselben Marken als Punkte im Inhaltsverzeichnis am Rand (ab 960 px),
+// dazu „Heute“. Vergangene Jahre nur als Jahr, damit der Streifen mit den
+// Jahren nicht überläuft.
+const thisYear = toIsoDate(ref).slice(0, 4);
+const tocMark = (mark: string) => {
   const { id, label, year } = timelineMark(mark, locale);
   return { href: `#${id}`, label, strong: year };
-});
+};
+const tocMarks = (marks: string[]) => marks.filter((m) => m.length === 4 || m.slice(0, 4) >= thisYear).map(tocMark);
+const tocItems = [
+  ...tocMarks(upcomingRows.flatMap((r) => r.marks)),
+  ...tocMarks(todayMarks),
+  { href: "#heute", label: c.events.today.charAt(0).toUpperCase() + c.events.today.slice(1), strong: true },
+  ...tocMarks(pastRows.flatMap((r) => r.marks)),
+];
 const feed = new URL("/events.ics", Astro.site);
 const webcal = feed.href.replace(/^https?:/, "webcal:");
 ---
@@ -79,7 +89,14 @@ const webcal = feed.href.replace(/^https?:/, "webcal:");
   current="events"
 >
   <link slot="head" rel="alternate" type="text/calendar" title="PSNG – Veranstaltungen" href="/events.ics" />
-  <section class="pb-24 pt-32 md:pb-32 md:pt-40">
+  <section
+    class="pb-24 pt-32 md:pb-32 md:pt-40 min-[960px]:grid min-[960px]:grid-cols-[minmax(10rem,1fr)_minmax(0,72rem)_minmax(0,1fr)] min-[960px]:pl-8"
+  >
+    {/* Ab 960 px steht das Inhaltsverzeichnis am linken Fensterrand, der Rest
+         mittig daneben (wie in ProseLayout). */}
+    <div class="hidden min-[960px]:block">
+      <SectionToc items={tocItems} label={c.nav.tocLabel} />
+    </div>
     <div class="container mx-auto max-w-6xl px-4 sm:px-6">
       <div class="mb-10 max-w-3xl">
         <h1 class="mb-4 font-heading text-3xl font-bold text-foreground md:text-5xl">{c.events.title}</h1>
@@ -118,11 +135,7 @@ const webcal = feed.href.replace(/^https?:/, "webcal:");
         </div>
       </div>
 
-      <div class="mx-auto max-w-5xl min-[960px]:grid min-[960px]:max-w-none min-[960px]:grid-cols-[8rem_minmax(0,1fr)] min-[960px]:gap-8">
-        <div class="hidden min-[960px]:block">
-          <SectionToc items={tocItems} label={c.nav.tocLabel} />
-        </div>
-        <div class="min-w-0">
+      <div class="mx-auto max-w-5xl">
         {upcoming.length === 0 && <p class="mb-8 text-muted-foreground">{c.eventPage.noUpcoming}</p>}
         <ol class="timeline relative">
           <span aria-hidden="true" class="absolute bottom-2 top-2 left-[0.75rem] w-px bg-border md:left-[7.25rem]"></span>
@@ -135,7 +148,7 @@ const webcal = feed.href.replace(/^https?:/, "webcal:");
             ))
           }
           {todayMarks.map((mark) => <TimelineMark mark={mark} locale={locale} />)}
-          <li class="timeline-today grid grid-cols-[1.5rem_minmax(0,1fr)] items-center md:grid-cols-[6.5rem_1.5rem_minmax(0,1fr)] my-1" aria-hidden="true">
+          <li id="heute" class="timeline-today scroll-mt-40 grid grid-cols-[1.5rem_minmax(0,1fr)] items-center md:grid-cols-[6.5rem_1.5rem_minmax(0,1fr)] my-1" aria-hidden="true">
             <p class="hidden pr-4 text-right font-heading text-xs uppercase tracking-[0.2em] text-primary md:block">
               {c.events.today}<span class="block normal-case tracking-normal" data-today-date></span>
             </p>
@@ -151,7 +164,6 @@ const webcal = feed.href.replace(/^https?:/, "webcal:");
             ))
           }
         </ol>
-        </div>
       </div>
 
       <div class="mt-14 rounded-2xl border border-border/60 bg-muted/40 p-6 text-center sm:p-8">

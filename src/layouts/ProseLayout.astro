@@ -7,8 +7,9 @@ import { pathFor } from "@/i18n/routes";
 
 /**
  * Lange Textseiten: Impressum, Datenschutz, Code of Conduct, Leitfaden.
- * Mit `toc` steht ab 960 px links das Inhaltsverzeichnis, der Text rückt
- * dafür etwas nach rechts und bleibt annähernd mittig.
+ * Mit `toc` steht ab 960 px das Inhaltsverzeichnis am linken Fensterrand.
+ * Der Text steht in der mittleren von drei Spalten und damit mittig, solange
+ * links genug Platz für das Verzeichnis bleibt; sonst rückt er nach rechts.
  */
 type Props = Parameters<typeof BaseLayout>[0] & {
   heading: string;
@@ -23,7 +24,8 @@ const c = copy[layout.locale];
   <div
     class:list={[
       "container mx-auto px-6 pb-24 pt-32 md:pt-40",
-      toc && "min-[960px]:grid min-[960px]:grid-cols-[11rem_minmax(0,48rem)] min-[960px]:justify-center min-[960px]:gap-12",
+      toc &&
+        "min-[960px]:grid min-[960px]:max-w-none min-[960px]:grid-cols-[minmax(13rem,1fr)_minmax(0,48rem)_minmax(0,1fr)] min-[960px]:gap-x-10 min-[960px]:pl-8",
     ]}
   >
     {
