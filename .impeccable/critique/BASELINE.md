@@ -278,10 +278,16 @@ harden (6) kann vorher als kleiner PR auf `main`. Das Inhaltsverzeichnis (11) ko
 - **BPSA auf der Übersicht:** Die Kooperationsleiste bleibt auf jeder Karte, leiser und mit besserem Kontrast (siehe Hebel 4).
 - **„Mach mit“-Sektion:** Sie kommt ans Ende von `/ueber-uns` (siehe Hebel 9).
 
+- **Schrift:** Schibsted Grotesk ist abgenommen.
+- **Hero-Foto:** Das ALPS-Jubelfoto (`src/assets/alps-conference/alps-01.webp`) als großes Band direkt unter Hero-Text und Termin-Karte. Nur Ausschnitt, keine Bearbeitung. Als Vollbild-Hintergrund würde die Karte die Gesichter verdecken, außerdem ist die Datei nur 1200 px breit.
+- **Lecture-Zeile auf /events und Startseite:** Nur noch „einmal im Monat“, ohne Uhrzeit und Zoom. Seit 09.11.2026 auch auf `main` live.
+- **„13+ Städte“ bleibt.** Gemeint ist die Zahl der WhatsApp-Gruppen.
+- **Polinas Rolle „Lecture-Reihe“** ist gewollt.
+- **Konferenzbesuche** bleiben vorerst so groß wie bisher, vielleicht in ein paar Monaten kompakter (betrifft Hebel 7).
+- **„Mach mit“:** Die Texte aus PR #1 werden übernommen (`git show 2409995 -- src/components/lab/JoinTeam.tsx src/i18n/copy.ts`).
+- **Seitenleiste (Hebel 11):** ja, auf `/leitfaden` und `/events`.
+- **Deutschlandkarte:** später.
+
 ### Noch offen
-1. **BPSA-Partnertext:** Passt „Ihre Lectures finden gelegentlich in Zusammenarbeit mit dem PSNG statt“ (`src/content/partners/bpsa/partner.yaml`) zu deiner Präzisierung, dass Lectures PSNG-Lectures sind und Lokalgruppen zusätzlich streamen können? A hält ihn für widersprüchlich, nach deiner Präzisierung kann er auch stimmen.
-2. **Hero-Foto:** Welches Foto soll den Hero tragen, z. B. der Hörsaal bei der Majić-Lecture? Bearbeiten würdest du es selbst.
-3. **Koralle:** Wegen AA ist der Verlauf auf 46–48 % Helligkeit abgedunkelt, Koralle wirkt dadurch ziegelrot. Darf Koralle künftig nur als Fläche oder Akzent ohne Text auftreten, damit sie wieder hell sein kann?
-4. **Konferenzbesuche:** Sollen ALPS, ICPR und Tryp im Zeitstrahl kompakter erscheinen als eigene Lectures?
-5. **Texte für „Mach mit“:** Übernehmen wir die Texte aus PR #1 (Probeaufgabe für vier Wochen, Bereiche inkl. „Vereinsgründung“) so?
-6. **Deutschlandkarte:** Die Idee einer Karte mit den PSNG-Gruppen ist vorgemerkt. Welche Städte bzw. Gruppen mit welchem Status sollen darauf, und wo soll sie stehen: Startseite, Über uns oder Leitfaden? Die Copy nennt bisher nur „13+ Städte“, Daten dazu gibt es noch keine.
+1. **BPSA-Partnertext:** Passt „Ihre Lectures finden gelegentlich in Zusammenarbeit mit dem PSNG statt“ (`src/content/partners/bpsa/partner.yaml`) zu deiner Präzisierung, dass Lectures PSNG-Lectures sind und Lokalgruppen zusätzlich streamen können?
+2. **„Erstes bundesweites“** im Hero ist unbeantwortet. Nicht ändern, bis Lennert entscheidet.

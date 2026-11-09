@@ -2,7 +2,6 @@
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import { ChevronDown } from "lucide-react";
-import heroBg from "@/assets/hero-bg.webp";
 import teamPhoto from "@/assets/Team-2026-08.webp";
 import AddToCalendar from "@/components/AddToCalendarIsland";
 import ContactSection from "@/components/ContactSection";
@@ -38,6 +37,8 @@ interface Props {
 const { locale } = Astro.props;
 const c = copy[locale];
 const ref = new Date();
+/** Das Event, dessen erstes Foto unter dem Hero steht. */
+const HERO_PHOTO_EVENT = "alps-conference-2026";
 const [events, features, partners] = await Promise.all([loadEvents(), loadFeatures(), loadPartnerList()]);
 
 const slot = getHeroSlot(events, features, ref);
@@ -48,10 +49,24 @@ const agenda = getUpcomingAgenda(events, ref)
   .slice(0, 3);
 // Steht ein Rückblick schon im Hero, braucht es ihn weiter unten nicht noch einmal.
 const proof = getProofEvents(
-  events.filter((e) => !(slot.kind === "recap" && slot.event.slug === e.slug)),
+  // Ohne das Event, das schon im Hero steht, und ohne das Event hinter dem Foto darunter.
+  events.filter((e) => !(slot.kind === "recap" && slot.event.slug === e.slug) && e.slug !== HERO_PHOTO_EVENT),
   ref,
 );
 const legacy = legacyAnchorTargets(events, locale);
+/** Das Foto unter dem Hero: die PSNG-Gruppe auf der ALPS Conference 2026. */
+const heroPhotoEvent = events.find((e) => e.slug === HERO_PHOTO_EVENT);
+const heroPhoto = heroPhotoEvent?.photos?.[0];
+const [feature, ...moreProof] = proof;
+/** Wie auf der Detailseite: statt „Lecture mit {Name}“ der Vortragstitel, der Name darunter. */
+const featureTalk =
+  feature?.speaker && feature.abstract?.title && pick(feature.title, locale).includes(feature.speaker) ? pick(feature.abstract.title, locale) : undefined;
+const figures = (e: (typeof proof)[number]) =>
+  [
+    e.attendees && { value: String(e.attendees), label: c.events.attendees },
+    e.rating && { value: String(e.rating), label: c.events.rating },
+    e.recommendPercent && { value: `${e.recommendPercent} %`, label: c.events.recommend },
+  ].filter(Boolean) as { value: string; label: string }[];
 
 const anchor = (hash: string) => `#${hash}`;
 const external = { target: "_blank", rel: "noopener noreferrer" };
@@ -100,8 +115,7 @@ const proofFigure = (e: (typeof proof)[number]) => {
     }
   </script>
 
-  <section data-track="hero" class="relative overflow-hidden pb-12 pt-24 md:pb-20 md:pt-32">
-    <Image src={heroBg} alt="" widths={[960, 1920]} sizes="100vw" loading="eager" class="absolute inset-0 -z-10 h-full w-full object-cover" />
+  <section data-track="hero" class="relative overflow-hidden bg-gradient-to-b from-primary/[0.06] to-background pb-12 pt-24 md:pb-16 md:pt-32">
     <div
       class:list={[
         "container mx-auto grid items-center gap-10 px-4 sm:px-6",
@@ -140,6 +154,24 @@ const proofFigure = (e: (typeof proof)[number]) => {
         )
       }
     </div>
+    {
+      heroPhoto && heroPhotoEvent && (
+        <figure class="container mx-auto mt-12 px-4 sm:px-6 md:mt-16">
+          <Image
+            src={heroPhoto.src as ImageMetadata}
+            alt={pick(heroPhoto.alt, locale) ?? ""}
+            widths={[640, 1200]}
+            sizes="(min-width: 1280px) 1200px, 100vw"
+            loading="eager"
+            class="aspect-[4/3] w-full rounded-2xl object-cover object-[center_35%] sm:aspect-[16/7] lg:aspect-[21/8]"
+          />
+          <figcaption class="mt-3 text-sm text-muted-foreground">
+            <a href={eventPath(heroPhotoEvent.slug, locale)} class="font-medium text-foreground hover:text-primary">{pick(heroPhotoEvent.title, locale)}</a>
+            {" · "}{formatEventDateRange(heroPhotoEvent, locale)}
+          </figcaption>
+        </figure>
+      )
+    }
   </section>
 
   <section aria-labelledby="home-ways" class="bg-white py-16 md:py-24">
@@ -257,34 +289,75 @@ const proofFigure = (e: (typeof proof)[number]) => {
             </div>
             <a href={pathFor("events", locale)} class={textLink}>{c.lab.agenda.all}</a>
           </div>
-          {/* Auf dem Handy ein Streifen zum Wischen, darüber ein Raster. */}
-          <ul class="-mx-4 mt-10 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-4 [&::-webkit-scrollbar]:hidden" data-reveal>
-            {proof.map((e) => (
-              <li class="w-[78%] shrink-0 snap-start sm:w-auto">
-                <a href={eventPath(e.slug, locale)} class="group block h-full overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-lg">
-                  <div class="aspect-[4/3] overflow-hidden bg-muted">
-                    <Image
-                      src={proofImage(e) as ImageMetadata}
-                      alt=""
-                      widths={[400, 800]}
-                      sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 78vw"
-                      class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                    />
-                  </div>
-                  <div class="p-5">
-                    <p class="text-xs text-muted-foreground">
-                      {formatEventDate(e.date, locale)}
-                      {e.partner ? ` · ${c.events.with} ${e.partner.short ?? e.partner.name}` : ""}
-                    </p>
-                    <h3 class="mt-1 line-clamp-2 font-heading text-base font-semibold leading-snug text-foreground group-hover:text-primary">
-                      {pick(e.title, locale)}
-                    </h3>
-                    <p class="mt-3 text-sm font-medium text-foreground">{proofFigure(e)}</p>
-                  </div>
-                </a>
-              </li>
-            ))}
-          </ul>
+          {/* Der stärkste Rückblick groß, mit Zahlen, die übrigen darunter. */}
+          <a href={eventPath(feature.slug, locale)} class="group mt-10 grid overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-lg lg:grid-cols-[1.4fr_1fr]" data-reveal>
+            <div class="aspect-[4/3] overflow-hidden bg-muted lg:aspect-auto">
+              <Image
+                src={proofImage(feature) as ImageMetadata}
+                alt=""
+                widths={[640, 1000]}
+                sizes="(min-width: 1024px) 700px, 100vw"
+                class="h-full w-full object-cover"
+              />
+            </div>
+            <div class="flex flex-col p-6 md:p-10">
+              <p class="text-sm text-muted-foreground">
+                {formatEventDate(feature.date, locale)}
+                {feature.partner ? ` · ${c.events.with} ${feature.partner.short ?? feature.partner.name}` : ""}
+              </p>
+              <h3 class="mt-2 text-balance font-heading text-2xl font-bold leading-tight text-foreground group-hover:text-primary md:text-3xl">
+                {featureTalk ?? pick(feature.title, locale)}
+              </h3>
+              {featureTalk && <p class="mt-2 font-heading text-base font-medium text-foreground">{feature.speaker}</p>}
+              {feature.subtitle && <p class="mt-3 text-reading">{pick(feature.subtitle, locale)}</p>}
+              {
+                figures(feature).length > 0 ? (
+                  <dl class="mt-auto flex flex-wrap gap-x-8 gap-y-4 pt-8">
+                    {figures(feature).map((f) => (
+                      <div>
+                        <dt class="sr-only">{f.label}</dt>
+                        <dd class="font-heading text-3xl font-bold leading-none text-foreground">{f.value}</dd>
+                        <dd class="mt-1 text-sm text-muted-foreground" aria-hidden="true">{f.label}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                ) : (
+                  <p class="mt-auto pt-8 text-sm font-medium text-foreground">{proofFigure(feature)}</p>
+                )
+              }
+            </div>
+          </a>
+          {
+            moreProof.length > 0 && (
+              <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
+                {moreProof.map((e) => (
+                  <li>
+                    <a href={eventPath(e.slug, locale)} class="group block h-full overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-lg">
+                      <div class="aspect-[3/2] overflow-hidden bg-muted">
+                        <Image
+                          src={proofImage(e) as ImageMetadata}
+                          alt=""
+                          widths={[400, 800]}
+                          sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
+                          class="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div class="p-5">
+                        <p class="text-sm text-muted-foreground">
+                          {formatEventDate(e.date, locale)}
+                          {e.partner ? ` · ${c.events.with} ${e.partner.short ?? e.partner.name}` : ""}
+                        </p>
+                        <h3 class="mt-1 font-heading text-lg font-semibold leading-snug text-foreground group-hover:text-primary">
+                          {pick(e.title, locale)}
+                        </h3>
+                        <p class="mt-3 text-sm font-medium text-foreground">{proofFigure(e)}</p>
+                      </div>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )
+          }
 
           <div class="mt-14" data-reveal>
             <p class="text-center font-heading text-xs uppercase tracking-[0.2em] text-muted-foreground">{c.partners.stripeLabel}</p>
