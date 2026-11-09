@@ -125,7 +125,7 @@ const label = "font-medium text-foreground";
             <ol class="mt-1.5 max-w-[68ch] list-decimal space-y-1.5 pl-5 marker:text-muted-foreground">
               {e.furtherReading.map((r) => (
                 <li class="pl-1 text-sm leading-relaxed">
-                  <a href={r.url} {...external} class="text-muted-foreground underline decoration-border underline-offset-2 transition-colors hover:text-primary hover:decoration-primary">
+                  <a href={r.url} {...external} class="text-foreground/80 underline decoration-border underline-offset-2 transition-colors hover:text-primary hover:decoration-primary">
                     {pick(r.text, locale)}
                   </a>
                 </li>

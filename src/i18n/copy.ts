@@ -112,11 +112,6 @@ const de = {
     ],
   },
 
-  midCta: {
-    title: "Noch nicht dabei?",
-    text: "Tritt unserer WhatsApp-Community bei und vernetze dich mit 250+ Studierenden aus 13+ Städten.",
-    cta: "WhatsApp beitreten",
-  },
 
   events: {
     eyebrow: "Events",
@@ -670,11 +665,6 @@ const en: Copy = {
     ],
   },
 
-  midCta: {
-    title: "Not with us yet?",
-    text: "Join our WhatsApp community and connect with 250+ students across 13+ cities.",
-    cta: "Join on WhatsApp",
-  },
 
   events: {
     eyebrow: "Events",

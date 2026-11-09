@@ -15,7 +15,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ['Space Grotesk', 'sans-serif'],
+        heading: ['Schibsted Grotesk', 'sans-serif'],
         body: ['DM Sans', 'sans-serif'],
       },
       colors: {

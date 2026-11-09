@@ -21,17 +21,17 @@ colors:
   bpsa-violet: "#8f49b9"
 typography:
   display:
-    fontFamily: "Space Grotesk, sans-serif"
+    fontFamily: "Schibsted Grotesk, sans-serif"
     fontSize: "clamp(2rem, 5vw, 3.5rem)"
     fontWeight: 700
     lineHeight: 1.1
   headline:
-    fontFamily: "Space Grotesk, sans-serif"
+    fontFamily: "Schibsted Grotesk, sans-serif"
     fontSize: "2.25rem"
     fontWeight: 700
     lineHeight: 1.2
   title:
-    fontFamily: "Space Grotesk, sans-serif"
+    fontFamily: "Schibsted Grotesk, sans-serif"
     fontSize: "1.25rem"
     fontWeight: 600
     lineHeight: 1.375
@@ -46,7 +46,7 @@ typography:
     fontWeight: 400
     lineHeight: 1.625
   label:
-    fontFamily: "Space Grotesk, sans-serif"
+    fontFamily: "Schibsted Grotesk, sans-serif"
     fontSize: "0.875rem"
     fontWeight: 500
     lineHeight: 1.25
@@ -127,14 +127,14 @@ Das Leitbild hat zwei Seiten. Zum einen ist das PSNG ein Netz von Studierenden q
 
 Im Ist-Zustand ist davon erst die Hälfte da. Die Seite wirkt wie die Aushangwand eines gut geführten Instituts, das seine Türen aufgemacht hat: weißes Papier, eine dunkle, leicht ins Rosé gezogene Tinte, ein klares Himbeer-Pink als einzige Signalfarbe und ein warmer Verlauf von Himbeer über Koralle, der nur dort auftaucht, wo die Seite etwas von einem will (Beitritt, Anmeldung, Footer). Die Gestaltungsklassen der Startseite stammen tatsächlich aus einem Prototyp unter `/lab`; der Name beschreibt, was im Code schon steht. Die Atmosphäre lebt von einem einzigen Bild, dem Hero-Hintergrund mit weißen, verzweigten Silhouetten (Myzel, Neuronen, Korallen) auf einem Nebel aus Pink und Koralle.
 
-Die Dichte ist mittel bis luftig. Inhalte stehen in einem zentrierten Container auf Weiß, Abschnitte trennen sich über einen hauchzarten Pink-Schleier (Himbeer-Pink bei 5 % Deckkraft) statt über Linien oder Schatten. Typografisch trägt Space Grotesk mit ihren technisch-geometrischen Formen die Überschriften, Knöpfe und Daten, DM Sans den Lesetext. Lange Texte (Abstracts, Bios, Beschreibungen) werden vollständig gezeigt, nicht gekürzt.
+Die Dichte ist mittel bis luftig. Inhalte stehen in einem zentrierten Container auf Weiß, Abschnitte trennen sich über einen hauchzarten Pink-Schleier (Himbeer-Pink bei 5 % Deckkraft) statt über Linien oder Schatten. Typografisch trägt Schibsted Grotesk mit ihren technisch-geometrischen Formen die Überschriften, Knöpfe und Daten, DM Sans den Lesetext. Lange Texte (Abstracts, Bios, Beschreibungen) werden vollständig gezeigt, nicht gekürzt.
 
 Der Bestand trägt noch sichtbar die Herkunft aus einem shadcn-Grundgerüst: Die Farbrollen (`primary`, `muted`, `accent`, `sidebar-*`) und die Formular-Bausteine in `src/components/ui/` sind dessen Standard, nur pink eingefärbt. Das ist Ist-Zustand, kein Leitbild; siehe „Im Bestand, nicht kanonisch“ am Ende.
 
 **Key Characteristics:**
 - Weißes Papier, rosé getönte Tinte, Himbeer-Pink als einzige Akzentfarbe für Text und Zustände.
 - Der Himbeer-Koralle-Verlauf ist für Handlungsaufforderungen und den Footer reserviert.
-- Space Grotesk für alles, was strukturiert (Überschriften, Knöpfe, Daten, Navigation); DM Sans für alles, was gelesen wird.
+- Schibsted Grotesk für alles, was strukturiert (Überschriften, Knöpfe, Daten, Navigation); DM Sans für alles, was gelesen wird.
 - Flach im Ruhezustand, Schatten nur als Antwort auf Hover oder für den nächsten Termin.
 - Großzügig gerundete Flächen (12 bis 16px), Chips als Pillen.
 - Partnerinhalte (BPSA, PARAB) tragen eine eigene, fremde Farbachse und werden nicht in die PSNG-Töne übersetzt.
@@ -172,21 +172,21 @@ Eine warme, einachsige Palette: Weiß und rosé gestimmte Neutraltöne, darauf H
 
 ## Typography
 
-**Display Font:** Space Grotesk (mit sans-serif), selbst gehostet in 400, 500, 600, 700 (300 wird geladen, aber nicht genutzt)
+**Display Font:** Schibsted Grotesk (mit sans-serif), selbst gehostet in 400, 500, 600, 700 (300 wird geladen, aber nicht genutzt)
 **Body Font:** DM Sans (mit sans-serif), 400, 500, 700 und 400 kursiv
 
-**Character:** Space Grotesk gibt Überschriften und Zahlen einen leicht technischen, laborhaften Zug; DM Sans bleibt im Lesetext neutral und freundlich. Die Paarung wirkt sachlich, ohne kühl zu sein.
+**Character:** Schibsted Grotesk gibt Überschriften und Zahlen einen leicht technischen, laborhaften Zug; DM Sans bleibt im Lesetext neutral und freundlich. Die Paarung wirkt sachlich, ohne kühl zu sein.
 
 ### Hierarchy
 - **Display** (700, 2rem bis 3,5rem, Zeilenhöhe 1,1): Nur die H1 im Hero der Startseite. Unterseiten-H1 (Events, Event-Detail) nutzen 700, 1,875rem bis 3rem.
 - **Headline** (700, 1,875rem, ab md 2,25rem): Abschnittsüberschriften der Startseite.
 - **Title** (600, 1,125 bis 1,25rem, Zeilenhöhe eng): Karten- und Schrittüberschriften, H2 auf der Event-Detailseite. Im Hero-Kartenkopf 700 bis 1,5rem.
 - **Body** (400, 1rem, Zeilenhöhe 1,625; Einleitungen 1,125rem): Lesetext. In Karten meist 0,875rem. Lange Texte maximal 70ch breit.
-- **Label** (Space Grotesk 500, 0,875rem): Knöpfe, Navigation, Filter, Textlinks.
-- **Meta** (DM Sans 500, 0,75rem): Chips, Datumsangaben, Kleingedrucktes. Die großen Tageszahlen der Datumsschiene setzen Space Grotesk 700 in 1,875rem, Zeilenhöhe 1.
+- **Label** (Schibsted Grotesk 500, 0,875rem): Knöpfe, Navigation, Filter, Textlinks.
+- **Meta** (DM Sans 500, 0,75rem): Chips, Datumsangaben, Kleingedrucktes. Die großen Tageszahlen der Datumsschiene setzen Schibsted Grotesk 700 in 1,875rem, Zeilenhöhe 1.
 
 ### Named Rules
-**The Struktur-gegen-Lesen Rule.** Space Grotesk für alles, was gliedert oder bedient (Überschriften, Knöpfe, Daten, Navigation); DM Sans für alles, was gelesen wird. Die Grenze verläuft nach Funktion, nicht nach Größe.
+**The Struktur-gegen-Lesen Rule.** Schibsted Grotesk für alles, was gliedert oder bedient (Überschriften, Knöpfe, Daten, Navigation); DM Sans für alles, was gelesen wird. Die Grenze verläuft nach Funktion, nicht nach Größe.
 
 **The Kein-Hurenkind Rule.** Überschriften (h1 bis h3) setzen `text-wrap: balance`, Absätze, Listen und Definitionen `text-wrap: pretty`. Global, nicht pro Komponente.
 
@@ -231,7 +231,7 @@ Bilder stehen in festen Formaten: Eventkarte 40:21, Archivkarte und Galerie 4:3,
 ### Buttons
 Kräftig, flächig, ohne Effekte außer einem leichten Abblenden.
 - **Shape:** sanft gerundet (12px), Text nie umbrechend.
-- **Primary:** Himbeer-Koralle-Verlauf, weiße Schrift in Space Grotesk 500, 0,875rem, Innenabstand 12px × 24px. In der Navigation 8px × 16px, auf dem Handy 36px hoch mit 0,75rem.
+- **Primary:** Himbeer-Koralle-Verlauf, weiße Schrift in Schibsted Grotesk 500, 0,875rem, Innenabstand 12px × 24px. In der Navigation 8px × 16px, auf dem Handy 36px hoch mit 0,75rem.
 - **Hover / Focus:** Hover blendet auf 90 % Deckkraft. Fokus über den globalen Ring: 2px Himbeer-Pink, 2px Versatz, nur bei Tastaturfokus.
 - **Secondary:** Weiß bei 60 % auf transparentem Grund, 1px Rahmen in Himbeer-Pink bei 30 %, Schrift Himbeer-Pink. Hover legt einen 5-%-Pink-Schleier unter.
 - **Invertiert (auf dunkler oder Verlaufsfläche):** auf Tiefe Tinte ein Umriss in Weiß bei 30 %; im Footer ein weißer Knopf mit Himbeer-Schrift. Beide existieren nur inline (siehe unten).
@@ -253,13 +253,13 @@ Kräftig, flächig, ohne Effekte außer einem leichten Abblenden.
 - **Error / Disabled:** Fehlertext in Warnrot unter dem Formular; deaktiviert bei 50 % Deckkraft.
 
 ### Navigation
-- **Style:** fixierte Glasleiste am oberen Rand, Logo im Kreis links, „PSNG“ in Space Grotesk 700 Himbeer-Pink ab sm.
-- **Links:** Space Grotesk 500, 0,875rem, Gedämpfte Tinte; Hover und aktive Seite in Himbeer-Pink. Externe Ziele tragen ein 13px-Symbol für externen Link.
+- **Style:** fixierte Glasleiste am oberen Rand, Logo im Kreis links, „PSNG“ in Schibsted Grotesk 700 Himbeer-Pink ab sm.
+- **Links:** Schibsted Grotesk 500, 0,875rem, Gedämpfte Tinte; Hover und aktive Seite in Himbeer-Pink. Externe Ziele tragen ein 13px-Symbol für externen Link.
 - **Sprachumschalter:** Pillengruppe auf Rosé-Nebel, aktive Sprache als weiße Pille mit Ruhekante und Himbeer-Schrift. Keine Flaggen.
 - **Mobil:** Der WhatsApp-Knopf bleibt sichtbar, der Rest klappt ohne Animation in ein Glaspanel.
 
 ### Datumsschiene (Signature Component)
-Termine stehen links von ihrem Inhalt als gestapelte Datumsmarke: Wochentag (0,75rem, Versalien, Gedämpfte Tinte), Tageszahl (Space Grotesk 700, 1,875rem, Zeilenhöhe 1), Monat (0,75rem, Versalien, Himbeer-Pink). Auf der Startseite in einer durch Haarlinien getrennten Liste, auf der Event-Seite als Spalte einer Zeitleiste.
+Termine stehen links von ihrem Inhalt als gestapelte Datumsmarke: Wochentag (0,75rem, Versalien, Gedämpfte Tinte), Tageszahl (Schibsted Grotesk 700, 1,875rem, Zeilenhöhe 1), Monat (0,75rem, Versalien, Himbeer-Pink). Auf der Startseite in einer durch Haarlinien getrennten Liste, auf der Event-Seite als Spalte einer Zeitleiste.
 
 ### Kooperationsleiste (Signature Component)
 Am Fuß von Eventkarten mit Partnerbeteiligung: 2px Oberkante in BPSA-Cyan, darunter ein Verlauf, der links weiß bleibt (dort sitzt das Partnerlogo) und nach rechts über Cyan in Violett läuft.

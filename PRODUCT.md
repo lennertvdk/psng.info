@@ -81,4 +81,4 @@ Das einzige bundesweite, studentisch organisierte Netzwerk für psychedelische W
 
 ## Accessibility & Inclusion
 
-Kein formaler Standard festgelegt. Im Code gibt es axe-Prüfungen (`axe-core` in Tests), Skip-Link und Alt-Texte in beiden Sprachen. Als Zielwert dient WCAG 2.2 AA (offene Entscheidung, nicht von Lennert bestätigt).
+Kein formaler Standard festgelegt. Im Code gibt es axe-Prüfungen (`axe-core` in Tests), Skip-Link und Alt-Texte in beiden Sprachen. Ziel ist WCAG 2.2 AA (am 09.11.2026 festgelegt; Lennert hat die Entscheidung an Claude übergeben).

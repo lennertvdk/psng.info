@@ -90,7 +90,7 @@ const ContactSection = () => {
   return (
     <section id="kontakt" className="py-24 md:py-32">
       <div className="container mx-auto px-6">
-        <div className="max-w-3xl mx-auto text-center mb-12"
+        <div className="max-w-2xl mx-auto mb-12"
         >
           <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary mb-4">
             {c.contact.eyebrow}
@@ -98,12 +98,12 @@ const ContactSection = () => {
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
             {c.contact.title}
           </h2>
-          <p className="text-muted-foreground text-lg leading-relaxed">
+          <p className="text-foreground/80 text-lg leading-relaxed max-w-[68ch]">
             {c.contact.intro}
           </p>
         </div>
 
-        <div className="max-w-xl mx-auto"
+        <div className="max-w-2xl mx-auto"
         >
           {status === "success" ? (
             <div

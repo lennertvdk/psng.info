@@ -273,7 +273,8 @@ harden (6) kann vorher als kleiner PR auf `main`. Das Inhaltsverzeichnis (11) ko
 
 ### Am 09.11.2026 entschieden
 - **Start:** Das Refinement beginnt mit Hebel 1 und 2 (distill und typeset).
-- **Schrift:** Space Grotesk wird im typeset geprüft. Dort werden Alternativen im Kontext gezeigt, die Entscheidung trifft Lennert.
+- **Schrift:** Überschriften in Schibsted Grotesk statt Space Grotesk (Lennerts Wahl aus vier Kandidaten im Hero), Fließtext bleibt DM Sans.
+- **Barrierefreiheit:** Ziel ist WCAG 2.2 AA.
 - **BPSA auf der Übersicht:** Die Kooperationsleiste bleibt auf jeder Karte, leiser und mit besserem Kontrast (siehe Hebel 4).
 - **„Mach mit“-Sektion:** Sie kommt ans Ende von `/ueber-uns` (siehe Hebel 9).
 
@@ -284,4 +285,3 @@ harden (6) kann vorher als kleiner PR auf `main`. Das Inhaltsverzeichnis (11) ko
 4. **Konferenzbesuche:** Sollen ALPS, ICPR und Tryp im Zeitstrahl kompakter erscheinen als eigene Lectures?
 5. **Texte für „Mach mit“:** Übernehmen wir die Texte aus PR #1 (Probeaufgabe für vier Wochen, Bereiche inkl. „Vereinsgründung“) so?
 6. **Deutschlandkarte:** Die Idee einer Karte mit den PSNG-Gruppen ist vorgemerkt. Welche Städte bzw. Gruppen mit welchem Status sollen darauf, und wo soll sie stehen: Startseite, Über uns oder Leitfaden? Die Copy nennt bisher nur „13+ Städte“, Daten dazu gibt es noch keine.
-7. **Barrierefreiheit:** Ist WCAG 2.2 AA das Ziel? In PRODUCT.md steht das als offene Entscheidung.
