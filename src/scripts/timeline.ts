@@ -1,5 +1,6 @@
 import { formatRelativeToToday } from "@/lib/events/format";
 import { toIsoDate } from "@/lib/events/schedule";
+import { intlLocale } from "@/i18n/localized";
 import type { Locale } from "@/i18n/locale";
 
 /**
@@ -34,6 +35,12 @@ export function initTimeline(): void {
   }
   const firstPast = rows.find((r) => r.dataset.phase === "past");
   list.insertBefore(marker, firstPast ?? null);
+  // „Heute · 9. Nov.“: Das Datum kommt erst hier dazu, damit ohne JavaScript
+  // nie das Datum des Builds als heute dasteht.
+  const date = new Date().toLocaleDateString(intlLocale(locale), { day: "numeric", month: "short" });
+  for (const label of marker.querySelectorAll<HTMLElement>("[data-today-label]")) {
+    label.textContent = `${label.dataset.todayLabel} · ${date}`;
+  }
 
   const current = (): Filter => {
     const value = new URLSearchParams(location.search).get("filter");

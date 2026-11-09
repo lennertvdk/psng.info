@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ExternalLink, Languages, Menu, X } from "lucide-react";
 import psngLogo from "@/assets/PSNG-Logo-centered.webp";
 import { whatsappHref } from "@/lib/links";
@@ -64,6 +64,19 @@ function LanguageSwitch({ switchTo }: { switchTo: Record<Locale, string> }) {
  */
 function SiteNav({ switchTo, current }: Props) {
   const [open, setOpen] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+
+  // Escape schließt das Menü und gibt den Fokus an den Knopf zurück.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
   const c = useCopy();
   const locale = useLocale();
   const home = pathFor("home", locale);
@@ -153,6 +166,7 @@ function SiteNav({ switchTo, current }: Props) {
             WhatsApp
           </a>
           <button
+            ref={toggleRef}
             type="button"
             className="inline-flex h-10 w-10 items-center justify-center text-primary"
             onClick={() => setOpen(!open)}

@@ -343,6 +343,7 @@ const de = {
     submitting: "Wird gesendet…",
     submit: "Nachricht senden",
     subjectRequired: "Bitte wähle zuerst dein Anliegen aus.",
+    allRequired: "Alle Felder sind Pflichtfelder.",
     subjects: [
       { key: "group", label: "Ich möchte eine Lokalgruppe gründen" },
       { key: "team", label: "Ich möchte Teil des Teams werden" },
@@ -893,6 +894,7 @@ const en: Copy = {
     submitting: "Sending…",
     submit: "Send message",
     subjectRequired: "Please choose a topic first.",
+    allRequired: "All fields are required.",
     subjects: [
       { key: "group", label: "I'd like to start a local group" },
       { key: "team", label: "I'd like to join the team" },

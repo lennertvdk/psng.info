@@ -1,4 +1,4 @@
-import { useState, useEffect, type FormEvent } from "react";
+import { useState, useEffect, useRef, type FormEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -46,6 +46,12 @@ const ContactSection = () => {
   const c = useCopy();
   const [status, setStatus] = useState<Status>("idle");
   const [subject, setSubject] = useState("");
+  // Nach dem Absenden verschwindet das Formular; der Fokus geht auf die
+  // Bestätigung, statt ins Leere zu fallen.
+  const successRef = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    if (status === "success") successRef.current?.focus();
+  }, [status]);
   // ?subject=… aus den Knöpfen anderer Seiten wählt das Anliegen vor.
   useEffect(() => {
     const param = new URLSearchParams(window.location.search).get("subject");
@@ -111,7 +117,7 @@ const ContactSection = () => {
               aria-live="polite"
               className="bg-card rounded-2xl border border-border p-8 text-center"
             >
-              <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
+              <h3 ref={successRef} tabIndex={-1} className="font-heading text-lg font-semibold text-foreground mb-2 focus:outline-none">
                 {c.contact.successTitle}
               </h3>
               <p className="text-muted-foreground text-sm mb-5">
@@ -137,10 +143,12 @@ const ContactSection = () => {
                 </label>
               </p>
 
+              <p className="text-sm text-muted-foreground">{c.contact.allRequired}</p>
+
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
                   <Label htmlFor="name">{c.contact.name}</Label>
-                  <Input id="name" name="name" required className="mt-1.5" />
+                  <Input id="name" name="name" autoComplete="name" required className="mt-1.5" />
                 </div>
                 <div>
                   <Label htmlFor="email">{c.contact.email}</Label>
@@ -148,6 +156,7 @@ const ContactSection = () => {
                     id="email"
                     name="email"
                     type="email"
+                    autoComplete="email"
                     required
                     className="mt-1.5"
                   />
@@ -201,12 +210,13 @@ const ContactSection = () => {
                 <Button
                   type="submit"
                   disabled={status === "submitting" || !subject}
+                  aria-describedby={!subject ? "kontakt-anliegen-hinweis" : undefined}
                   className="w-full bg-primary text-primary-foreground font-heading hover:bg-primary-hover"
                 >
                   {status === "submitting" ? c.contact.submitting : c.contact.submit}
                 </Button>
                 {!subject && (
-                  <p className="text-muted-foreground text-xs mt-2 text-center">
+                  <p id="kontakt-anliegen-hinweis" className="text-muted-foreground text-xs mt-2 text-center">
                     {c.contact.subjectRequired}
                   </p>
                 )}

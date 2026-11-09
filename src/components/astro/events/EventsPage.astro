@@ -89,11 +89,11 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
           <span aria-hidden="true" class="absolute bottom-2 top-2 left-[0.75rem] w-px bg-border md:left-[7.25rem]"></span>
           {upcoming.map((entry) => <TimelineRow entry={entry} events={events} locale={locale} upcoming isNext={entry.id === nextId} ref={ref} />)}
           <li class="timeline-today grid grid-cols-[1.5rem_minmax(0,1fr)] items-center md:grid-cols-[6.5rem_1.5rem_minmax(0,1fr)] my-1" aria-hidden="true">
-            <p class="hidden pr-4 text-right font-heading text-xs uppercase tracking-[0.2em] text-primary md:block">
+            <p class="hidden pr-4 text-right font-heading text-xs uppercase tracking-[0.2em] text-primary md:block" data-today-label={c.events.today}>
               {c.events.today}
             </p>
             <div class="flex items-center justify-center"><span class="gradient-psychedelic h-0.5 w-full rounded-full"></span></div>
-            <p class="pl-3 font-heading text-xs uppercase tracking-[0.2em] text-primary md:hidden">{c.events.today}</p>
+            <p class="pl-3 font-heading text-xs uppercase tracking-[0.2em] text-primary md:hidden" data-today-label={c.events.today}>{c.events.today}</p>
           </li>
           {past.map((entry) => <TimelineRow entry={entry} events={events} locale={locale} upcoming={false} ref={ref} />)}
         </ol>

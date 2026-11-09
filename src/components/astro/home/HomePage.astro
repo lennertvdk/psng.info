@@ -81,7 +81,9 @@ const anchor = (hash: string) => `#${hash}`;
 const external = { target: "_blank", rel: "noopener noreferrer" };
 const onboardingTargets: Record<string, { href: string; external?: boolean }> = {
   join: { href: whatsappHref("einstieg"), external: true },
-  events: { href: anchor(HOME_ANCHORS.agenda) },
+  // Zur Übersicht, nicht zum Abschnitt darunter: Der ist leer, wenn die
+  // Hero-Karte den einzigen Termin schon zeigt.
+  events: { href: pathFor("events", locale) },
   start: { href: pathFor("guide", locale) },
 };
 
@@ -207,7 +209,10 @@ const proofFigure = (e: (typeof proof)[number]) => {
     </div>
   </section>
 
-  <section id={HOME_ANCHORS.agenda} aria-labelledby="home-agenda" class="scroll-mt-20 bg-primary/5 py-16 md:py-24">
+  {/* Nur, wenn nach dem Termin im Hero noch etwas kommt. Läuft alles ab,
+       blendet scripts/freshness.ts den ganzen Abschnitt aus. */}
+  {agenda.length > 0 && (
+  <section id={HOME_ANCHORS.agenda} aria-labelledby="home-agenda" data-hide-when-expired class="scroll-mt-20 bg-primary/5 py-16 md:py-24">
     <div class="container mx-auto grid gap-10 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
       <div data-reveal>
         <p class={`${eyebrow} mb-3`}>{c.lab.agenda.eyebrow}</p>
@@ -287,6 +292,7 @@ const proofFigure = (e: (typeof proof)[number]) => {
       }
     </div>
   </section>
+  )}
 
   {
     proof.length > 0 && (
