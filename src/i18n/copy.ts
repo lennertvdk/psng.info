@@ -128,9 +128,7 @@ const de = {
     seriesNoteBefore: "Lectures:",
     seriesNoteAfter:
       "Ausnahmen bestätigen die Regel. Fachlicher Input aus der Community und von eingeladenen Expert:innen.",
-    seriesNoteOn: "auf",
-    seriesNoteEvery: "einmal im Monat,",
-    seriesNoteClock: "Uhr,",
+    seriesNoteEvery: "einmal im Monat.",
     filters: { all: "Alle", talks: "Vorträge", community: "Community" },
     columns: { talks: "Vorträge", community: "Community" },
     columnsSingular: { talks: "Vortrag", community: "Community" },
@@ -686,9 +684,7 @@ const en: Copy = {
     seriesNoteBefore: "Lectures:",
     seriesNoteAfter:
       "Exceptions prove the rule. Expert input from within the community and from invited speakers.",
-    seriesNoteOn: "on",
-    seriesNoteEvery: "once a month,",
-    seriesNoteClock: "CET,",
+    seriesNoteEvery: "once a month.",
     filters: { all: "All", talks: "Talks", community: "Community" },
     columns: { talks: "Talks", community: "Community" },
     columnsSingular: { talks: "Talk", community: "Community" },
