@@ -2,8 +2,8 @@ title:
   de: Lecture mit Jelena Brasanac, PhD
   en: Lecture with Jelena Brasanac, PhD
 subtitle:
-  de: Thema folgt
-  en: Topic to be announced
+  de: "Breathing into altered states: what happens in the body during breathwork?"
+  en: "Breathing into altered states: what happens in the body during breathwork?"
 role: co-hosted
 category: lecture
 column: vortraege
@@ -19,12 +19,20 @@ venue:
 location:
   de: "Zoom und vor Ort in Berlin, Ort folgt"
   en: "Zoom and in person in Berlin, venue to be announced"
+description:
+  de: Zirkuläres Breathwork kann veränderte Bewusstseinszustände auslösen, ähnlich wie Psychedelika. Jelena Brasanac stellt eine der ersten Studien vor, die dabei Körper und Erleben gemeinsam gemessen hat, und gibt einen Ausblick auf die Folgestudien RESET und BIOBREATH.
+  en: Circular breathwork can trigger altered states of consciousness similar to those reported with psychedelics. Jelena Brasanac presents one of the first studies to measure body and experience together during a session, plus an outlook on the follow-up studies RESET and BIOBREATH.
 speaker: Jelena Brasanac, PhD
 speakerType: gast
-speakerLinkedinUrl: https://de.linkedin.com/in/jelena-brasanac-phd-985a3b4a
+speakerLinkedinUrl: https://www.linkedin.com/in/jelena-brasanac-phd-985a3b4a/
 speakerBio:
-  de: Jelena Brasanac forscht als Postdoc an der Charité – Universitätsmedizin Berlin.
-  en: Jelena Brasanac is a postdoctoral researcher at Charité – Universitätsmedizin Berlin.
+  de: Jelena Brasanac ist translationale Neurowissenschaftlerin an der Charité – Universitätsmedizin Berlin und forscht an der Schnittstelle von biologischer Psychiatrie und Immunpsychiatrie. Sie ist Mitautorin einer der ersten Studien zu den physiologischen Mechanismen hinter veränderten Bewusstseinszuständen durch Breathwork und leitet heute BIOBREATH, eine Studie zu den Effekten von zirkulärem Breathwork auf Entzündungs- und immunmetabolische Marker.
+  en: Dr Jelena Brasanac is a translational neuroscience researcher at Charité – Universitätsmedizin Berlin, working at the intersection of biological psychiatry and immunopsychiatry. She co-authored one of the first studies investigating the physiological mechanisms underlying breathwork-induced altered states of consciousness, and now leads BIOBREATH, a study examining the effects of circular breathwork on inflammatory and immunometabolic markers.
+abstract:
+  lang: en
+  title: "Breathing into altered states: what happens in the body during breathwork?"
+  text: |-
+    Circular breathwork, a technique of fast, deep, continuous breathing, can trigger intense altered states of consciousness similar to those reported with psychedelics, but how it does this is still poorly understood. This talk presents one of the first studies to track body and mind together during a breathwork session. A decrease in carbon dioxide in the breath was linked to the onset of these states, and deeper experiences predicted better well-being and fewer depressive symptoms afterwards. The talk closes with updates on ongoing follow-up studies, including the RESET randomised controlled trial and BIOBREATH, which explores whether breathwork also affects the immune system.
 partner:
   id: bpsa
   role:
