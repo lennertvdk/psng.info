@@ -6,7 +6,7 @@ import { copy } from "@/i18n/copy";
 import type { Locale } from "@/i18n/locale";
 import { pick } from "@/i18n/localized";
 import { eventPath } from "@/lib/events/paths";
-import { isPast, isTranslated } from "@/lib/events/schedule";
+import { getChildEvents, isPast, isTranslated } from "@/lib/events/schedule";
 import type { SiteEvent } from "@/lib/events/types";
 import { socialImageOf } from "@/lib/events/view";
 import { eventNode, graph, organizationNode } from "@/lib/seo/structuredData";
@@ -51,7 +51,7 @@ const description =
   switchTo={{ de: eventPath(e.slug, "de"), en: eventPath(e.slug, "en") }}
   image={og && social ? { src: og.src, alt: social.alt, width: 1200, height: 630 } : undefined}
   ogType={isPast(e, ref) ? "article" : "website"}
-  jsonLd={graph(organizationNode(c.meta.home.description), eventNode(e, locale, pageImages))}
+  jsonLd={graph(organizationNode(c.meta.home.description), eventNode(e, locale, pageImages, getChildEvents(events, e.slug)))}
   current="events"
 >
   <EventDetail event={e} events={events} locale={locale} ref={ref} />

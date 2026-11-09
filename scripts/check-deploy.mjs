@@ -99,6 +99,7 @@ console.log(`Prüfe ${base}${bypass ? " (mit Bypass-Header)" : ""}`);
 for (const path of PAGES) await checkPage(path);
 
 // Event-Seiten: aus der Sitemap, jede mit Event-JSON-LD.
+const NO_EVENT_JSONLD = new Set([]);
 const sitemapRes = await get("/sitemap.xml");
 check(sitemapRes.status === 200, `/sitemap.xml: Status ${sitemapRes.status}`);
 const sitemap = await sitemapRes.text();
@@ -109,7 +110,13 @@ for (const loc of locs) {
   if (PAGES.includes(path)) continue;
   const html = await checkPage(path);
   if (html && /\/events\/[^/]+$/.test(path)) {
-    check(/"@type":\s*"Event"/.test(html), `${path}: kein Event im JSON-LD`);
+    // Ohne bekannten Ort gibt es bewusst kein Event (ungültig ohne `location`).
+    // Der Ort kommt aus `attendance` im YAML; diese Seiten haben noch keins.
+    const slug = path.split("/").pop();
+    if (!NO_EVENT_JSONLD.has(slug)) {
+      check(/"@type":\s*"Event"/.test(html), `${path}: kein Event im JSON-LD`);
+      check(/"location":/.test(html), `${path}: Event ohne location`);
+    }
   }
 }
 // Was hreflang verspricht, muss es geben.
