@@ -1,19 +1,39 @@
 ---
 import { ArrowLeft } from "lucide-react";
 import BaseLayout from "./BaseLayout.astro";
+import SectionToc from "@/components/astro/SectionToc.astro";
 import { copy } from "@/i18n/copy";
 import { pathFor } from "@/i18n/routes";
 
-/** Lange Textseiten: Impressum, Datenschutz, Code of Conduct, Leitfaden. */
-type Props = Parameters<typeof BaseLayout>[0] & { heading: string };
+/**
+ * Lange Textseiten: Impressum, Datenschutz, Code of Conduct, Leitfaden.
+ * Mit `toc` steht ab 960 px links das Inhaltsverzeichnis, der Text rückt
+ * dafür etwas nach rechts und bleibt annähernd mittig.
+ */
+type Props = Parameters<typeof BaseLayout>[0] & {
+  heading: string;
+  toc?: { href: string; label: string }[];
+};
 
-const { heading, ...layout } = Astro.props;
+const { heading, toc, ...layout } = Astro.props;
 const c = copy[layout.locale];
 ---
 
 <BaseLayout {...layout}>
-  <div class="container mx-auto px-6 pb-24 pt-32 md:pt-40">
-    <div class="mx-auto max-w-3xl">
+  <div
+    class:list={[
+      "container mx-auto px-6 pb-24 pt-32 md:pt-40",
+      toc && "min-[960px]:grid min-[960px]:grid-cols-[11rem_minmax(0,48rem)] min-[960px]:justify-center min-[960px]:gap-12",
+    ]}
+  >
+    {
+      toc && (
+        <div class="hidden min-[960px]:block">
+          <SectionToc items={toc} label={c.nav.tocLabel} />
+        </div>
+      )
+    }
+    <div class:list={["mx-auto max-w-3xl", toc && "min-[960px]:mx-0 min-[960px]:max-w-none"]}>
       <a
         href={pathFor("home", layout.locale)}
         class="mb-8 inline-flex items-center gap-2 font-heading text-sm text-muted-foreground transition-colors hover:text-primary"

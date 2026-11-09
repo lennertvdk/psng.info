@@ -1,0 +1,54 @@
+---
+/*
+ * Inhaltsverzeichnis am linken Rand, nach dem Vorbild von LessWrong
+ * (Referenz: Commit a594f84, damals als React-Insel auf der Startseite).
+ *
+ * Ein schmaler Streifen: eine Linie, ein Punkt je Abschnitt, die Abstände
+ * maßstäblich zur Länge der Abschnitte, dazu ein Balken für den Teil der
+ * Seite, der gerade im Bild ist. Die Namen blenden beim Hovern oder mit dem
+ * Tastaturfokus ein; ohne Maus (Tablet) stehen sie dauerhaft. Unter 960 px
+ * gibt es den Streifen nicht.
+ *
+ * Ohne JavaScript bleibt es eine gewöhnliche Liste von Sprunglinks mit
+ * gleichmäßigen Abständen; scripts/toc.ts setzt Abstände, Balken und
+ * `aria-current`.
+ */
+interface Props {
+  items: { href: string; label: string; strong?: boolean }[];
+  label: string;
+}
+
+const { items, label } = Astro.props;
+const reveal =
+  "opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 [@media(hover:none)]:opacity-100 motion-reduce:transition-none";
+---
+
+<nav aria-label={label} data-toc class="group sticky top-28 h-[calc(100vh-9rem)] print:hidden">
+  <div class="flex h-full">
+    <div data-toc-line class="relative w-px shrink-0 bg-foreground/20">
+      <div data-toc-bar class="absolute -left-[0.5px] top-0 h-0 w-[2px] rounded-full bg-primary"></div>
+    </div>
+    <div class="flex min-w-0 flex-1 flex-col">
+      <div data-toc-intro class="flex-[0_1_0%]"></div>
+      <ol data-toc-list class="flex flex-1 flex-col">
+        {
+          items.map((item) => (
+            <li data-toc-item class="flex flex-1 flex-col">
+              <a href={item.href} class="-ml-[3.5px] flex items-center gap-2.5 py-1 text-muted-foreground transition-colors hover:text-foreground aria-[current]:text-foreground">
+                <span data-toc-dot class="h-[7px] w-[7px] shrink-0 rounded-full bg-foreground/35" aria-hidden="true" />
+                <span class:list={[reveal, "font-heading text-[0.8125rem] leading-tight", item.strong && "font-semibold"]}>
+                  {item.label}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</nav>
+
+<script>
+  import { initToc } from "@/scripts/toc";
+  initToc();
+</script>

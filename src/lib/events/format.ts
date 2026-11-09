@@ -77,3 +77,14 @@ export function formatRelativeToToday(iso: string, locale: Locale, ref: Date): s
   if (weeks < 9) return rtf.format(weeks, "week");
   return rtf.format(Math.round(days / 30.44), "month");
 }
+
+/**
+ * Marke im Zeitstrahl, „2026“ oder „2026-11“: Anker und Beschriftung, wie sie
+ * an der Schiene und im Inhaltsverzeichnis von /events stehen.
+ */
+export function timelineMark(mark: string, locale: Locale): { id: string; label: string; year: boolean } {
+  const [year, month] = mark.split("-");
+  if (!month) return { id: `jahr-${year}`, label: year, year: true };
+  const label = new Date(Number(year), Number(month) - 1, 1).toLocaleDateString(intlLocale(locale), { month: "long" });
+  return { id: `monat-${mark}`, label, year: false };
+}
