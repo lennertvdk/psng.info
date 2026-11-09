@@ -61,9 +61,18 @@ const [feature, ...moreProof] = proof;
 /** Wie auf der Detailseite: statt „Lecture mit {Name}“ der Vortragstitel, der Name darunter. */
 const featureTalk =
   feature?.speaker && feature.abstract?.title && pick(feature.title, locale).includes(feature.speaker) ? pick(feature.abstract.title, locale) : undefined;
+const bare = (s: string) => s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "");
+const featureHeading = feature && (featureTalk ?? pick(feature.title, locale));
+const featureSubtitle = feature?.subtitle && pick(feature.subtitle, locale);
+/** Untertitel nur, wenn er nicht bloß die Überschrift wiederholt. */
+const showFeatureSubtitle = Boolean(featureSubtitle) && bare(featureSubtitle!) !== bare(featureHeading ?? "");
+/** Der erste Absatz des Abstracts (sonst der Beschreibung), ungekürzt. */
+const featureLead = feature && (feature.abstract ? pick(feature.abstract.text, locale) : pick(feature.description, locale))?.split(/\n\s*\n/)[0];
 const figures = (e: (typeof proof)[number]) =>
   [
     e.attendees && { value: String(e.attendees), label: c.events.attendees },
+    e.attendees && e.attendeesOnline !== undefined && { value: String(e.attendeesOnline), label: c.events.online },
+    e.attendees && e.attendeesOnline !== undefined && { value: String(e.attendees - e.attendeesOnline), label: c.events.inPerson },
     e.rating && { value: String(e.rating), label: c.events.rating },
     e.recommendPercent && { value: `${e.recommendPercent} %`, label: c.events.recommend },
   ].filter(Boolean) as { value: string; label: string }[];
@@ -156,14 +165,14 @@ const proofFigure = (e: (typeof proof)[number]) => {
     </div>
     {
       heroPhoto && heroPhotoEvent && (
-        <figure class="container mx-auto mt-12 px-4 sm:px-6 md:mt-16">
+        <figure class="container mx-auto mt-12 max-w-[calc(1200px+3rem)] px-4 sm:px-6 md:mt-16">
           <Image
             src={heroPhoto.src as ImageMetadata}
             alt={pick(heroPhoto.alt, locale) ?? ""}
             widths={[640, 1200]}
             sizes="(min-width: 1280px) 1200px, 100vw"
             loading="eager"
-            class="aspect-[4/3] w-full rounded-2xl object-cover object-[center_35%] sm:aspect-[16/7] lg:aspect-[21/8]"
+            class="aspect-[4/3] w-full rounded-2xl object-cover sm:aspect-[16/9]"
           />
           <figcaption class="mt-3 text-sm text-muted-foreground">
             <a href={eventPath(heroPhotoEvent.slug, locale)} class="font-medium text-foreground hover:text-primary">{pick(heroPhotoEvent.title, locale)}</a>
@@ -306,10 +315,11 @@ const proofFigure = (e: (typeof proof)[number]) => {
                 {feature.partner ? ` · ${c.events.with} ${feature.partner.short ?? feature.partner.name}` : ""}
               </p>
               <h3 class="mt-2 text-balance font-heading text-2xl font-bold leading-tight text-foreground group-hover:text-primary md:text-3xl">
-                {featureTalk ?? pick(feature.title, locale)}
+                {featureHeading}
               </h3>
               {featureTalk && <p class="mt-2 font-heading text-base font-medium text-foreground">{feature.speaker}</p>}
-              {feature.subtitle && <p class="mt-3 text-reading">{pick(feature.subtitle, locale)}</p>}
+              {showFeatureSubtitle && <p class="mt-3 text-lg text-foreground/80">{featureSubtitle}</p>}
+              {featureLead && <p lang={feature.abstract?.lang} class="mt-4 text-reading">{featureLead}</p>}
               {
                 figures(feature).length > 0 ? (
                   <dl class="mt-auto flex flex-wrap gap-x-8 gap-y-4 pt-8">

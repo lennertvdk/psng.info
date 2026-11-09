@@ -22,8 +22,15 @@ export function formatEventDateShort(iso: string, locale: Locale): string {
 
 /** Datum, bei mehrtägigen Events bis zum letzten Tag. */
 export function formatEventDateRange(e: SiteEvent, locale: Locale): string {
-  const start = formatEventDate(e.date, locale, e.showWeekday);
-  return e.endDate && e.endDate !== e.date ? `${start} – ${formatEventDate(e.endDate, locale)}` : start;
+  if (!e.endDate || e.endDate === e.date) return formatEventDate(e.date, locale, e.showWeekday);
+  // Ohne Wochentag fasst Intl gleiche Monate und Jahre zusammen: „09.–10. Oktober 2026“.
+  if (!e.showWeekday) {
+    return new Intl.DateTimeFormat(intlLocale(locale), { day: "2-digit", month: "long", year: "numeric" }).formatRange(
+      parseEventDate(e.date),
+      parseEventDate(e.endDate),
+    );
+  }
+  return `${formatEventDate(e.date, locale, true)} – ${formatEventDate(e.endDate, locale)}`;
 }
 
 const TIME_LABELS = {

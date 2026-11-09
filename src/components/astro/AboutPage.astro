@@ -122,8 +122,8 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
                 )}
                 <p class="mt-3 text-[0.9375rem] leading-relaxed text-foreground/80">{pick(member.bio, locale)}</p>
                 {member.linkedinUrl && (
-                  <div class="mt-auto border-t border-border/50 pt-3">
-                    <a href={member.linkedinUrl} {...external} class="inline-block text-xs font-medium text-primary hover:underline">
+                  <div class="mt-auto pt-4">
+                    <a href={member.linkedinUrl} {...external} class="block border-t border-border/50 pt-3 text-xs font-medium text-primary hover:underline">
                       {c.team.linkedin}
                     </a>
                   </div>
@@ -132,21 +132,7 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
             </div>
           ))
         }
-        <div class={card} data-reveal>
-          <div class="-mx-6 -mt-6 mb-5 flex aspect-[4/5] w-[calc(100%+3rem)] items-center justify-center rounded-t-2xl bg-muted">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-              class="h-20 w-20 text-muted-foreground/30"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
-                clip-rule="evenodd"></path>
-            </svg>
-          </div>
+        <div class={card.replace("bg-card", "bg-primary/5")} data-reveal>
           <div class="flex flex-1 flex-col">
             <h3 class="font-heading text-base font-semibold text-foreground">{c.team.recruiting.name}</h3>
             <ul class="mt-2 flex flex-wrap gap-1.5">

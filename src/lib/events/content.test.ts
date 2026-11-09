@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { copy } from "@/i18n/copy";
-import { formatEventDate, formatEventTime, formatRelativeToToday } from "./format";
+import { formatEventDate, formatEventDateRange, formatEventTime, formatRelativeToToday } from "./format";
 import { bySlug, testEvents as events, withChanges } from "./testData";
 import { cardAction } from "./view";
 
@@ -35,6 +35,8 @@ describe("Inhalte", () => {
 describe("formatEventTime", () => {
   it("baut die Uhrzeit aus Anfang, Ende und Zusatz", () => {
     expect(formatEventTime(bySlug("abend-rund-um-psychedelika"), "de")).toBe("16:00 – 20:00, Einlass ab 15:30");
+    // Mehrtägig im selben Monat: Monat und Jahr nur einmal.
+    expect(formatEventDateRange(bySlug("alps-conference-2026"), "de")).toBe("9.–10. Oktober 2026");
     expect(formatEventTime(bySlug("abend-rund-um-psychedelika"), "en")).toBe("16:00 – 20:00, doors from 15:30");
   });
 
