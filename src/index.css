@@ -127,6 +127,9 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
+    /* Lange deutsche Komposita brechen bei großer Schrift um, statt
+       überzustehen. Bei normaler Größe greift das nie. */
+    overflow-wrap: break-word;
   }
 
   /* `hidden` muss gewinnen, auch gegen `grid` oder `flex` auf demselben
@@ -162,13 +165,13 @@
    * Absage oder Verschiebung.
    */
   .chip {
-    @apply inline-flex items-center rounded-full border border-border bg-card px-2.5 py-0.5 text-xs font-medium text-foreground/75;
+    @apply inline-flex max-w-full [overflow-wrap:anywhere] items-center rounded-full border border-border bg-card px-2.5 py-0.5 text-xs font-medium text-foreground/75;
   }
   .chip-accent {
-    @apply inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary-hover;
+    @apply inline-flex max-w-full [overflow-wrap:anywhere] items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary-hover;
   }
   .chip-status {
-    @apply inline-flex items-center rounded-full bg-destructive/10 px-2.5 py-0.5 text-xs font-medium text-destructive;
+    @apply inline-flex max-w-full [overflow-wrap:anywhere] items-center rounded-full bg-destructive/10 px-2.5 py-0.5 text-xs font-medium text-destructive;
   }
 
   /*
