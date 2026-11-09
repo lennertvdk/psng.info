@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import { primaryButton } from "@/components/astro/home/styles";
 import { CONTACT_EMAIL } from "@/lib/links";
 import { track } from "@/scripts/track";
 import { useCopy } from "@/i18n/copy";
@@ -197,14 +197,14 @@ const ContactSection = ({ defaultSubject, embedded = false }: Props) => {
               </div>
 
               <div>
-                <Button
+                <button
                   type="submit"
                   disabled={status === "submitting" || !subject}
                   aria-describedby={!subject ? "kontakt-anliegen-hinweis" : undefined}
-                  className="w-full bg-primary text-primary-foreground font-heading hover:bg-primary-hover"
+                  className={`${primaryButton} w-full disabled:pointer-events-none disabled:opacity-50`}
                 >
                   {status === "submitting" ? c.contact.submitting : c.contact.submit}
-                </Button>
+                </button>
                 {!subject && (
                   <p id="kontakt-anliegen-hinweis" className="text-muted-foreground text-xs mt-2 text-center">
                     {c.contact.subjectRequired}
@@ -220,9 +220,6 @@ const ContactSection = ({ defaultSubject, embedded = false }: Props) => {
     <section id="kontakt" className="py-24 md:py-32">
       <div className="container mx-auto px-6">
         <div className="max-w-2xl mx-auto mb-12">
-          <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary mb-4">
-            {c.contact.eyebrow}
-          </p>
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
             {c.contact.title}
           </h2>

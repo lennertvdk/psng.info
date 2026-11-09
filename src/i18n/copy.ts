@@ -330,7 +330,6 @@ const de = {
   },
 
   contact: {
-    eyebrow: "Kontakt",
     title: "Schreib uns",
     intro:
       "Ob Gruppengründung, Kooperation, Feedback oder eine Beschwerde – wähle dein Anliegen und wir melden uns bei dir.",
@@ -417,7 +416,6 @@ const de = {
     recapLabel: "Zuletzt",
     since: "Seit März 2026 aktiv",
     agenda: {
-      eyebrow: "Termine",
       title: "Weitere Termine",
       all: "Alle Termine & Aufzeichnungen →",
     },
@@ -871,7 +869,6 @@ const en: Copy = {
   },
 
   contact: {
-    eyebrow: "Contact",
     title: "Write to us",
     intro:
       "Starting a group, a partnership, feedback or a complaint – pick your topic and we'll get back to you.",
@@ -951,7 +948,6 @@ const en: Copy = {
     recapLabel: "Most recent",
     since: "Active since March 2026",
     agenda: {
-      eyebrow: "Events",
       title: "More dates",
       all: "All events & recordings →",
     },
