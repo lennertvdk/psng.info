@@ -88,19 +88,22 @@ const textLink = "inline-flex items-center gap-1 text-sm font-medium text-primar
     <div class="flex gap-2">
       {
         // Wie im Zeitstrahl, wo das Neuere oben steht: links geht es zum
-        // späteren Event, rechts zum früheren.
+        // späteren Event, rechts zum früheren. Die Beschriftung sagt es dazu,
+        // weil „links = neuer“ allein niemand errät.
         (["next", "prev"] as const).map((dir) => {
           const target = neighbours[dir];
           const Icon = dir === "next" ? ChevronLeft : ChevronRight;
           const label = dir === "prev" ? p.prevEvent : p.nextEvent;
-          const cls = "flex h-11 w-11 items-center justify-center rounded-full border border-border";
+          const short = dir === "prev" ? p.older : p.newer;
+          const cls = `inline-flex h-11 items-center gap-1 rounded-full border border-border font-heading text-sm font-medium ${dir === "next" ? "pl-3 pr-4" : "pl-4 pr-3"}`;
+          const content = dir === "next" ? [<Icon size={18} aria-hidden="true" />, short] : [short, <Icon size={18} aria-hidden="true" />];
           return target ? (
             <a href={eventPath(target.slug, locale)} class={`${cls} text-foreground transition-colors hover:border-primary hover:text-primary`} aria-label={`${label}: ${pick(target.title, locale)}`} title={pick(target.title, locale)}>
-              <Icon size={18} aria-hidden="true" />
+              {content}
             </a>
           ) : (
-            <span class={`${cls} text-muted-foreground/40`} aria-hidden="true">
-              <Icon size={18} />
+            <span class={`${cls} text-muted-foreground/50`} aria-hidden="true">
+              {content}
             </span>
           );
         })

@@ -3,6 +3,23 @@ import { useLocale, type Locale } from "./locale";
 /**
  * Alle Texte der Oberfläche, je Sprache an einer Stelle.
  *
+ * Glossar – dieselbe Sache heißt überall gleich:
+ * - **Event**: alles im Zeitstrahl, das an einem Datum stattfindet (Lecture,
+ *   Treffen, Konferenzbesuch). Die eigene Seite dazu heißt „Event-Seite“.
+ * - **Lecture**: die monatliche Vortragsreihe des PSNG, ein Name. Der einzelne
+ *   Beitrag darin ist ein **Vortrag**; von außen eingeladen ein **Gastvortrag**.
+ * - **Termin**: ein Datum im Kalender, etwa in „Weitere Termine“.
+ * - **Hochschulgruppe**: eine PSNG-Gruppe vor Ort, auch wenn nicht alle
+ *   Mitglieder studieren. Nicht „Lokalgruppe“. Kurz „Gruppe“ geht, wenn
+ *   „Hochschulgruppe“ im selben Blick steht. (Der Code of Conduct behält
+ *   seinen eigenen Wortlaut.)
+ * - **Community**: die WhatsApp-Community und alle, die dort sind. Die
+ *   Gruppen einzelner Städte darin heißen „WhatsApp-Gruppe deiner Stadt“.
+ * - **Neuer/Älter**: Richtung im Zeitstrahl. „Als Nächstes“ heißt nur
+ *   „kommt demnächst“, nie „das folgende Event in der Liste“.
+ * Englisch: event, event page, lecture, talk, guest talk, date, university
+ * group, community.
+ *
  * Deutsch ist die Quelle: `Copy` wird aus dem deutschen Objekt abgeleitet, und
  * das englische muss diesen Typ erfüllen. Fehlt drüben ein Schlüssel, schlägt
  * der Typecheck fehl – eine Übersetzung kann also nicht unbemerkt zurückfallen.
@@ -81,7 +98,7 @@ const de = {
       {
         key: "join",
         title: "Community beitreten",
-        desc: "Tritt unserer WhatsApp-Gruppe bei und vernetze dich mit 250+ Studierenden aus ganz Deutschland.",
+        desc: "Tritt unserer WhatsApp-Community bei und vernetze dich mit 250+ Studierenden aus ganz Deutschland.",
         cta: "WhatsApp beitreten",
       },
       {
@@ -92,7 +109,7 @@ const de = {
       },
       {
         key: "start",
-        title: "Lokalgruppe starten",
+        title: "Hochschulgruppe starten",
         desc: "Bring psychedelische Wissenschaft an deine Hochschule. Wir helfen dir beim Aufbau.",
         cta: "Leitfaden lesen",
       },
@@ -114,7 +131,7 @@ const de = {
     filters: { all: "Alle", talks: "Vorträge", community: "Community" },
     columns: { talks: "Vorträge", community: "Community" },
     columnsSingular: { talks: "Vortrag", community: "Community" },
-    speakerTypes: { student: "Studentisch", guest: "Expertenvortrag" },
+    speakerTypes: { student: "Studentisch", guest: "Gastvortrag" },
     languages: { de: "Deutsch", en: "Englisch" },
     languageNote: {
       talk: { before: "Der Vortrag ist ", in: "auf " },
@@ -255,27 +272,27 @@ const de = {
       {
         key: "student",
         question:
-          "Muss ich Student*in sein, um Teil des PSNG oder einer Lokalgruppe zu werden?",
+          "Muss ich Student*in sein, um Teil des PSNG oder einer Hochschulgruppe zu werden?",
         answer:
-          "Nein, ein studentischer Status ist keine zwingende Voraussetzung, um Mitglied zu werden. Wenn es bereits eine Lokalgruppe an einer Uni in deiner Stadt gibt, helfen wir gerne dabei, den Kontakt herzustellen.",
+          "Nein, ein studentischer Status ist keine zwingende Voraussetzung, um Mitglied zu werden. Wenn es bereits eine Hochschulgruppe in deiner Stadt gibt, helfen wir gerne dabei, den Kontakt herzustellen.",
       },
       {
         key: "found",
-        question: "Muss ich Student*in sein, um eine Lokalgruppe gründen zu können?",
+        question: "Muss ich Student*in sein, um eine Hochschulgruppe gründen zu können?",
         answer:
           "Das PSNG richtet sich primär an Menschen im akademischen Kontext. Auch wenn ein Studierendenstatus keine formale Pflicht ist, liegt unser Fokus klar auf wissenschaftlichem Austausch und Nachwuchsförderung.",
       },
       {
         key: "organised",
-        question: "Wie ist eine Lokalgruppe organisiert?",
+        question: "Wie ist eine Hochschulgruppe organisiert?",
         answer:
-          "Ganz individuell, je nach Lokalgruppe! Wir unterstützen euch bei der Gründung, z.B. durch Bereitstellung von Gründungsdokumenten bereits bestehender Studierendengruppen. Als Teil des PSNG erklären sich die Lokalgruppen bereit, den Code of Conduct zu wahren.",
+          "Ganz individuell, je nach Hochschulgruppe! Wir unterstützen euch bei der Gründung, z.B. durch Bereitstellung von Gründungsdokumenten bereits bestehender Studierendengruppen. Als Teil des PSNG erklären sich die Hochschulgruppen bereit, den Code of Conduct zu wahren.",
       },
       {
         key: "offers",
         question: "Welche Angebote bietet das PSNG selbst?",
         answer:
-          "Wir bieten Unterstützung und Impulse zur Vernetzung, bei Fragen erreichst du uns über das Kontaktformular. Außerdem teilen wir Journal-Clubs, Keynote-Lectures und weitere Formate der Lokalgruppen im PSNG-Netzwerk. Dadurch möchten wir den Lokalgruppen auch eine Plattform anbieten, auf der sie eine größere Reichweite erreichen.",
+          "Wir bieten Unterstützung und Impulse zur Vernetzung, bei Fragen erreichst du uns über das Kontaktformular. Außerdem teilen wir Journal-Clubs, Keynote-Lectures und weitere Formate der Hochschulgruppen im PSNG-Netzwerk. Dadurch möchten wir den Hochschulgruppen auch eine Plattform anbieten, auf der sie eine größere Reichweite erreichen.",
       },
     ],
   },
@@ -294,7 +311,7 @@ const de = {
   partners: {
     eyebrow: "Kooperation",
     title: "Unsere Partner",
-    intro: "Wir sind stolze Kooperationspartner der folgenden Organisationen.",
+    intro: "Mit diesen Organisationen arbeiten wir zusammen.",
     stripeLabel: "In Kooperation mit",
     website: "Website",
     instagram: "Instagram",
@@ -333,7 +350,7 @@ const de = {
     subjectRequired: "Bitte wähle zuerst dein Anliegen aus.",
     allRequired: "Alle Felder sind Pflichtfelder.",
     subjects: [
-      { key: "group", label: "Ich möchte eine Lokalgruppe gründen" },
+      { key: "group", label: "Ich möchte eine Hochschulgruppe gründen" },
       { key: "team", label: "Ich möchte Teil des Teams werden" },
       { key: "talk", label: "Ich möchte einen Vortrag vorschlagen" },
       { key: "cooperation", label: "Kooperationsanfrage" },
@@ -401,7 +418,7 @@ const de = {
     since: "Seit März 2026 aktiv",
     agenda: {
       eyebrow: "Termine",
-      title: "Danach im Kalender",
+      title: "Weitere Termine",
       all: "Alle Termine & Aufzeichnungen →",
     },
     groups: {
@@ -494,8 +511,10 @@ const de = {
     closeGallery: "Galerie schließen",
     numbers: "In Zahlen",
     next: "Als Nächstes",
-    prevEvent: "Vorheriges Event",
-    nextEvent: "Nächstes Event",
+    prevEvent: "Älteres Event",
+    newer: "Neuer",
+    older: "Älter",
+    nextEvent: "Neueres Event",
     ofWhichOnline: "davon online",
     abstract: "Abstract",
     partner: "In Kooperation mit",
@@ -621,7 +640,7 @@ const en: Copy = {
       {
         key: "join",
         title: "Join the community",
-        desc: "Join our WhatsApp group and connect with 250+ students from across Germany.",
+        desc: "Join our WhatsApp community and connect with 250+ students from across Germany.",
         cta: "Join on WhatsApp",
       },
       {
@@ -632,7 +651,7 @@ const en: Copy = {
       },
       {
         key: "start",
-        title: "Start a local group",
+        title: "Start a university group",
         desc: "Bring psychedelic science to your university. We'll help you set it up.",
         cta: "Read the guide",
       },
@@ -654,7 +673,7 @@ const en: Copy = {
     filters: { all: "All", talks: "Talks", community: "Community" },
     columns: { talks: "Talks", community: "Community" },
     columnsSingular: { talks: "Talk", community: "Community" },
-    speakerTypes: { student: "Student talk", guest: "Expert talk" },
+    speakerTypes: { student: "Student talk", guest: "Guest talk" },
     languages: { de: "German", en: "English" },
     languageNote: {
       talk: { before: "This talk is ", in: "in " },
@@ -794,27 +813,27 @@ const en: Copy = {
       {
         key: "student",
         question:
-          "Do I have to be a student to join the PSNG or a local group?",
+          "Do I have to be a student to join the PSNG or a university group?",
         answer:
-          "No, student status is not a requirement for membership. If there is already a local group at a university in your city, we're happy to put you in touch.",
+          "No, student status is not a requirement for membership. If there is already a university group in your city, we're happy to put you in touch.",
       },
       {
         key: "found",
-        question: "Do I have to be a student to start a local group?",
+        question: "Do I have to be a student to start a university group?",
         answer:
           "The PSNG is aimed primarily at people in an academic context. Student status is not formally required, but our focus is clearly on scientific exchange and supporting early-career researchers.",
       },
       {
         key: "organised",
-        question: "How is a local group organised?",
+        question: "How is a university group organised?",
         answer:
-          "Entirely up to each group. We support you in setting one up, for example with founding documents from student groups that already exist. As part of the PSNG, local groups agree to uphold the code of conduct.",
+          "Entirely up to each group. We support you in setting one up, for example with founding documents from student groups that already exist. As part of the PSNG, university groups agree to uphold the code of conduct.",
       },
       {
         key: "offers",
         question: "What does the PSNG itself offer?",
         answer:
-          "We offer support and ideas for connecting with others, and you can reach us with questions through the contact form. We also share journal clubs, keynote lectures and other formats from local groups across the PSNG network, giving those groups a platform and a wider reach.",
+          "We offer support and ideas for connecting with others, and you can reach us with questions through the contact form. We also share journal clubs, keynote lectures and other formats from university groups across the PSNG network, giving those groups a platform and a wider reach.",
       },
     ],
   },
@@ -833,7 +852,7 @@ const en: Copy = {
   partners: {
     eyebrow: "Partners",
     title: "Our partners",
-    intro: "We are proud to work with the following organisations.",
+    intro: "These are the organisations we work with.",
     stripeLabel: "In cooperation with",
     website: "Website",
     instagram: "Instagram",
@@ -872,7 +891,7 @@ const en: Copy = {
     subjectRequired: "Please choose a topic first.",
     allRequired: "All fields are required.",
     subjects: [
-      { key: "group", label: "I'd like to start a local group" },
+      { key: "group", label: "I'd like to start a university group" },
       { key: "team", label: "I'd like to join the team" },
       { key: "talk", label: "I'd like to propose a talk" },
       { key: "cooperation", label: "Partnership enquiry" },
@@ -933,7 +952,7 @@ const en: Copy = {
     since: "Active since March 2026",
     agenda: {
       eyebrow: "Events",
-      title: "Coming up after that",
+      title: "More dates",
       all: "All events & recordings →",
     },
     groups: {
@@ -1026,8 +1045,10 @@ const en: Copy = {
     closeGallery: "Close gallery",
     numbers: "In numbers",
     next: "Coming up",
-    prevEvent: "Previous event",
-    nextEvent: "Next event",
+    prevEvent: "Older event",
+    newer: "Newer",
+    older: "Older",
+    nextEvent: "Newer event",
     ofWhichOnline: "of which online",
     abstract: "Abstract",
     partner: "In cooperation with",
