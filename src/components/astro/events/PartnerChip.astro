@@ -1,25 +1,18 @@
 ---
-import { ExternalLink } from "lucide-react";
 import type { Partner } from "@/lib/events/types";
 
-/** Chip einer Partnerorganisation in ihrer Farbwelt, verlinkt auf deren Seite. */
+/*
+ * Kurzer Hinweis auf die Partnerorganisation, neutral wie die übrigen Chips.
+ * Bewusst ohne Link und ohne Partnerfarbe: Die Karte gehört zur PSNG-Reihe,
+ * der Weg zur Partnerorganisation steht in der Kooperationsleiste.
+ */
 interface Props {
-  partner: Pick<Partner, "short" | "name" | "url" | "tone">;
+  partner: Pick<Partner, "short" | "name">;
 }
 
 const { partner } = Astro.props;
-// Als Literale, nicht zusammengesetzt: Was Tailwind nicht ausgeschrieben
-// findet, wirft es beim Bauen weg.
-const tone = { bpsa: "badge-bpsa", parab: "badge-parab" }[partner.tone ?? "parab"];
 ---
 
-<a
-  href={partner.url}
-  target="_blank"
-  rel="noopener noreferrer"
-  aria-label={partner.name}
-  class={`inline-flex items-center gap-1 rounded-full ${tone} px-2 py-1 font-heading text-xs font-medium transition-opacity hover:opacity-90`}
->
+<span class="inline-flex items-center rounded-full border border-border bg-card px-2.5 py-0.5 text-xs font-medium text-foreground/75" title={partner.name}>
   {partner.short ?? partner.name}
-  <ExternalLink size={12} aria-hidden="true" />
-</a>
+</span>

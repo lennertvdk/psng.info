@@ -61,13 +61,6 @@
     --bpsa-navy: #071030;
     --bpsa-cyan: #47cddb;
     --bpsa-violet: #8f49b9;
-    /*
-     * Aufgehellte Variante des Navys, nur für den Chip. Das Original ist als
-     * Logohintergrund gedacht, auf einer 2 cm breiten Fläche in hellem Umfeld
-     * liest es sich schwarz statt blau. Keine Markenfarbe, deshalb hier
-     * abgeleitet statt oben mitgeführt. Weißer Text darauf: Kontrast 13:1.
-     */
-    --bpsa-navy-chip: #1b2c6b;
 
     --font-heading: 'Schibsted Grotesk', sans-serif;
     --font-body: 'DM Sans', sans-serif;
@@ -247,26 +240,6 @@
   }
 
   /*
-   * Chip für BPSA-Inhalte: aufgehelltes Navy der Marke, weiße Schrift,
-   * dazu ein Rahmen aus den beiden Logofarben. Der Verlauf liegt im Rahmen
-   * statt in der Fläche, weil weiße Schrift auf dem hellen Cyan nicht mehr
-   * lesbar wäre.
-   */
-  .badge-bpsa {
-    color: hsl(0 0% 100%);
-    border: 1px solid transparent;
-    background:
-      linear-gradient(var(--bpsa-navy-chip), var(--bpsa-navy-chip)) padding-box,
-      linear-gradient(
-          90deg,
-          var(--bpsa-cyan),
-          var(--bpsa-violet),
-          var(--bpsa-cyan)
-        )
-        border-box;
-  }
-
-  /*
    * Die Kooperationsleiste am Kartenfuß. Die Tönung sitzt hier statt auf der
    * ganzen Karte: Über den vollen Kartenhintergrund gelegt war sie zu schwach,
    * um als Aussage zu taugen, und zu breit, um etwas abzugrenzen. Auf dem
@@ -287,28 +260,16 @@
    * Reihenfolge im erzeugten CSS, wer gewinnt.
    */
   .surface-bpsa {
-    border-top: 2px solid rgb(71 205 219 / 0.65);
+    border-top: 1px solid rgb(71 205 219 / 0.4);
     background:
       linear-gradient(
         90deg,
         rgb(71 205 219 / 0) 0%,
         rgb(71 205 219 / 0) 20%,
-        rgb(71 205 219 / 0.2) 58%,
-        rgb(143 73 185 / 0.18) 100%
+        rgb(71 205 219 / 0.08) 58%,
+        rgb(143 73 185 / 0.07) 100%
       ),
       hsl(var(--card));
-  }
-
-  /*
-   * Chip für PARAB-Inhalte. Das PARAB-Logo ist reine Strichzeichnung in
-   * Schwarzweiß – es gibt keine Markenfarbe, aus der sich eine Fläche ableiten
-   * ließe. Deshalb neutral dunkel, aber in derselben Form wie der BPSA-Chip,
-   * damit beide als dieselbe Sorte Hinweis gelesen werden.
-   */
-  .badge-parab {
-    color: hsl(0 0% 100%);
-    border: 1px solid transparent;
-    background: hsl(var(--foreground));
   }
 
   .gradient-soft {
