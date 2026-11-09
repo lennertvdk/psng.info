@@ -6,7 +6,6 @@ import { pathFor } from "@/i18n/routes";
 import { HOME_ANCHORS } from "@/lib/anchors";
 import { loadEvents, loadMilestones } from "@/lib/events/load";
 import { getTimelineEntries } from "@/lib/events/schedule";
-import { LECTURE_SERIES } from "@/lib/events/series";
 import { INSTAGRAM_LINK, whatsappHref } from "@/lib/links";
 import { alternatesOf } from "@/lib/seo/alternates";
 import { primaryButton, secondaryButton } from "../home/styles";
@@ -40,10 +39,6 @@ const filters = [
 ];
 const seriesNote = [
   c.events.seriesNoteEvery,
-  LECTURE_SERIES.startTime,
-  c.events.seriesNoteClock,
-  c.events.seriesNoteOn,
-  `${LECTURE_SERIES.location}.`,
   c.events.seriesNoteAfter,
 ].join(" ");
 const link = "text-primary underline hover:no-underline";

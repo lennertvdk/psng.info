@@ -18,7 +18,6 @@ import { formatEventDate, formatEventDateRange, formatEventTime, formatSeriesTim
 import { loadEvents, loadFeatures } from "@/lib/events/load";
 import { eventPath } from "@/lib/events/paths";
 import { getHeroSlot, getProofEvents, getUpcomingAgenda, parseEventDate, proofImage } from "@/lib/events/schedule";
-import { LECTURE_SERIES } from "@/lib/events/series";
 import { cardAction, columnLabel } from "@/lib/events/view";
 import { legacyAnchorTargets } from "@/lib/legacyAnchors";
 import { whatsappHref } from "@/lib/links";
@@ -176,10 +175,6 @@ const proofFigure = (e: (typeof proof)[number]) => {
           <span class="font-medium text-foreground">{c.events.seriesNoteBefore}</span>{" "}{
             [
               c.events.seriesNoteEvery,
-              LECTURE_SERIES.startTime,
-              c.events.seriesNoteClock,
-              c.events.seriesNoteOn,
-              `${LECTURE_SERIES.location}.`,
               c.events.seriesNoteAfter,
             ].join(" ")
           }
