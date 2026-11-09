@@ -3,20 +3,17 @@ name: PSNG – Psychedelic Student Network Germany
 description: Website des bundesweiten studentischen Netzwerks für psychedelische Wissenschaft, Stand Branch astro vor dem Refinement
 colors:
   himbeer-pink: "hsl(339 63% 48%)"
-  brand-pink: "hsl(339 68% 54%)"
+  himbeer-hover: "hsl(339 63% 41%)"
   koralle: "hsl(5 78% 65%)"
-  gebrannte-koralle: "hsl(15 80% 44%)"
-  verlauf-himbeer: "hsl(339 68% 48%)"
-  verlauf-koralle: "hsl(5 78% 46%)"
-  verlauf-rose: "hsl(350 70% 48%)"
+  hinweis: "hsl(40 90% 94%)"
+  hinweis-tinte: "hsl(30 80% 24%)"
   papierweiss: "hsl(0 0% 100%)"
   tiefe-tinte: "hsl(340 20% 15%)"
-  gedaempfte-tinte: "hsl(340 10% 45%)"
+  gedaempfte-tinte: "hsl(340 10% 42%)"
   rose-nebel: "hsl(340 20% 96%)"
   rose-linie: "hsl(340 15% 90%)"
-  warnrot: "hsl(0 84.2% 60.2%)"
+  warnrot: "hsl(0 72% 42%)"
   bpsa-navy: "#071030"
-  bpsa-navy-chip: "#1b2c6b"
   bpsa-cyan: "#47cddb"
   bpsa-violet: "#8f49b9"
 typography:
@@ -71,7 +68,7 @@ spacing:
   section-md: "96px"
 components:
   button-primary:
-    backgroundColor: "{colors.verlauf-himbeer}"
+    backgroundColor: "{colors.himbeer-pink}"
     textColor: "{colors.papierweiss}"
     typography: "{typography.label}"
     rounded: "{rounded.lg}"
@@ -84,15 +81,15 @@ components:
     padding: "12px 24px"
   button-secondary-hover:
     backgroundColor: "{colors.rose-nebel}"
-  chip-spalte:
-    backgroundColor: "{colors.gebrannte-koralle}"
-    textColor: "{colors.papierweiss}"
+  chip:
+    backgroundColor: "{colors.papierweiss}"
+    textColor: "{colors.tiefe-tinte}"
     typography: "{typography.meta}"
     rounded: "{rounded.full}"
     padding: "2px 10px"
-  chip-bpsa:
-    backgroundColor: "{colors.bpsa-navy-chip}"
-    textColor: "{colors.papierweiss}"
+  chip-accent:
+    backgroundColor: "{colors.rose-nebel}"
+    textColor: "{colors.himbeer-hover}"
     typography: "{typography.meta}"
     rounded: "{rounded.full}"
     padding: "2px 10px"
@@ -141,32 +138,33 @@ Der Bestand trägt noch sichtbar die Herkunft aus einem shadcn-Grundgerüst: Die
 
 ## Colors
 
-Eine warme, einachsige Palette: Weiß und rosé gestimmte Neutraltöne, darauf Himbeer-Pink als Stimme und Koralle als Wärmeträger im Verlauf.
+Eine warme, einachsige Palette: Weiß und rosé gestimmte Neutraltöne, darauf Himbeer-Pink als Stimme und eine helle Koralle als Wärmeträger, die nie Text trägt (Entscheidung vom 09.11.2026).
 
 ### Primary
 - **Himbeer-Pink** (hsl(339 63% 48%)): Die Arbeitsfarbe. Textlinks, aktive Navigation, Speaker-Namen, Datumsmonat, Nummerierungen, Fokusring, Rahmen des Sekundärknopfs (30 % Deckkraft) und der Abschnittsschleier (5 %). Kontrast auf Weiß 5,3:1, deshalb auch für kleinen Text zulässig.
-- **Marken-Pink** (hsl(339 68% 54%)): Die hellere, dekorative Fassung. Lebt nur im Leuchten unter dem nächsten Termin (30 % Deckkraft). Unter weißer Schrift zu schwach (4,4:1), deshalb nie als Fläche für Text.
+- **Himbeer-Hover** (hsl(339 63% 41%)): Hover der Himbeer-Knöpfe (dunkler statt durchscheinend) und Schrift der Akzent-Chips (≥ 5:1 auch auf getönten Flächen).
+- **Himbeer-Vollton** füllt alle Primärknöpfe, den WhatsApp-Knopf der Navigation und die Fläche des Footers (weiße Schrift 5,25:1).
 
 ### Secondary
-- **Gebrannte Koralle** (hsl(15 80% 44%)): Füllung der Spalten-Chips (Vortrag, Community) unter weißer Schrift. Bewusst auf 44 % Helligkeit abgesenkt, damit 4,8:1 erreicht wird.
-- **Koralle** (hsl(5 78% 65%)): Die Markenkoralle in ihrer hellen Fassung. Nur dekorativ, unter Text nicht tragfähig (3,1:1).
+- **Koralle** (hsl(5 78% 65%)): Die Markenkoralle, hell wie im Logo. Nur als Fläche, Linie oder Punkt ohne Text: Oberkante der Hero-Karte, „Als Nächstes“-Punkt, Punkt des nächsten Termins im Zeitstrahl, Oberkanten der Belegpunkte, Tönung des Hero.
 
 ### Tertiary
-- **Der Verlauf** (Verlauf-Himbeer hsl(339 68% 48%), Verlauf-Koralle hsl(5 78% 46%), Verlauf-Rosé hsl(350 70% 48%), 135°): Füllung der Primärknöpfe, des WhatsApp-Knopfs in der Navigation und des gesamten Footers. Jeder Stopp hält mindestens 5,1:1 gegen Weiß.
-- **BPSA-Achse** (BPSA-Navy #071030, Chip-Navy #1b2c6b, BPSA-Cyan #47cddb, BPSA-Violett #8f49b9): Fremde Markenfarben, absichtlich in Hex gehalten, damit sie exakt bleiben. Nur für Kennzeichnung von BPSA-Inhalten: Chip mit Verlaufsrahmen, Kooperationsleiste am Kartenfuß.
+- **Der Verlauf** (Himbeer → Koralle, 90°): Nur als textfreies Band, an der Oberkante des Footers und als Heute-Linie im Zeitstrahl.
+- **Hinweis** (hsl(40 90% 94%) mit Hinweis-Tinte hsl(30 80% 24%), 8:1): Verschobene Termine.
+- **BPSA-Achse** (BPSA-Navy #071030, BPSA-Cyan #47cddb, BPSA-Violett #8f49b9): Fremde Markenfarben, absichtlich in Hex gehalten. Nur in der Kooperationsleiste am Kartenfuß, und dort leise (1px-Linie, 8 % Tönung).
 
 ### Neutral
 - **Papierweiß** (hsl(0 0% 100%)): Seitengrund, Karten, Popover. Weiß und Kartenfarbe sind identisch; Karten heben sich nur über die Linie ab.
-- **Tiefe Tinte** (hsl(340 20% 15%)): Fließtext und Überschriften. Fast schwarz, minimal ins Rosé gezogen. Dient außerdem als Fläche der dunklen Abschluss-CTA und des PARAB-Chips.
-- **Gedämpfte Tinte** (hsl(340 10% 45%)): Sekundärtext, Metadaten, inaktive Navigation (5,2:1 auf Weiß).
+- **Tiefe Tinte** (hsl(340 20% 15%)): Fließtext und Überschriften. Fast schwarz, minimal ins Rosé gezogen. 
+- **Gedämpfte Tinte** (hsl(340 10% 42%)): Sekundärtext, Metadaten, inaktive Navigation (5,8:1 auf Weiß, ≥ 5:1 auf den getönten Flächen).
 - **Rosé-Nebel** (hsl(340 20% 96%)): Hintergrund von Bildplatzhaltern, Sprachumschalter, Filterleiste, Hinweisboxen.
 - **Rosé-Linie** (hsl(340 15% 90%)): Alle Rahmen und Trennlinien, auch Eingabefelder.
-- **Warnrot** (hsl(0 84.2% 60.2%)): Abgesagt/verschoben, Formularfehler. Meist als 5- bis 30-%-Tönung.
+- **Warnrot** (hsl(0 72% 42%)): Abgesagt, Formularfehler (6,5:1 auf Weiß). Als Status-Chip bei 10 %.
 
 ### Named Rules
-**The Eine-Stimme Rule.** Himbeer-Pink ist die einzige Farbe, in der Text hervorgehoben wird. Koralle spricht nie allein, sie erscheint als Chip-Fläche oder im Verlauf.
+**The Eine-Stimme Rule.** Himbeer-Pink ist die einzige Farbe, in der Text hervorgehoben wird und Handlungen gefüllt werden. Koralle spricht nie: Sie trägt keinen Text und steht nie unter Text.
 
-**The Verlauf-heißt-Handeln Rule.** Der Himbeer-Koralle-Verlauf markiert eine Handlung (Beitreten, Anmelden, Absenden) oder den Footer. Eine Fläche mit Verlauf, die nichts auslöst, gibt es nicht.
+**The Ein-Verlauf Rule.** Der Himbeer-Koralle-Verlauf erscheint nur als textfreies Band (Footer-Oberkante, Heute-Linie). Knöpfe sind Vollton.
 
 **The Fremde-Marke-bleibt-fremd Rule.** Partnerfarben werden exakt (Hex) übernommen und nur zur Kennzeichnung von Partnerinhalten eingesetzt, nie in PSNG-Flächen gemischt.
 
@@ -229,16 +227,16 @@ Bilder stehen in festen Formaten: Eventkarte 40:21, Archivkarte und Galerie 4:3,
 ## Components
 
 ### Buttons
-Kräftig, flächig, ohne Effekte außer einem leichten Abblenden.
+Kräftig, flächig, ohne Effekte.
 - **Shape:** sanft gerundet (12px), Text nie umbrechend.
-- **Primary:** Himbeer-Koralle-Verlauf, weiße Schrift in Schibsted Grotesk 500, 0,875rem, Innenabstand 12px × 24px. In der Navigation 8px × 16px, auf dem Handy 36px hoch mit 0,75rem.
-- **Hover / Focus:** Hover blendet auf 90 % Deckkraft. Fokus über den globalen Ring: 2px Himbeer-Pink, 2px Versatz, nur bei Tastaturfokus.
+- **Primary:** Himbeer-Vollton, weiße Schrift in Schibsted Grotesk 500, 0,875rem, Innenabstand 12px × 24px. In der Navigation 8px × 16px, auf dem Handy 36px hoch mit 0,75rem.
+- **Hover / Focus:** Hover dunkelt auf Himbeer-Hover ab. Fokus über den globalen Ring: 2px Himbeer-Pink, 2px Versatz, nur bei Tastaturfokus.
 - **Secondary:** Weiß bei 60 % auf transparentem Grund, 1px Rahmen in Himbeer-Pink bei 30 %, Schrift Himbeer-Pink. Hover legt einen 5-%-Pink-Schleier unter.
-- **Invertiert (auf dunkler oder Verlaufsfläche):** auf Tiefe Tinte ein Umriss in Weiß bei 30 %; im Footer ein weißer Knopf mit Himbeer-Schrift. Beide existieren nur inline (siehe unten).
+- **Invertiert (Footer):** weißer Knopf mit Himbeer-Schrift, Hover auf Rosé-Nebel.
 
 ### Chips
 - **Style:** Pillen (voll rund), 0,75rem DM Sans 500, Innenabstand 2px × 10px.
-- **Varianten:** Spalte (Gebrannte Koralle, weiße Schrift), Status (Himbeer-Pink bei 10 % mit Himbeer-Schrift; Warnrot bei 10 % mit Warnrot-Schrift), Highlight (Verlauf), BPSA (Chip-Navy mit Cyan-Violett-Verlaufsrahmen), PARAB (Tiefe Tinte).
+- **Drei Rollen** (`src/index.css`, `.chip`, `.chip-accent`, `.chip-status`): Neutral (Weiß, 1px Rosé-Linie, Tinte bei 75 %) für Einordnung wie Vortrag, Community, Partner; Akzent (Himbeer bei 10 %, Schrift Himbeer-Hover) für das, was ein Event auszeichnet; Status (Warnrot bei 10 %) für Absagen.
 
 ### Cards / Containers
 - **Corner Style:** 16px für Eventkarten und große Container, 12px für Neben-Boxen.
@@ -262,14 +260,14 @@ Kräftig, flächig, ohne Effekte außer einem leichten Abblenden.
 Termine stehen links von ihrem Inhalt als gestapelte Datumsmarke: Wochentag (0,75rem, Versalien, Gedämpfte Tinte), Tageszahl (Schibsted Grotesk 700, 1,875rem, Zeilenhöhe 1), Monat (0,75rem, Versalien, Himbeer-Pink). Auf der Startseite in einer durch Haarlinien getrennten Liste, auf der Event-Seite als Spalte einer Zeitleiste.
 
 ### Kooperationsleiste (Signature Component)
-Am Fuß von Eventkarten mit Partnerbeteiligung: 2px Oberkante in BPSA-Cyan, darunter ein Verlauf, der links weiß bleibt (dort sitzt das Partnerlogo) und nach rechts über Cyan in Violett läuft.
+Am Fuß von Eventkarten mit Partnerbeteiligung, bewusst leise: 1px Oberkante in BPSA-Cyan bei 40 %, darunter eine 8-%-Tönung, die links weiß bleibt (dort sitzt das 40-px-Logo) und nach rechts über Cyan in Violett läuft.
 
 ## Do's and Don'ts
 
 ### Do:
 - **Do** Himbeer-Pink (hsl(339 63% 48%)) für jede Texthervorhebung, jeden Link und den Fokusring verwenden.
-- **Do** den Verlauf nur auf Handlungen und den Footer legen und darunter ausschließlich weiße Schrift setzen.
-- **Do** für weiße Schrift auf farbiger Fläche die abgesenkten Töne nehmen (Gebrannte Koralle, Verlaufsstopps), nie Marken-Pink, Koralle, Rosé oder Lachs.
+- **Do** Handlungen in Himbeer-Vollton füllen und den Verlauf nur als textfreies Band einsetzen.
+- **Do** Koralle als Fläche, Linie oder Punkt zeigen, hell wie im Logo.
 - **Do** Partnerfarben exakt in Hex übernehmen und nur für Partnerinhalte einsetzen.
 - **Do** Karten flach mit 1px Rosé-Linie bauen und Schatten erst beim Hover zeigen.
 - **Do** Fotos groß und unverändert zeigen; Code darf nur Ausschnitt und Format bestimmen.
@@ -279,7 +277,7 @@ Am Fuß von Eventkarten mit Partnerbeteiligung: 2px Oberkante in BPSA-Cyan, daru
 ### Don't:
 - **Don't** das Logo (`public/psng-logo.png`) verändern, umfärben oder neu zeichnen.
 - **Don't** Himbeer-Pink und Koralle durch eine andere Hauptfarbe ersetzen; sie sind die Identität.
-- **Don't** Koralle (hsl(5 78% 65%)) oder Marken-Pink (hsl(339 68% 54%)) als Fläche unter Text einsetzen.
+- **Don't** Koralle unter oder als Text einsetzen, auch nicht abgedunkelt.
 - **Don't** BPSA-Farben in PSNG-Flächen mischen oder in HSL umrechnen.
 - **Don't** Zeitleiste und Datumsschiene durch Karten ohne Datum ersetzen.
 

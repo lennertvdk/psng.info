@@ -31,7 +31,9 @@ const legal = [
 const external = { target: "_blank", rel: "noopener noreferrer" };
 ---
 
-<footer class="gradient-psychedelic py-16">
+<footer class="bg-primary">
+  <div class="gradient-psychedelic h-2" aria-hidden="true"></div>
+  <div class="py-16">
   <div class="container mx-auto px-6">
     <div class="mx-auto max-w-3xl text-center">
       <div class="mb-8 flex flex-wrap items-center justify-center gap-6">
@@ -50,7 +52,7 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
         <a
           href={whatsappHref("footer")}
           {...external}
-          class="inline-flex items-center justify-center rounded-lg bg-primary-foreground px-8 py-3 font-heading text-sm font-medium text-primary transition-opacity hover:opacity-90"
+          class="inline-flex items-center justify-center rounded-lg bg-primary-foreground px-8 py-3 font-heading text-sm font-medium text-primary transition-colors hover:bg-secondary"
         >
           {c.footer.joinWhatsapp}
         </a>
@@ -71,5 +73,6 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
         <p class="mt-2 font-heading text-xs text-primary-foreground">{c.footer.thanks}</p>
       </div>
     </div>
+  </div>
   </div>
 </footer>

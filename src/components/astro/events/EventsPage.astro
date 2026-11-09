@@ -92,7 +92,7 @@ const external = { target: "_blank", rel: "noopener noreferrer" };
             <p class="hidden pr-4 text-right font-heading text-xs uppercase tracking-[0.2em] text-primary md:block">
               {c.events.today}
             </p>
-            <div class="flex items-center justify-center"><span class="h-px w-full bg-primary/30"></span></div>
+            <div class="flex items-center justify-center"><span class="gradient-psychedelic h-0.5 w-full rounded-full"></span></div>
             <p class="pl-3 font-heading text-xs uppercase tracking-[0.2em] text-primary md:hidden">{c.events.today}</p>
           </li>
           {past.map((entry) => <TimelineRow entry={entry} events={events} locale={locale} upcoming={false} ref={ref} />)}

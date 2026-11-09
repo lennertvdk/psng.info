@@ -41,7 +41,7 @@ const dot = upcoming
   ? isNext
     ? "bg-coral ring-4 ring-coral/25"
     : "border-2 border-primary/35 bg-background"
-  : "bg-primary/30";
+  : "bg-[hsl(339_45%_86%)]";
 const wide = "(min-width: 1024px) 860px, (min-width: 768px) calc(100vw - 12rem), 100vw";
 const chip = "chip";
 const card = "rounded-xl border border-border/60 bg-card";
@@ -63,7 +63,7 @@ const card = "rounded-xl border border-border/60 bg-card";
     </p>
   </div>
   <div class="flex justify-center pt-2">
-    <span class={`timeline-dot h-3 w-3 shrink-0 rounded-full ${dot}`} aria-hidden="true"></span>
+    <span class={`timeline-dot relative z-[1] h-3 w-3 shrink-0 rounded-full ${dot}`} aria-hidden="true"></span>
   </div>
   <div class={`min-w-0 pb-8 pl-3 md:pl-4 ${isNext ? "next-event-glow" : ""}`}>
     {
