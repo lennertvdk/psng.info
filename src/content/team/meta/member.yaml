@@ -4,6 +4,7 @@ photo: ./photo.webp
 roles:
   - de: "Vereinsgründung"
     en: "Founding the association"
+  - "Blog"
 study:
   de: "Psychologie-Masterandin"
   en: "Psychology master's student"
